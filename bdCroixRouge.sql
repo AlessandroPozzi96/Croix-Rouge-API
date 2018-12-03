@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS Lanceralerte;
 DROP TABLE IF EXISTS Concerne;
 DROP TABLE IF EXISTS Alerte;
 DROP TABLE IF EXISTS Utilisateur;
@@ -100,6 +101,15 @@ CREATE TABLE Don (
 	PRIMARY KEY CLUSTERED (Id ASC), 
 	FOREIGN KEY (Fk_Collecte) REFERENCES Collecte(Id), 
 	FOREIGN KEY (Fk_Donneur) REFERENCES Donneur(Registration_id)
+);
+
+CREATE TABLE Lanceralerte (
+	Id 				INT 	IDENTITY(1, 1) 	NOT NULL,
+	Fk_Alerte		INT 					NOT NULL, 
+	Fk_Utilisateur	NVARCHAR(50)			NOT NULL, 
+	PRIMARY KEY CLUSTERED (Id ASC), 
+	FOREIGN KEY (Fk_Alerte) REFERENCES Alerte(Id), 
+	FOREIGN KEY (Fk_Utilisateur) REFERENCES Utilisateur(Login)
 );
 
 INSERT INTO [dbo].[Role]
