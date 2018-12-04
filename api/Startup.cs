@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using api.model;
+using Microsoft.EntityFrameworkCore;
 
 namespace api
 {
