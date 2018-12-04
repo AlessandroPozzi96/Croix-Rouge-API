@@ -75,3 +75,4 @@ _[Ss]cripts
 *.dot[Cc]over
 # Include dlls if they're in the CommonReferences directory
 model/connectionString.json
+api/connectionString.json
