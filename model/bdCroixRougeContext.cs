@@ -1,11 +1,15 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.FileExtensions;
+using Microsoft.Extensions.Configuration.Json;
 
 namespace model
 {
     public partial class bdCroixRougeContext : DbContext
     {
+        public static IConfiguration Config {get;set;}
         public bdCroixRougeContext()
         {
         }
@@ -31,10 +35,13 @@ namespace model
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            Config = new ConfigurationBuilder()
+            .AddJsonFile("connectionString.json", true, true)
+            .Build();
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=tcp:croixrouge.database.windows.net,1433;Initial Catalog=bdCroixRouge;User Id=Gwynbleidd@croixrouge.database.windows.net;Password=Pa456lOt;");
+                optionsBuilder
+                .UseSqlServer($"{ Config["stringConnexion"] }");
             }
         }
 

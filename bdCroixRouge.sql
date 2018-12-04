@@ -19,8 +19,8 @@ CREATE TABLE Groupesanguin (
 );
 
 CREATE TABLE Imagepromotion (
-	Url		NVARCHAR(900)	NOT NULL, 
-	PRIMARY KEY CLUSTERED (Url ASC)
+	Url		NVARCHAR(400)	NOT NULL, 
+	PRIMARY KEY (Url)
 );
 
 CREATE TABLE Role (
@@ -56,7 +56,7 @@ CREATE TABLE Utilisateur (
 
 CREATE TABLE Partagerimage (
 	Id 				INT 	IDENTITY(1, 1) 	NOT NULL,
-	Fk_Image		NVARCHAR(900)			NOT NULL, 
+	Fk_Image		NVARCHAR(400)			NOT NULL, 
 	Fk_Utilisateur	NVARCHAR(50)			NOT NULL
 	PRIMARY KEY CLUSTERED (Id ASC), 
 	FOREIGN KEY (Fk_Image) REFERENCES Imagepromotion(Url), 
@@ -65,7 +65,7 @@ CREATE TABLE Partagerimage (
 
 CREATE TABLE Diffuserimage (
 	Id 				INT 	IDENTITY(1, 1) 	NOT NULL,
-	Fk_Image		NVARCHAR(900)			NOT NULL, 
+	Fk_Image		NVARCHAR(400)			NOT NULL, 
 	Fk_Utilisateur	NVARCHAR(50)			NOT NULL
 	PRIMARY KEY CLUSTERED (Id ASC), 
 	FOREIGN KEY (Fk_Image) REFERENCES Imagepromotion(Url), 
@@ -76,9 +76,7 @@ CREATE TABLE Alerte (
 	Id 				INT IDENTITY(1,1) 	NOT NULL,
 	Nom 			NVARCHAR(100)		NOT NULL, 
 	Contenu			NVARCHAR(500) 		NOT NULL,
-	Fk_Utilisateur 	NVARCHAR(50)		NOT NULL,
-	PRIMARY KEY CLUSTERED(Id ASC), 
-	FOREIGN KEY (Fk_Utilisateur) REFERENCES Utilisateur(Login)
+	PRIMARY KEY CLUSTERED(Id ASC)
 );
 
 CREATE TABLE Concerne (
@@ -95,8 +93,8 @@ CREATE TABLE Collecte (
 	Nom 		NVARCHAR(200)			NOT NULL, 
 	DateDebut	DATE 					NOT NULL, 
 	DateFin		DATE, 
-	Latitude	GEOGRAPHY				NOT NULL, 
-	Longitude	GEOGRAPHY 				NOT NULL,
+	Latitude	DECIMAL(9, 6)			NOT NULL, 
+	Longitude	DECIMAL(9, 6) 			NOT NULL,
 	Fk_Addresse	INT 					NOT NULL,
 	PRIMARY KEY CLUSTERED (Id ASC), 
 	FOREIGN KEY (Fk_Addresse) REFERENCES Addresse(Id)

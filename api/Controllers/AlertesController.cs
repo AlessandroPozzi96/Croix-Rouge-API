@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using api.model;
+using model;
 
 namespace api.Controllers
 {
@@ -14,24 +15,21 @@ namespace api.Controllers
     [ApiController]
     public class AlertesController : ControllerBase
     {
-        private Alerte[] alertes = new Alerte[] {
-            new Alerte(1, "Stock AB+ faible", "La croix rouge estime que le niveau de sang AB+ ne sera pas suffisant pour satisfaire la demande, nous vous demandons votre aide !"), 
-            new Alerte(2, "Stock O-", "Message a tous les donneurs universelles, suite aux récents attentats nous vous demandons de venir le plus vite possible donner votre sang pour sauver un maximum de personnes"), 
-            new Alerte(3, "Stock All", "Cher donneurs et cher donneuses, la croix rouge dispose de suffisamment de sang pour le moment, ne vous sentez pas obligué de venir ces temps ci")
-        };
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<Alerte>> Get()
         {
             User.Claims.ToList().ForEach(claim => Console.WriteLine($"Claim : {claim.Type}: {claim.Value}"));
-            return this.alertes;
+            var dbCroixRougeContext = new bdCroixRougeContext();
+            return dbCroixRougeContext.Alerte.ToArray();
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<Alerte> Get(int id)
         {
-            return this.alertes[id];
+            var dbCroixRougeContext = new bdCroixRougeContext();
+            return (Alerte)dbCroixRougeContext.Alerte.ToArray().GetValue(id);
         }
 
         // POST api/values
