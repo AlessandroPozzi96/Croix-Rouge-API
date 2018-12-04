@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using api.model;
 using model;
+using model.Alerte;
 
 namespace api.Controllers
 {
