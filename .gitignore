@@ -73,6 +73,6 @@ _[Ss]cripts
 *.nupkg
 *.ncrunchsolution
 *.dot[Cc]over
-# Include dlls if they're in the CommonReferences directory
+# ConnectionString
 model/connectionString.json
 api/connectionString.json
