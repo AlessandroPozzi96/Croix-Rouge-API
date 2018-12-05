@@ -74,6 +74,4 @@ _[Ss]cripts
 *.ncrunchsolution
 *.dot[Cc]over
 # ConnectionString
-model/connectionString.json
-api/connectionString.json
 api/appsettings.json
