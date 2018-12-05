@@ -10,10 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using CroixRouge.DTO;
 using CroixRouge.Model;
+using CroixRouge.Dal;
 
 namespace CroixRouge.api.Controllers
 {
-
     // Ce controller est accessible même aux utilisateurs non identifiés
     // En effet, ces derniers doivent pouvoir demander un token!
     [AllowAnonymous]
@@ -23,9 +23,13 @@ namespace CroixRouge.api.Controllers
     {
 
         private readonly JwtIssuerOptions _jwtOptions;
-        public JwtController(IOptions<JwtIssuerOptions> jwtOptions)
+        private Dal.bdCroixRougeContext _context;
+
+        public JwtController(IOptions<JwtIssuerOptions> jwtOptions, Dal.bdCroixRougeContext context)
         {
             _jwtOptions = jwtOptions.Value;
+             this._context = context ?? throw new ArgumentNullException(nameof(context));
+
         }
 
         // POST api/Jwt
@@ -39,28 +43,38 @@ namespace CroixRouge.api.Controllers
             // if (!ModelState.IsValid)
             //     return BadRequest(ModelState);
 
-            var repository = new AuthenticationRepository();
-            CroixRouge.Model.User userFound = repository.GetUsers().FirstOrDefault(user => user.UserName == loginModel.UserName && user.Password == loginModel.Password);
-            if (userFound == null)
+            var repository = new AuthenticationRepository(this._context);
+
+
+            repository.GetUsers().FirstOrDefault(u => {
+                Console.Write(u.Login);
+                Console.Write(u.Password);
+                return true;
+            });
+            Model.Utilisateur utilisateurFound = repository.GetUsers().FirstOrDefault(utilisateur => utilisateur.Login == loginModel.UserName && utilisateur.Password == loginModel.Password);
+            if (utilisateurFound == null)
                 return Unauthorized();
+
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, userFound.UserName),
+                new Claim(JwtRegisteredClaimNames.Sub, utilisateurFound.Login),
                 new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
                 new Claim(JwtRegisteredClaimNames.Iat,
                         ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(),
                         ClaimValueTypes.Integer64),
-                new Claim(PrivateClaims.UserId,userFound.Id.ToString())
+                // new Claim(PrivateClaims.UserId,userFound.Id.ToString())  l'id est le login
+
             };
 
             // rappel: le token est configurable. On y ajoute ce que l'on veut comme claims!
             // un ensemble de nom de claims est "réservé" (voir JwtRegisteredClaimNames)
             // le reste est utilisable à loisir! Voir classe PrivateClaims par exemple. 
-            if (userFound.Roles != null)
+            if (utilisateurFound.FkLibelle != null)
             {
-                userFound.Roles.ToList().ForEach(roleName =>
-                claims.Add(new Claim("roles", roleName)));
+                claims.Add(new Claim("role",utilisateurFound.FkLibelle));
+                /* userFound.Roles.ToList().ForEach(roleName =>
+                claims.Add(new Claim("roles", roleName)));*/
             }
 
             //IEnumerable<string> roles = await _userManager.GetRolesAsync(user);
