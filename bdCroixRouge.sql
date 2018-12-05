@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS Utilisateur;
 DROP TABLE IF EXISTS Groupesanguin;
 DROP TABLE IF EXISTS Role;
 DROP TABLE IF EXISTS Collecte;
-DROP TABLE IF EXISTS Addresse;
+DROP TABLE IF EXISTS Adresse;
 DROP TABLE IF EXISTS Imagepromotion;
 
 
@@ -28,7 +28,7 @@ CREATE TABLE Role (
 	PRIMARY KEY CLUSTERED (Libelle ASC)
 );
 
-CREATE TABLE Addresse (
+CREATE TABLE Adresse (
 	Id 		INT IDENTITY(1,1) 	NOT NULL,
 	Ville	NVARCHAR(100) 		NOT NULL, 
 	Rue		NVARCHAR(100) 		NOT NULL, 
@@ -46,11 +46,11 @@ CREATE TABLE Utilisateur (
 	DateNaissance		DATE			NOT NULL, 
 	Score				INT				NOT NULL,
 	Fk_Libelle			NVARCHAR(50)	NOT NULL,
-	Fk_Addresse			INT 			NOT NULL, 
+	Fk_Adresse			INT 			NOT NULL, 
 	Fk_Groupesanguin	NVARCHAR(3),
 	PRIMARY KEY CLUSTERED (Login), 
 	FOREIGN KEY (Fk_Libelle) REFERENCES Role(Libelle), 
-	FOREIGN KEY (Fk_Addresse) REFERENCES Addresse(Id), 
+	FOREIGN KEY (Fk_Adresse) REFERENCES Adresse(Id), 
 	FOREIGN KEY (Fk_Groupesanguin) REFERENCES Groupesanguin(Nom)
 );
 
@@ -95,9 +95,9 @@ CREATE TABLE Collecte (
 	DateFin		DATE, 
 	Latitude	DECIMAL(9, 6)			NOT NULL, 
 	Longitude	DECIMAL(9, 6) 			NOT NULL,
-	Fk_Addresse	INT 					NOT NULL,
+	Fk_Adresse	INT 					NOT NULL,
 	PRIMARY KEY CLUSTERED (Id ASC), 
-	FOREIGN KEY (Fk_Addresse) REFERENCES Addresse(Id)
+	FOREIGN KEY (Fk_Adresse) REFERENCES Adresse(Id)
 );
 
 CREATE TABLE Jourouverture (
@@ -137,7 +137,7 @@ INSERT INTO [dbo].[Role]
 		   ('USER'), 
 		   ('SUPERUSER');
 		   
-INSERT INTO [dbo].[Addresse]
+INSERT INTO [dbo].[Adresse]
            ([Ville]
            ,[Rue]
            ,[Numero])
@@ -154,10 +154,14 @@ INSERT INTO [dbo].[Utilisateur]
            ,[DateNaissance]
            ,[Score]
            ,[Fk_Libelle]
-           ,[Fk_Addresse]
+           ,[Fk_Adresse]
            ,[Fk_Groupesanguin])
      VALUES
            ('Gwynbleidd', 'POZZI', 'Alessandro', 'MotDePasseNonHashé', 'aless@gmail.com', 473227085, '1996-07-14', 0, 'ADMIN', 1, null);
-
+INSERT INTO [dbo].[Alerte]
+           ([Nom]
+           ,[Contenu])
+     VALUES
+           ('Stock O-', 'La croix Rouge a besoin des donneurs O- !');
 
 

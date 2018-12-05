@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using CroixRouge.api.Infrastructure;
+using CroixRouge.Dal;
 
 namespace api
 {
@@ -30,46 +31,55 @@ namespace api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string secretKey = "MaSuperCleSecreteANePasPublier";
-            SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(
-                Encoding.ASCII.GetBytes(secretKey)
-            );
-            services.Configure<JwtIssuerOptions> (options => 
+            #region ....
+            services.AddDbContext<bdCroixRougeContext>((options) =>
+            {
+                string connectionString = new ConfigurationHelper("CroixRougeDatabase").GetConnectionString();
+                options.UseSqlServer(connectionString);
+            });
+            #endregion
+            string SecretKey = "MaSuperCleSecreteANePasPublier";
+            SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+            services.Configure<JwtIssuerOptions>(options =>
             {
                 options.Issuer = "MonSuperServeurDeJetons";
                 options.Audience = "http://localhost:5000";
-                options.SigningCredentials = 
-                new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256) ;
+                options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
             });
+
+
 
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = true, 
-                ValidIssuer = "MonSuperServeurDeJetons", 
-                ValidateAudience = true, 
-                ValidAudience = "http://localhost:5000", 
-                ValidateIssuerSigningKey = true, 
-                IssuerSigningKey = _signingKey, 
-                RequireExpirationTime = true, 
-                ValidateLifetime = true, 
+                ValidateIssuer = true,
+                ValidIssuer = "MonSuperServeurDeJetons",
+
+                ValidateAudience = true,
+                ValidAudience = "http://localhost:5000",
+
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = _signingKey,
+
+                RequireExpirationTime = true,
+                ValidateLifetime = true,
+
                 ClockSkew = TimeSpan.Zero
-            }; 
+            };
 
             services
-            .AddAuthentication(
-                options => 
+                .AddAuthentication(
+                    options =>
+                    {
+
+                        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    })
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
-                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                }
-            )
-            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, 
-            options => 
-            {
                     options.Audience = "http://localhost:5000";
                     options.ClaimsIssuer = "MonSuperServeurDeJetons";
                     options.TokenValidationParameters = tokenValidationParameters;
                     options.SaveToken = true;
-            });
+                });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
