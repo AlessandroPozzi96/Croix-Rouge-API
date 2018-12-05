@@ -76,3 +76,4 @@ _[Ss]cripts
 # ConnectionString
 model/connectionString.json
 api/connectionString.json
+api/appsettings.json
