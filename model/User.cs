@@ -1,6 +1,6 @@
 using System;
 
-namespace api.model
+namespace model
 {
 
     public class User 

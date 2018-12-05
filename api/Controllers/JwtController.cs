@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.Extensions.Options;
-using api.model;
-using api.dto;
+using api.infrastructure;
+using dto;
 
 
 namespace api.controllers

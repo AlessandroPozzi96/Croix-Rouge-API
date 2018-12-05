@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace api.model
+namespace api.infrastructure
 {
     public class AuthenticationRepository
     {
