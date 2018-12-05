@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CroixRouge.Model
+namespace Dal
 {
     public class Class1
     {

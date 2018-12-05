@@ -1,13 +1,13 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DTO
+namespace CroixRouge.DTO
 {
     public class LoginModel
     {
         [StringLength(50, MinimumLength=3)]
         [Required]
-        public string Username {get; set;}
+        public string UserName {get; set;}
         [StringLength(20, MinimumLength=3)]
         [Required]
         public string Password {get; set;}

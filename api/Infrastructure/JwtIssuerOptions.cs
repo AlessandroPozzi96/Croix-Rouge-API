@@ -1,8 +1,9 @@
+﻿
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Threading.Tasks;
 
-namespace api.infrastructure
+namespace CroixRouge.api.Infrastructure
 {
   public class JwtIssuerOptions
   {
@@ -67,7 +68,7 @@ namespace api.infrastructure
     /// <summary>
     /// Set the timespan the token will be valid for (default is 5 min/300 seconds)
     /// </summary>
-    public TimeSpan ValidFor { get; set; } = TimeSpan.FromMinutes(60);
+    public TimeSpan ValidFor { get; set; } = TimeSpan.FromMinutes(15);
 
     /// <summary>
     /// "exp" (Expiration Time) Claim (returns IssuedAt + ValidFor)

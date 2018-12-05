@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace api.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
@@ -17,7 +14,6 @@ namespace api.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            User.Claims.ToList().ForEach(claim => Console.WriteLine($"Claim : {claim.Type}: {claim.Value}"));
             return new string[] { "value1", "value2" };
         }
 

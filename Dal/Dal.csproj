@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>CroixRouge.Model</RootNamespace>
   </PropertyGroup>
 
 </Project>

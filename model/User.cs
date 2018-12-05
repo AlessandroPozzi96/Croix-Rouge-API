@@ -1,41 +1,13 @@
-using System;
-
-namespace model
+﻿using System;
+namespace CroixRouge.Model
 {
-
-    public class User 
+    public class User
     {
-        private string userName;
-        private string passWord;
-        private string email;
-        private int id;
-        public int Id
-        {
-            get { return id;}
-            set { id = value;}
-        }
-        
-        public string Email
-        {
-            get { return email;}
-            set { email = value;}
-        }
-        
-        public string PassWord
-        {
-            get { return passWord;}
-            set { passWord = value;}
-        }
-        
-        public string UserName
-        {
-            get { return userName;}
-            set { userName = value;}
-        }
+        public string UserName { get; set; }
+        public int Id { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
 
-        public User()
-        {
-
-        }
+        public string[] Roles { get; set; }
     }
 }
