@@ -16,6 +16,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using CroixRouge.api.Infrastructure;
 using CroixRouge.Dal;
+using  CroixRouge.DTO;
+using AutoMapper;
 
 namespace api
 {
@@ -80,13 +82,17 @@ namespace api
                     options.TokenValidationParameters = tokenValidationParameters;
                     options.SaveToken = true;
                 });
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            AutoMapper.Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<CroixRouge.Model.Role,RoleModel>();
+                cfg.CreateMap<CroixRouge.Model.Alerte,AlerteModel>();
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
