@@ -165,5 +165,10 @@ INSERT INTO [dbo].[Alerte]
            ('Stock O- faible', 'La croix Rouge a besoin des donneurs O- !'), 
 		   ('Trop de donneurs', 'Suite aux récents attentats, vous être nombreux a vouloir donner votre sang, tout en vous remerciant pour votre solidarité nous vous prions de revenir dans quelques jours afin que nous puissions mieux nous organiser'), 
 		   ('Stock AB+ suffisant', 'La croix rouge a pour l instant assez de donneurs AB+, revenez dans quelques semaines');
+		   
+INSERT INTO [dbo].[Groupesanguin]
+           ([Nom])
+     VALUES
+           ('A+'), ('A-'), ('B+'), ('B-'), ('AB+'), ('AB-'), ('O+'), ('O-');
 
 

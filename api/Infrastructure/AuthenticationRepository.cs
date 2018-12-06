@@ -2,20 +2,23 @@
 using System.Collections.Generic;
 using CroixRouge.Model;
 using CroixRouge.Dal;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
 namespace CroixRouge.api.Infrastructure
 {
     public class AuthenticationRepository
     {
 
-        private bdCroixRougeContext _context;
-        public AuthenticationRepository(bdCroixRougeContext context)
+        private CroixRouge.Dal.bdCroixRougeContext _context;
+        public AuthenticationRepository(CroixRouge.Dal.bdCroixRougeContext context)
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public IEnumerable<Utilisateur> GetUsers()
+        public async Task<IEnumerable<Utilisateur>> GetUsers()
         {
-            return _context.Utilisateur;
+            return await this._context.Utilisateur.ToArrayAsync();
         }
     }
 }
