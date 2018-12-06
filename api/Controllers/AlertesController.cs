@@ -38,6 +38,7 @@ namespace CroixRouge.api.Controllers
             return Ok(results);
         }
       /*        private static DTO.AlerteModel CreateDTOFromEntity(Model.Alerte entity)
+
         {
             //fixme: comment améliorer cette implémentation?
             return new DTO.AlerteModel()
