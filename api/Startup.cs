@@ -107,6 +107,7 @@ namespace api
             {
                 cfg.CreateMap<CroixRouge.Model.Role,RoleModel>();
                 cfg.CreateMap<CroixRouge.Model.Alerte,AlerteModel>();
+                cfg.CreateMap<AlerteModel, CroixRouge.Model.Alerte>();
                 cfg.CreateMap<CroixRouge.Model.Groupesanguin, GroupesanguinModel>();
             });
             if (env.IsDevelopment())
