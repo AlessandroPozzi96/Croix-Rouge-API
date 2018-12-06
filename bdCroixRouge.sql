@@ -44,12 +44,14 @@ CREATE TABLE Utilisateur (
 	Mail				NVARCHAR(320)	NOT NULL, 
 	NumGSM				INT				NOT NULL, 
 	DateNaissance		DATE			NOT NULL, 
+	IsMale				BIT				NOT NULL,
 	Score				INT				NOT NULL,
-	Fk_Libelle			NVARCHAR(50)	NOT NULL,
+	Fk_Role				NVARCHAR(50)	NOT NULL,
 	Fk_Adresse			INT 			NOT NULL, 
 	Fk_Groupesanguin	NVARCHAR(3),
+	Rv					ROWVERSION		NOT NULL,
 	PRIMARY KEY CLUSTERED (Login), 
-	FOREIGN KEY (Fk_Libelle) REFERENCES Role(Libelle), 
+	FOREIGN KEY (Fk_Role) REFERENCES Role(Libelle), 
 	FOREIGN KEY (Fk_Adresse) REFERENCES Adresse(Id), 
 	FOREIGN KEY (Fk_Groupesanguin) REFERENCES Groupesanguin(Nom)
 );
@@ -153,12 +155,13 @@ INSERT INTO [dbo].[Utilisateur]
            ,[Mail]
            ,[NumGSM]
            ,[DateNaissance]
+		   ,[IsMale]
            ,[Score]
-           ,[Fk_Libelle]
+           ,[Fk_Role]
            ,[Fk_Adresse]
            ,[Fk_Groupesanguin])
      VALUES
-           ('Gwynbleidd', 'POZZI', 'Alessandro', 'MotDePasseNonHashé', 'aless@gmail.com', 473227085, '1996-07-14', 0, 'ADMIN', 1, null);
+           ('Gwynbleidd', 'POZZI', 'Alessandro', 'MotDePasseNonHashé', 'aless@gmail.com', 473227085, '1996-07-14', 1, 0, 'ADMIN', 1, null);
 INSERT INTO [dbo].[Alerte]
            ([Nom]
            ,[Contenu])

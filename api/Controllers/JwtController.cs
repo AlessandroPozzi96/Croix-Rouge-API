@@ -72,9 +72,9 @@ namespace CroixRouge.api.Controllers
             // rappel: le token est configurable. On y ajoute ce que l'on veut comme claims!
             // un ensemble de nom de claims est "réservé" (voir JwtRegisteredClaimNames)
             // le reste est utilisable à loisir! Voir classe PrivateClaims par exemple. 
-            if (utilisateurFound.FkLibelle != null)
+            if (utilisateurFound.FkRole != null)
             {
-                claims.Add(new Claim("role",utilisateurFound.FkLibelle));
+                claims.Add(new Claim("role",utilisateurFound.FkRole));
                 /* userFound.Roles.ToList().ForEach(roleName =>
                 claims.Add(new Claim("roles", roleName)));*/
             }
