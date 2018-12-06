@@ -33,7 +33,7 @@ namespace CroixRouge.api.Controllers
             return Ok(entities.Select(CreateDTOFromEntity));
         }
 
-                private static DTO.AlerteModel CreateDTOFromEntity(Model.Alerte entity)
+        private static DTO.AlerteModel CreateDTOFromEntity(Model.Alerte entity)
         {
             //fixme: comment améliorer cette implémentation?
             return new DTO.AlerteModel()
