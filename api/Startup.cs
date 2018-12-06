@@ -82,6 +82,21 @@ namespace api
                     options.TokenValidationParameters = tokenValidationParameters;
                     options.SaveToken = true;
                 });
+
+            // services.AddCors();
+            //pour ajouter CORS services (authoriser les requetes cross origin)
+            //services.AddCors();
+            services.AddCors(options =>{
+                options.AddPolicy("AllowSpecificOrigins",
+                builder =>
+                {
+                    builder.WithOrigins("*")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+                });
+              }
+            );
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -101,6 +116,18 @@ namespace api
             {
                 app.UseHsts();
             }
+
+            /* app.UseCors(builder =>
+                 builder.WithOrigins("*"));*/
+            //Enable CORS with CORS Middleware
+            // Shows UseCors with CorsPolicyBuilder.
+            app.UseCors(builder =>
+                //builder.WithOrigins("http://localhost:4200")
+                builder.WithOrigins("*") // pour toute les url
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+            );
+
 
             //app.UseHttpsRedirection();
             app.UseMvc();
