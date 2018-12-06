@@ -79,10 +79,9 @@ namespace CroixRouge.api.Controllers
             entity.Nom = dto.Nom;
             entity.Contenu = dto.Contenu;
             //fixme: le premier RowVersion n'a pas d'impact. 
-            // Attardez-vous à comprendre pour quelle raison.
-            // entity.RowVersion = dto.RowVersion;
-            //_context.Entry(entity).OriginalValues["RowVersion"] = dto.RowVersion;
-            //pas de gestion des opening periods (voir autre controller).
+            //Accès concurrents
+            _context.Entry(entity).OriginalValues["Rv"] = dto.Rv;
+
             await _context.SaveChangesAsync();
             return Ok(Mapper.Map<CroixRouge.DTO.AlerteModel>(entity));
         }

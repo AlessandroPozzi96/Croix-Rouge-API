@@ -14,6 +14,7 @@ namespace CroixRouge.Model
         public int Id { get; set; }
         public string Nom { get; set; }
         public string Contenu { get; set; }
+        public byte[] Rv { get; set; }
 
         public ICollection<Concerne> Concerne { get; set; }
         public ICollection<Lanceralerte> Lanceralerte { get; set; }

@@ -11,6 +11,7 @@ namespace CroixRouge.DTO
         public string Nom { get; set; }
         [Required]
         public string Contenu { get; set; }
+        public byte[] Rv { get; set; }
 
         public AlerteModel ()
         {

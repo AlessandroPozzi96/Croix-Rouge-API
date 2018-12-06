@@ -65,6 +65,11 @@ namespace CroixRouge.Dal
                 entity.Property(e => e.Nom)
                     .IsRequired()
                     .HasMaxLength(100);
+                
+                entity.Property(e => e.Rv)
+                    .IsRequired()
+                    .HasColumnName("RV")
+                    .IsRowVersion();
             });
 
             modelBuilder.Entity<Collecte>(entity =>
