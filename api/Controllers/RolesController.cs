@@ -11,41 +11,35 @@ using Microsoft.EntityFrameworkCore;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 using CroixRouge.Dal;
 using AutoMapper;
-
 namespace CroixRouge.api.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
-    public class AlertesController : Controller
+    public class RolesController : Controller
     {
         private bdCroixRougeContext _context;
 
-        public AlertesController(bdCroixRougeContext context)
+        public RolesController(bdCroixRougeContext context)
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
         }
-        // GET api/alertes
+        // GET api/Roles
+        // Recuperer les roles pour ne pas les hards coder en angular
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            IEnumerable<CroixRouge.Model.Alerte> entities = await _context.Alerte
-            .OrderBy(alerte => alerte.Id)
+            IEnumerable<CroixRouge.Model.Role> entities = await _context.Role
             .ToArrayAsync();
-            
-            var results = Mapper.Map<IEnumerable<AlerteModel>>(entities);
-
+            var results = Mapper.Map<IEnumerable<RoleModel>>(entities);
             //return Ok(entities.Select(CreateDTOFromEntity));
             return Ok(results);
         }
-      /*        private static DTO.AlerteModel CreateDTOFromEntity(Model.Alerte entity)
-
+       /*        private static DTO.RoleModel CreateDTOFromEntity(Model.Role entity)
         {
             //fixme: comment améliorer cette implémentation?
-            return new DTO.AlerteModel()
+            return new DTO.RoleModel()
             {
-                Id = entity.Id,
-                Nom = entity.Nom, 
-                Contenu = entity.Contenu
+                Libelle = entity.Libelle
             };
         }*/
     }
