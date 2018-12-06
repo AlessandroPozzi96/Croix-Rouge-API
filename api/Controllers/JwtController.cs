@@ -45,13 +45,15 @@ namespace CroixRouge.api.Controllers
 
             var repository = new AuthenticationRepository(this._context);
 
+            Task<IEnumerable<Model.Utilisateur>> usersTask = repository.GetUsers();
+            IEnumerable<Model.Utilisateur> users = usersTask.Result;
 
-            repository.GetUsers().FirstOrDefault(u => {
+            users.FirstOrDefault(u => {
                 Console.Write(u.Login);
                 Console.Write(u.Password);
                 return true;
             });
-            Model.Utilisateur utilisateurFound = repository.GetUsers().FirstOrDefault(utilisateur => utilisateur.Login == loginModel.UserName && utilisateur.Password == loginModel.Password);
+            Model.Utilisateur utilisateurFound = users.FirstOrDefault(utilisateur => utilisateur.Login == loginModel.UserName && utilisateur.Password == loginModel.Password);
             if (utilisateurFound == null)
                 return Unauthorized();
 
