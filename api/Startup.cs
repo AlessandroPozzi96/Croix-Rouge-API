@@ -106,11 +106,14 @@ namespace api
             AutoMapper.Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<CroixRouge.Model.Role,RoleModel>();
+                cfg.CreateMap<RoleModel,CroixRouge.Model.Role>();
                 cfg.CreateMap<CroixRouge.Model.Alerte,AlerteModel>();
                 cfg.CreateMap<AlerteModel, CroixRouge.Model.Alerte>();
                 cfg.CreateMap<CroixRouge.Model.Groupesanguin, GroupesanguinModel>();
                 cfg.CreateMap<CroixRouge.Model.Utilisateur, UtilisateurModel>();
                 cfg.CreateMap<UtilisateurModel, CroixRouge.Model.Utilisateur>();
+                cfg.CreateMap<CroixRouge.Model.Adresse, CroixRouge.DTO.AdresseModel>();
+                cfg.CreateMap<CroixRouge.DTO.AdresseModel, CroixRouge.Model.Adresse>();
             });
             if (env.IsDevelopment())
             {

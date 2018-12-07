@@ -3,19 +3,22 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CroixRouge.DTO
 {
-    public class AlerteModel
+    public class AdresseModel
     {
         [Required]
         public int Id { get; set; }
         [StringLength(100, MinimumLength=2)]
         [Required]
-        public string Nom { get; set; }
-        [StringLength(500, MinimumLength=2)]
+        public string Ville { get; set; }
+        [StringLength(100, MinimumLength=2)]
         [Required]
-        public string Contenu { get; set; }
+        public string Rue { get; set; }
+        [StringLength(4, MinimumLength=1)]
+        [Required]
+        public string Numero { get; set; }
         public byte[] Rv { get; set; }
 
-        public AlerteModel ()
+        public AdresseModel ()
         {
 
         }

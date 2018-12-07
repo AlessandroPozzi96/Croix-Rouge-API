@@ -15,6 +15,7 @@ namespace CroixRouge.Model
         public string Ville { get; set; }
         public string Rue { get; set; }
         public string Numero { get; set; }
+        public byte[] Rv { get; set; }
 
         public ICollection<Collecte> Collecte { get; set; }
         public ICollection<Utilisateur> Utilisateur { get; set; }
