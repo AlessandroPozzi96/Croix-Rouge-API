@@ -26,7 +26,7 @@ namespace CroixRouge.api.Controllers
         }
         // GET api/alertes
         [HttpGet]
-        public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 3, string nom = null)
+        public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 10, string nom = null)
         {
             IEnumerable<CroixRouge.Model.Alerte> entities = await _context.Alerte
             .Where(alerte => nom == null || alerte.Nom.Contains(nom))

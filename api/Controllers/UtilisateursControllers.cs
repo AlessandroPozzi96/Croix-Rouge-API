@@ -24,11 +24,11 @@ namespace CroixRouge.api.Controllers
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
         }
-        
+
         // GET api/Utilisateurs
         [HttpGet]
         //[Authorize(Roles = Constants.Roles.Admin)]
-        public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 3, string login = null)
+        public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 20, string login = null)
         {
             IEnumerable<CroixRouge.Model.Utilisateur> entities = await _context.Utilisateur
             .Where(u => login == null || u.Login.Contains(login))

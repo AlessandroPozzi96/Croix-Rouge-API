@@ -26,7 +26,7 @@ namespace CroixRouge.api.Controllers
         }
         // GET api/Adresses
         [HttpGet]
-        public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 3, string ville = null)
+        public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 10, string ville = null)
         {
             IEnumerable<CroixRouge.Model.Adresse> entities = await _context.Adresse
             .Where(adr => ville == null || adr.Ville.Contains(ville))
@@ -96,6 +96,9 @@ namespace CroixRouge.api.Controllers
                 // todo: débat: si l'on demande une suppression d'une entité qui n'existe pas
                 // s'agit-il vraiment d'un cas d'erreur? 
                 return NotFound();
+            //if (adr.Utilisateur != null)
+                //return BadRequest("FK UTILISATEUR");
+
             _context.Adresse.Remove(adr);
             await _context.SaveChangesAsync();
             return Ok();
