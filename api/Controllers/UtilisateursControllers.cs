@@ -14,7 +14,7 @@ using AutoMapper;
 
 namespace CroixRouge.api.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
     [Route("api/[controller]")]
     public class UtilisateursController : Controller
     {
@@ -24,8 +24,10 @@ namespace CroixRouge.api.Controllers
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
         }
+        
         // GET api/Utilisateurs
         [HttpGet]
+        //[Authorize(Roles = Constants.Roles.Admin)]
         public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 3, string login = null)
         {
             IEnumerable<CroixRouge.Model.Utilisateur> entities = await _context.Utilisateur
@@ -55,7 +57,6 @@ namespace CroixRouge.api.Controllers
 
         // POST api/Utilisateurs
         [HttpPost]
-        //[Authorize(Roles = Constants.Roles.Admin)]
         public async Task<IActionResult> Post([FromBody]CroixRouge.DTO.UtilisateurModel dto)
         {
             if (!ModelState.IsValid)

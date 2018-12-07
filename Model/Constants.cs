@@ -5,8 +5,9 @@ namespace CroixRouge.Model
     {
         public static class Roles
         {
-            public const string Admin = "Administrateur";
-            public const string Gestionnaire = "Gestionnaire";
+            public const string Admin = "ADMIN";
+            public const string User = "USER";
+            public const string SuperUser = "SUPERUSER";
         }
     }
 }
