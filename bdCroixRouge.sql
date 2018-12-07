@@ -146,7 +146,8 @@ INSERT INTO [dbo].[Adresse]
            ,[Rue]
            ,[Numero])
      VALUES
-           ('Dinant', 'Place du Baty', '6B');
+           ('Dinant', 'Place du Baty', '6B'), 
+		   ('Libramont', 'Rue de Libramont', '77A');
 		   
 INSERT INTO [dbo].[Utilisateur]
            ([Login]
@@ -162,7 +163,8 @@ INSERT INTO [dbo].[Utilisateur]
            ,[Fk_Adresse]
            ,[Fk_Groupesanguin])
      VALUES
-           ('Gwynbleidd', 'POZZI', 'Alessandro', 'MotDePasseNonHashé', 'aless@gmail.com', 473227085, '1996-07-14', 1, 0, 'ADMIN', 1, null);
+           ('Gwynbleidd', 'POZZI', 'Alessandro', 'MotDePasseNonHashé', 'aless@gmail.com', 473227085, '1996-07-14', 1, 0, 'ADMIN', 1, null), 
+		   ('Bob', 'BRAHY', 'Sébastien', 'MonMotDePasse', 'seba@gmail.com', 473124578, '1993-01-01', 1, 0, 'ADMIN', 2, null);
 INSERT INTO [dbo].[Alerte]
            ([Nom]
            ,[Contenu])
