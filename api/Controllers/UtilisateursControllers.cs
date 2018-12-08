@@ -14,7 +14,7 @@ using AutoMapper;
 
 namespace CroixRouge.api.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class UtilisateursController : Controller
     {
@@ -27,7 +27,7 @@ namespace CroixRouge.api.Controllers
 
         // GET api/Utilisateurs
         [HttpGet]
-        //[Authorize(Roles = Constants.Roles.Admin)]
+        [Authorize(Roles = Constants.Roles.Admin)]
         public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 20, string login = null)
         {
             IEnumerable<CroixRouge.Model.Utilisateur> entities = await _context.Utilisateur
@@ -44,6 +44,7 @@ namespace CroixRouge.api.Controllers
 
         // GET api/Utilisateurs/Gwynbleidd
         [HttpGet("{login}")]
+        [Authorize(Roles = Constants.Roles.Admin)]
         public async Task<IActionResult> GetById(string login)
         {
             CroixRouge.Model.Utilisateur entity = await FindUtilisateurByLogin(login);
@@ -96,6 +97,7 @@ namespace CroixRouge.api.Controllers
 
         // DELETE api/Utilisateurs/Gwynbleidd
         [HttpDelete("{login}")]
+        [Authorize(Roles = Constants.Roles.Admin)]
         public async Task<IActionResult> Delete(string login)
         {
             CroixRouge.Model.Utilisateur utilisateur = await FindUtilisateurByLogin(login);
