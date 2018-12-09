@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS Don;
 DROP TABLE IF EXISTS Lanceralerte;
 DROP TABLE IF EXISTS Jourouverture;
+DROP TABLE IF EXISTS TrancheHoraire;
 DROP TABLE IF EXISTS Diffuserimage;
 DROP TABLE IF EXISTS Partagerimage;
 DROP TABLE IF EXISTS Concerne;
@@ -95,23 +96,28 @@ CREATE TABLE Concerne (
 CREATE TABLE Collecte ( 
 	Id 			INT 	IDENTITY(1, 1) 	NOT NULL,
 	Nom 		NVARCHAR(200)			NOT NULL, 
-	DateDebut	DATE 					NOT NULL, 
-	DateFin		DATE, 
 	Latitude	DECIMAL(9, 6)			NOT NULL, 
-	Longitude	DECIMAL(9, 6) 			NOT NULL,
-	Fk_Adresse	INT 					NOT NULL,
-	PRIMARY KEY CLUSTERED (Id ASC), 
-	FOREIGN KEY (Fk_Adresse) REFERENCES Adresse(Id)
+	Longitude	DECIMAL(9, 6) 			NOT NULL, 
+	Telephone	INT,
+	PRIMARY KEY CLUSTERED (Id ASC)
+);
+
+CREATE TABLE TrancheHoraire (
+	Id 		INT IDENTITY(1, 1) 			NOT NULL, 
+	HeureDebut		TIME 				NOT NULL, 
+	HeureFin		TIME 				NOT NULL, 
+	PRIMARY KEY CLUSTERED (Id ASC)
 );
 
 CREATE TABLE Jourouverture (
-	Id 			INT 	IDENTITY(1, 1) 	NOT NULL,
-	Nom 		NVARCHAR(8) 			NOT NULL, 
-	HeureDebut	TIME 					NOT NULL, 
-	HeureFin	TIME 					NOT NULL, 
-	Fk_Collecte	INT 					NOT NULL,
+	Id 					INT 	IDENTITY(1, 1) 	NOT NULL,
+	LibelleJour 		NVARCHAR(8) 			NOT NULL, 
+	Date 				DATE,
+	Fk_Collecte			INT 					NOT NULL,
+	Fk_TrancheHoraire	INT 					NOT NULL,
 	PRIMARY KEY CLUSTERED (Id ASC), 
-	FOREIGN KEY (Fk_Collecte) REFERENCES Collecte(Id)
+	FOREIGN KEY (Fk_Collecte) REFERENCES Collecte(Id), 
+	FOREIGN KEY (Fk_TrancheHoraire) REFERENCES TrancheHoraire(Id)
 );
 
 CREATE TABLE Don (
@@ -177,5 +183,31 @@ INSERT INTO [dbo].[Groupesanguin]
            ([Nom])
      VALUES
            ('A+'), ('A-'), ('B+'), ('B-'), ('AB+'), ('AB-'), ('O+'), ('O-');
+		   
+INSERT INTO [dbo].[Collecte]
+           ([Nom]
+           ,[Latitude]
+           ,[Longitude]
+           ,[Telephone])
+     VALUES
+           ('Site de Namur - Rue des dames blanches', 50.467260, 4.866500, 081221010);
+		   
+INSERT INTO [dbo].[TrancheHoraire]
+           ([HeureDebut]
+           ,[HeureFin])
+     VALUES
+           ('08:00', '19:30'), 
+		   ('08:00', '12:30'), 
+		   ('08:00', '16:30');
 
-
+INSERT INTO [dbo].[Jourouverture]
+           ([LibelleJour]
+           ,[Date]
+           ,[Fk_Collecte]
+           ,[Fk_TrancheHoraire])
+     VALUES
+           ('Lundi', null, 1, 1), 
+		   ('Mardi', null, 1, 2), 
+		   ('Mercredi', null, 1, 3), 
+		   ('Jeudi', null, 1, 1), 
+		   ('Vendredi', null, 1, 3);
