@@ -111,7 +111,7 @@ CREATE TABLE TrancheHoraire (
 
 CREATE TABLE Jourouverture (
 	Id 					INT 	IDENTITY(1, 1) 	NOT NULL,
-	LibelleJour 		NVARCHAR(8) 			NOT NULL, 
+	LibelleJour 		NVARCHAR(8), 
 	Date 				DATE,
 	Fk_Collecte			INT 					NOT NULL,
 	Fk_TrancheHoraire	INT 					NOT NULL,
@@ -190,7 +190,15 @@ INSERT INTO [dbo].[Collecte]
            ,[Longitude]
            ,[Telephone])
      VALUES
-           ('Site de Namur - Rue des dames blanches', 50.467260, 4.866500, 081221010);
+           ('Site de prélèvement Namur', 50.467260, 4.866500, 081221010), 
+		   ('Bois de Villers - Salle communal', 50.389900, 4.823320, null), 
+		   ('Courriere - Salle cecilia', 50.392790, 4.990760, null), 
+		   ('Emines - Ecole communal', 50.512530, 4.840690, null), 
+		   ('Namur - Car devant l''église saint-joseph', 50.466410, 4.865420, null), 
+		   ('Saint Denis Bovesse - Salle la Ruche """"', 50.535290, 4.784890, null), 
+		   ('Sclayn - Salle communale (Près du terrain de foot)', 50.493090, 5.035540, null), 
+		   ('Spy - École fondamentale autonome', 50.480150, 4.702640, null), 
+		   ('Site de prélèvement Huy', 50.510810, 5.240360, 085277588);
 		   
 INSERT INTO [dbo].[TrancheHoraire]
            ([HeureDebut]
@@ -198,7 +206,16 @@ INSERT INTO [dbo].[TrancheHoraire]
      VALUES
            ('08:00', '19:30'), 
 		   ('08:00', '12:30'), 
-		   ('08:00', '16:30');
+		   ('08:00', '16:30'), 
+		   ('16:00', '19:30'), 
+		   ('15:30', '19:30'), 
+		   ('15:00', '18:30'), 
+		   ('10:00', '17:00'), 
+		   ('08:00', '14:00'), 
+		   ('11:00', '17:00'), 
+		   ('11:00', '16:30'), 
+		   ('13:00', '19:30'), 
+		   ('09:00', '13:00');
 
 INSERT INTO [dbo].[Jourouverture]
            ([LibelleJour]
@@ -206,8 +223,12 @@ INSERT INTO [dbo].[Jourouverture]
            ,[Fk_Collecte]
            ,[Fk_TrancheHoraire])
      VALUES
-           ('Lundi', null, 1, 1), 
-		   ('Mardi', null, 1, 2), 
-		   ('Mercredi', null, 1, 3), 
-		   ('Jeudi', null, 1, 1), 
-		   ('Vendredi', null, 1, 3);
+           ('Lundi', null, 1, 1), ('Mardi', null, 1, 2), ('Mercredi', null, 1, 3), ('Jeudi', null, 1, 1), ('Vendredi', null, 1, 3), (null, '2018-12-15', 1, 7),(null, '2018-12-24', 1, 8),(null, '2018-12-29', 1, 8),(null, '2018-12-31', 1, 8),
+		   (null, '2018-12-20', 2, 4), (null, '2019-03-21', 2, 4), (null, '2019-06-20', 2, 4), (null, '2019-09-19', 2, 4), (null, '2019-12-19', 2, 4), 
+		   (null, '2019-02-15', 3, 5), (null, '2019-05-17', 3, 5), (null, '2019-08-16', 3, 5), (null, '2019-11-05', 3, 5), 
+		   (null, '2019-01-14', 4, 6), (null, '2019-04-01', 4, 6), (null, '2019-07-01', 4, 6), (null, '2019-10-14', 4, 6), 
+		   (null, '2018-12-26', 5, 9), (null, '2018-12-27', 5, 9), (null, '2018-12-28', 5, 10), 
+		   (null, '2019-02-04', 6, 6), (null, '2019-05-16', 6, 6), (null, '2019-08-08', 6, 6), (null, '2019-11-14', 6, 6), 
+		   (null, '2019-01-22', 7, 6), (null, '2019-04-23', 7, 6), (null, '2019-07-23', 7, 6), (null, '2019-10-22', 7, 6), 
+		   (null, '2019-02-25', 8, 6), (null, '2019-05-27', 8, 6), (null, '2019-08-26', 8, 6), (null, '2019-11-25', 8, 6), 
+		   ('Mardi', null, 9, 11), ('Mercredi', null, 9, 12), ('Jeudi', null, 9, 11);
