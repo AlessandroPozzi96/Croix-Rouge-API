@@ -40,16 +40,16 @@ CREATE TABLE Adresse (
 
 CREATE TABLE Utilisateur (
 	Login 				NVARCHAR(50)	NOT NULL, 
-	Nom 				NVARCHAR(100)	NOT NULL, 
-	Prenom				NVARCHAR(100)	NOT NULL, 
+	Nom 				NVARCHAR(100), 
+	Prenom				NVARCHAR(100), 
 	Password 			NVARCHAR(200)	NOT NULL, 
 	Mail				NVARCHAR(320)	NOT NULL, 
-	NumGSM				INT				NOT NULL, 
-	DateNaissance		DATE			NOT NULL, 
-	IsMale				BIT				NOT NULL,
+	NumGSM				INT, 
+	DateNaissance		DATE, 
+	IsMale				BIT,
 	Score				INT				NOT NULL,
 	Fk_Role				NVARCHAR(50)	NOT NULL,
-	Fk_Adresse			INT 			NOT NULL, 
+	Fk_Adresse			INT, 
 	Fk_Groupesanguin	NVARCHAR(3),
 	Rv					ROWVERSION		NOT NULL,
 	PRIMARY KEY CLUSTERED (Login), 
@@ -99,6 +99,7 @@ CREATE TABLE Collecte (
 	Latitude	DECIMAL(9, 6)			NOT NULL, 
 	Longitude	DECIMAL(9, 6) 			NOT NULL, 
 	Telephone	INT,
+	Rv			ROWVERSION				NOT NULL,
 	PRIMARY KEY CLUSTERED (Id ASC)
 );
 
@@ -169,8 +170,8 @@ INSERT INTO [dbo].[Utilisateur]
            ,[Fk_Adresse]
            ,[Fk_Groupesanguin])
      VALUES
-           ('Gwynbleidd', 'POZZI', 'Alessandro', 'MotDePasseNonHashé', 'aless@gmail.com', 473227085, '1996-07-14', 1, 0, 'ADMIN', 1, null), 
-		   ('Bob', 'BRAHY', 'Sébastien', 'MonMotDePasse', 'seba@gmail.com', 473124578, '1993-01-01', 1, 0, 'ADMIN', 2, null);
+           ('Gwynbleidd', 'POZZI', 'Alessandro', 'MotDePasseNonHashé', 'alessandro.pozzi72@gmail.com', 473227085, '1996-07-14', 1, 0, 'ADMIN', 1, null), 
+		   ('Bob', 'BRAHY', 'Sébastien', '12345678', 'brahysebastien@hotmail.com', 473124578, '1993-01-01', 1, 0, 'ADMIN', 2, null);
 INSERT INTO [dbo].[Alerte]
            ([Nom]
            ,[Contenu])
@@ -195,7 +196,7 @@ INSERT INTO [dbo].[Collecte]
 		   ('Courriere - Salle cecilia', 50.392790, 4.990760, null), 
 		   ('Emines - Ecole communal', 50.512530, 4.840690, null), 
 		   ('Namur - Car devant l''église saint-joseph', 50.466410, 4.865420, null), 
-		   ('Saint Denis Bovesse - Salle la Ruche """"', 50.535290, 4.784890, null), 
+		   ('Saint Denis Bovesse - Salle la Ruche', 50.535290, 4.784890, null), 
 		   ('Sclayn - Salle communale (Près du terrain de foot)', 50.493090, 5.035540, null), 
 		   ('Spy - École fondamentale autonome', 50.480150, 4.702640, null), 
 		   ('Site de prélèvement Huy', 50.510810, 5.240360, 085277588);

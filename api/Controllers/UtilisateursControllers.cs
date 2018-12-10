@@ -14,7 +14,6 @@ using AutoMapper;
 
 namespace CroixRouge.api.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class UtilisateursController : Controller
     {
@@ -27,7 +26,7 @@ namespace CroixRouge.api.Controllers
 
         // GET api/Utilisateurs
         [HttpGet]
-        [Authorize(Roles = Constants.Roles.Admin)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
         public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 20, string login = null)
         {
             IEnumerable<CroixRouge.Model.Utilisateur> entities = await _context.Utilisateur
@@ -43,8 +42,9 @@ namespace CroixRouge.api.Controllers
         }
 
         // GET api/Utilisateurs/Gwynbleidd
+        //Vérifier si le login passé en paramètre est le même que celui du token
         [HttpGet("{login}")]
-        [Authorize(Roles = Constants.Roles.Admin)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetById(string login)
         {
             CroixRouge.Model.Utilisateur entity = await FindUtilisateurByLogin(login);
@@ -70,7 +70,9 @@ namespace CroixRouge.api.Controllers
         }
 
         // PUT api/Utilisateurs/Gwynbleidd
+        //Vérifier si le login passé en paramètre est le même que celui du token
         [HttpPut("{login}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Put(string login, [FromBody]CroixRouge.DTO.UtilisateurModel dto)
         {
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
@@ -97,7 +99,8 @@ namespace CroixRouge.api.Controllers
 
         // DELETE api/Utilisateurs/Gwynbleidd
         [HttpDelete("{login}")]
-        [Authorize(Roles = Constants.Roles.Admin)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //Vérifier si le login passé en paramètre est le même que celui du token
         public async Task<IActionResult> Delete(string login)
         {
             CroixRouge.Model.Utilisateur utilisateur = await FindUtilisateurByLogin(login);
