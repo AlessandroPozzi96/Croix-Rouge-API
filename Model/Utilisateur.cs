@@ -18,12 +18,12 @@ namespace CroixRouge.Model
         public string Prenom { get; set; }
         public string Password { get; set; }
         public string Mail { get; set; }
-        public int NumGsm { get; set; }
-        public DateTime DateNaissance { get; set; }
-        public bool IsMale { get; set; }
+        public int? NumGsm { get; set; }
+        public DateTime? DateNaissance { get; set; }
+        public bool? IsMale { get; set; }
         public int Score { get; set; }
         public string FkRole { get; set; }
-        public int FkAdresse { get; set; }
+        public int? FkAdresse { get; set; }
         public string FkGroupesanguin { get; set; }
         public byte[] Rv { get; set; }
 
