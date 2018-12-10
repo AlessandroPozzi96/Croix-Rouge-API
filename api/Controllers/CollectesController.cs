@@ -107,7 +107,10 @@ namespace CroixRouge.api.Controllers
 
         public Task<CroixRouge.Model.Collecte> FindCollecteById(int id)
         {
-            return _context.Collecte.FindAsync(id);
+            return _context.Collecte
+            .Include(c => c.Jourouverture)
+                .ThenInclude(j => j.FkTrancheHoraireNavigation)
+            .FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }
