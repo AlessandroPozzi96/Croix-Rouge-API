@@ -16,7 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using CroixRouge.api.Infrastructure;
 using CroixRouge.Dal;
-using  CroixRouge.DTO;
+using CroixRouge.DTO;
 using AutoMapper;
 
 namespace api
@@ -114,6 +114,8 @@ namespace api
                 cfg.CreateMap<UtilisateurModel, CroixRouge.Model.Utilisateur>();
                 cfg.CreateMap<CroixRouge.Model.Adresse, CroixRouge.DTO.AdresseModel>();
                 cfg.CreateMap<CroixRouge.DTO.AdresseModel, CroixRouge.Model.Adresse>();
+                cfg.CreateMap<CroixRouge.DTO.CollecteModel, CroixRouge.Model.Collecte>();
+                cfg.CreateMap<CroixRouge.Model.Collecte, CroixRouge.DTO.CollecteModel>();
             });
             if (env.IsDevelopment())
             {

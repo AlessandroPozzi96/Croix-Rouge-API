@@ -7,7 +7,6 @@ namespace CroixRouge.Model
     {
         public Adresse()
         {
-            Collecte = new HashSet<Collecte>();
             Utilisateur = new HashSet<Utilisateur>();
         }
 
@@ -17,7 +16,6 @@ namespace CroixRouge.Model
         public string Numero { get; set; }
         public byte[] Rv { get; set; }
 
-        public ICollection<Collecte> Collecte { get; set; }
         public ICollection<Utilisateur> Utilisateur { get; set; }
     }
 }

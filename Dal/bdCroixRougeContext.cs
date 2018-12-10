@@ -28,6 +28,7 @@ namespace CroixRouge.Dal
         public virtual DbSet<Lanceralerte> Lanceralerte { get; set; }
         public virtual DbSet<Partagerimage> Partagerimage { get; set; }
         public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<TrancheHoraire> TrancheHoraire { get; set; }
         public virtual DbSet<Utilisateur> Utilisateur { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -68,12 +69,6 @@ namespace CroixRouge.Dal
 
             modelBuilder.Entity<Collecte>(entity =>
             {
-                entity.Property(e => e.DateDebut).HasColumnType("date");
-
-                entity.Property(e => e.DateFin).HasColumnType("date");
-
-                entity.Property(e => e.FkAdresse).HasColumnName("Fk_Adresse");
-
                 entity.Property(e => e.Latitude).HasColumnType("decimal(9, 6)");
 
                 entity.Property(e => e.Longitude).HasColumnType("decimal(9, 6)");
@@ -82,11 +77,9 @@ namespace CroixRouge.Dal
                     .IsRequired()
                     .HasMaxLength(200);
 
-                entity.HasOne(d => d.FkAdresseNavigation)
-                    .WithMany(p => p.Collecte)
-                    .HasForeignKey(d => d.FkAdresse)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Collecte__Fk_Adr__0E591826");
+                entity.Property(e => e.Rv)
+                    .IsRequired()
+                    .IsRowVersion();
             });
 
             modelBuilder.Entity<Concerne>(entity =>
@@ -102,13 +95,13 @@ namespace CroixRouge.Dal
                     .WithMany(p => p.Concerne)
                     .HasForeignKey(d => d.FkAlerte)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Concerne__Fk_Ale__0A888742");
+                    .HasConstraintName("FK__Concerne__Fk_Ale__33408412");
 
                 entity.HasOne(d => d.FkGroupesanguinNavigation)
                     .WithMany(p => p.Concerne)
                     .HasForeignKey(d => d.FkGroupesanguin)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Concerne__Fk_Gro__0B7CAB7B");
+                    .HasConstraintName("FK__Concerne__Fk_Gro__3434A84B");
             });
 
             modelBuilder.Entity<Diffuserimage>(entity =>
@@ -127,13 +120,13 @@ namespace CroixRouge.Dal
                     .WithMany(p => p.Diffuserimage)
                     .HasForeignKey(d => d.FkImage)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Diffuseri__Fk_Im__04CFADEC");
+                    .HasConstraintName("FK__Diffuseri__Fk_Im__2D87AABC");
 
                 entity.HasOne(d => d.FkUtilisateurNavigation)
                     .WithMany(p => p.Diffuserimage)
                     .HasForeignKey(d => d.FkUtilisateur)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Diffuseri__Fk_Ut__05C3D225");
+                    .HasConstraintName("FK__Diffuseri__Fk_Ut__2E7BCEF5");
             });
 
             modelBuilder.Entity<Don>(entity =>
@@ -151,13 +144,13 @@ namespace CroixRouge.Dal
                     .WithMany(p => p.Don)
                     .HasForeignKey(d => d.FkCollecte)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Don__Fk_Collecte__1411F17C");
+                    .HasConstraintName("FK__Don__Fk_Collecte__3EB236BE");
 
                 entity.HasOne(d => d.FkUtilisateurNavigation)
                     .WithMany(p => p.Don)
                     .HasForeignKey(d => d.FkUtilisateur)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Don__Fk_Utilisat__150615B5");
+                    .HasConstraintName("FK__Don__Fk_Utilisat__3FA65AF7");
             });
 
             modelBuilder.Entity<Groupesanguin>(entity =>
@@ -180,17 +173,25 @@ namespace CroixRouge.Dal
 
             modelBuilder.Entity<Jourouverture>(entity =>
             {
+                entity.Property(e => e.Date).HasColumnType("date");
+
                 entity.Property(e => e.FkCollecte).HasColumnName("Fk_Collecte");
 
-                entity.Property(e => e.Nom)
-                    .IsRequired()
-                    .HasMaxLength(8);
+                entity.Property(e => e.FkTrancheHoraire).HasColumnName("Fk_TrancheHoraire");
+
+                entity.Property(e => e.LibelleJour).HasMaxLength(8);
 
                 entity.HasOne(d => d.FkCollecteNavigation)
                     .WithMany(p => p.Jourouverture)
                     .HasForeignKey(d => d.FkCollecte)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Jourouver__Fk_Co__113584D1");
+                    .HasConstraintName("FK__Jourouver__Fk_Co__3AE1A5DA");
+
+                entity.HasOne(d => d.FkTrancheHoraireNavigation)
+                    .WithMany(p => p.Jourouverture)
+                    .HasForeignKey(d => d.FkTrancheHoraire)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Jourouver__Fk_Tr__3BD5CA13");
             });
 
             modelBuilder.Entity<Lanceralerte>(entity =>
@@ -206,13 +207,13 @@ namespace CroixRouge.Dal
                     .WithMany(p => p.Lanceralerte)
                     .HasForeignKey(d => d.FkAlerte)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Lancerale__Fk_Al__17E28260");
+                    .HasConstraintName("FK__Lancerale__Fk_Al__4282C7A2");
 
                 entity.HasOne(d => d.FkUtilisateurNavigation)
                     .WithMany(p => p.Lanceralerte)
                     .HasForeignKey(d => d.FkUtilisateur)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Lancerale__Fk_Ut__18D6A699");
+                    .HasConstraintName("FK__Lancerale__Fk_Ut__4376EBDB");
             });
 
             modelBuilder.Entity<Partagerimage>(entity =>
@@ -231,13 +232,13 @@ namespace CroixRouge.Dal
                     .WithMany(p => p.Partagerimage)
                     .HasForeignKey(d => d.FkImage)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Partageri__Fk_Im__00FF1D08");
+                    .HasConstraintName("FK__Partageri__Fk_Im__29B719D8");
 
                 entity.HasOne(d => d.FkUtilisateurNavigation)
                     .WithMany(p => p.Partagerimage)
                     .HasForeignKey(d => d.FkUtilisateur)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Partageri__Fk_Ut__01F34141");
+                    .HasConstraintName("FK__Partageri__Fk_Ut__2AAB3E11");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -296,18 +297,18 @@ namespace CroixRouge.Dal
                     .WithMany(p => p.Utilisateur)
                     .HasForeignKey(d => d.FkAdresse)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Utilisate__Fk_Ad__7D2E8C24");
+                    .HasConstraintName("FK__Utilisate__Fk_Ad__25E688F4");
 
                 entity.HasOne(d => d.FkGroupesanguinNavigation)
                     .WithMany(p => p.Utilisateur)
                     .HasForeignKey(d => d.FkGroupesanguin)
-                    .HasConstraintName("FK__Utilisate__Fk_Gr__7E22B05D");
+                    .HasConstraintName("FK__Utilisate__Fk_Gr__26DAAD2D");
 
                 entity.HasOne(d => d.FkRoleNavigation)
                     .WithMany(p => p.Utilisateur)
                     .HasForeignKey(d => d.FkRole)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Utilisate__Fk_Ro__7C3A67EB");
+                    .HasConstraintName("FK__Utilisate__Fk_Ro__24F264BB");
             });
         }
     }
