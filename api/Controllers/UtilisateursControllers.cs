@@ -66,6 +66,7 @@ namespace CroixRouge.api.Controllers
             var entity = Mapper.Map<CroixRouge.Model.Utilisateur>(dto);
             _context.Utilisateur.Add(entity);
             await _context.SaveChangesAsync();
+            dto.Score = 0;
             return Created($"api/Utilisateurs/{entity.Login}", Mapper.Map<UtilisateurModel>(entity));
         }
 

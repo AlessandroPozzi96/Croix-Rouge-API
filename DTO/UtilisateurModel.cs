@@ -21,7 +21,6 @@ namespace CroixRouge.DTO
         public int NumGsm { get; set; }
         public DateTime DateNaissance { get; set; }
         public bool IsMale { get; set; }
-        [Required]
         public int Score { get; set; }
         [StringLength(50, MinimumLength=3)]
         [Required]
