@@ -16,6 +16,7 @@ namespace CroixRouge.DTO
         public decimal Longitude { get; set; }
         public int? Telephone { get; set; }
         public byte[] Rv { get; set; }
+        public JourouvertureModel[] Jourouverture { get; set; }
 
         public CollecteModel ()
         {

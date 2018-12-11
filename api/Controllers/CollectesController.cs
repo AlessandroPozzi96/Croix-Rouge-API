@@ -29,6 +29,8 @@ namespace CroixRouge.api.Controllers
         {
             IEnumerable<CroixRouge.Model.Collecte> entities = await _context.Collecte
             .OrderBy(collecte => collecte.Id)
+            .Include(c => c.Jourouverture)
+                .ThenInclude(j => j.FkTrancheHoraireNavigation)
             .Take(pageSize.Value)
             .Skip(pageIndex.Value * pageSize.Value)
             .ToArrayAsync();
@@ -105,7 +107,10 @@ namespace CroixRouge.api.Controllers
 
         public Task<CroixRouge.Model.Collecte> FindCollecteById(int id)
         {
-            return _context.Collecte.FindAsync(id);
+            return _context.Collecte
+            .Include(c => c.Jourouverture)
+                .ThenInclude(j => j.FkTrancheHoraireNavigation)
+            .FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }
