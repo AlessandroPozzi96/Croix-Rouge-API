@@ -87,15 +87,21 @@ namespace CroixRouge.api.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Put(string login, [FromBody]CroixRouge.DTO.UtilisateurModel dto)
         {
+            var loginToken = User.Claims.ElementAt(0).Value;
+
+            if(login != dto.Login)
+             {
+                 return BadRequest();
+             }
+             if (login != loginToken) // --> impossible de changer le login de qqn pour un admin
+             {
+                return NotFound("Login passé en paramètre différends de celui du token ");
+             }
+
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
             CroixRouge.Model.Utilisateur entity = await FindUtilisateurByLogin(login);
             if (entity == null)
                 return NotFound();
-            
-            var loginToken = User.Claims.ElementAt(0).Value;
-
-            if (login != loginToken)
-                return NotFound("Login passé en paramètre différends de celui du token ");
 
             //fixme: améliorer cette implémentation
             entity.Nom = dto.Nom;
@@ -109,8 +115,10 @@ namespace CroixRouge.api.Controllers
             
             //fixme: le premier RowVersion n'a pas d'impact. 
             //Accès concurrents
-            _context.Entry(entity).OriginalValues["Rv"] = dto.Rv;
+            //_context.Entry(entity).OriginalValues["Rv"] = dto.Rv;   --> ?
 
+
+            _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return Ok(Mapper.Map<CroixRouge.DTO.UtilisateurModel>(entity));
         }
