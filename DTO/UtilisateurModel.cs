@@ -18,14 +18,13 @@ namespace CroixRouge.DTO
         [StringLength(320, MinimumLength=4)]
         [Required]
         public string Mail { get; set; }
-        public int NumGsm { get; set; }
-        public DateTime DateNaissance { get; set; }
-        public bool IsMale { get; set; }
+        public int? NumGsm { get; set; }
+        public DateTime? DateNaissance { get; set; }
+        public bool? IsMale { get; set; }
         public int Score { get; set; }
         [StringLength(50, MinimumLength=3)]
-        [Required]
         public string FkRole { get; set; }
-        public int FkAdresse { get; set; }
+        public int? FkAdresse { get; set; }
         [StringLength(3, MinimumLength=2)]
         public string FkGroupesanguin { get; set; }
         public byte[] Rv { get; set; }
