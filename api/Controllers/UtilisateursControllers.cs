@@ -7,6 +7,7 @@ using CroixRouge.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 using CroixRouge.Dal;
@@ -50,6 +51,11 @@ namespace CroixRouge.api.Controllers
             CroixRouge.Model.Utilisateur entity = await FindUtilisateurByLogin(login);
             if (entity == null)
                 return NotFound();
+            
+            var loginToken = User.Claims.ElementAt(0).Value;
+
+            if (login != loginToken)
+                return NotFound("Login passé en paramètre différends de celui du token ");
 
             var result = Mapper.Map<UtilisateurModel>(entity);
 
@@ -80,6 +86,12 @@ namespace CroixRouge.api.Controllers
             CroixRouge.Model.Utilisateur entity = await FindUtilisateurByLogin(login);
             if (entity == null)
                 return NotFound();
+            
+            var loginToken = User.Claims.ElementAt(0).Value;
+
+            if (login != loginToken)
+                return NotFound("Login passé en paramètre différends de celui du token ");
+
             //fixme: améliorer cette implémentation
             entity.Nom = dto.Nom;
             entity.Mail = dto.Mail;
@@ -109,6 +121,12 @@ namespace CroixRouge.api.Controllers
                 // todo: débat: si l'on demande une suppression d'une entité qui n'existe pas
                 // s'agit-il vraiment d'un cas d'erreur? 
                 return NotFound();
+
+            var loginToken = User.Claims.ElementAt(0).Value;
+
+            if (login != loginToken)
+                return NotFound("Login passé en paramètre différends de celui du token ");
+
             _context.Utilisateur.Remove(utilisateur);
             await _context.SaveChangesAsync();
             return Ok();
