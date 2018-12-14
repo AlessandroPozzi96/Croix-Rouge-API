@@ -34,7 +34,7 @@ namespace CroixRouge.api.Controllers
             .Take(pageSize.Value)
             .Skip(pageIndex.Value * pageSize.Value)
             .ToArrayAsync();
-            
+
             var results = Mapper.Map<IEnumerable<CollecteModel>>(entities);
 
             return Ok(results);

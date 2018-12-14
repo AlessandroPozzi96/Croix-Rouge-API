@@ -28,7 +28,7 @@ namespace CroixRouge.api.Controllers
         public JwtController(IOptions<JwtIssuerOptions> jwtOptions, Dal.bdCroixRougeContext context)
         {
             _jwtOptions = jwtOptions.Value;
-             this._context = context ?? throw new ArgumentNullException(nameof(context));
+            this._context = context ?? throw new ArgumentNullException(nameof(context));
 
         }
 
@@ -45,8 +45,7 @@ namespace CroixRouge.api.Controllers
 
             var repository = new AuthenticationRepository(this._context);
 
-            Task<IEnumerable<Model.Utilisateur>> usersTask = repository.GetUsers();
-            IEnumerable<Model.Utilisateur> users = usersTask.Result;
+            var users = await repository.GetUsers();
 
             users.FirstOrDefault(u => {
                 Console.Write(u.Login);

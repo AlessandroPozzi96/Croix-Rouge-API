@@ -19,21 +19,18 @@ namespace CroixRouge.api.Controllers
     public class AdressesController : Controller
     {
         private bdCroixRougeContext _context;
+        private DataAccess dataAccess;
 
         public AdressesController(bdCroixRougeContext context)
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
+            this.dataAccess = new DataAccess(this._context);
         }
         // GET api/Adresses
         [HttpGet]
-        public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 10, string ville = null)
+        public async Task<IActionResult> Get(string ville = null)
         {
-            IEnumerable<CroixRouge.Model.Adresse> entities = await _context.Adresse
-            .Where(adr => ville == null || adr.Ville.Contains(ville))
-            .OrderBy(adr => adr.Id)
-            .Take(pageSize.Value)
-            .Skip(pageIndex.Value * pageSize.Value)
-            .ToArrayAsync();
+            IEnumerable<CroixRouge.Model.Adresse> entities = await dataAccess.GetAdressesAsync(ville);
             
             var results = Mapper.Map<IEnumerable<AdresseModel>>(entities);
 
@@ -44,7 +41,7 @@ namespace CroixRouge.api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            CroixRouge.Model.Adresse entity = await FindAdresseById(id);
+            CroixRouge.Model.Adresse entity = await dataAccess.FindAdresseByIdAsync(id);
             if (entity == null)
                 return NotFound();
 
@@ -62,8 +59,9 @@ namespace CroixRouge.api.Controllers
                 return BadRequest(ModelState);
 
             var entity = Mapper.Map<CroixRouge.Model.Adresse>(dto);
-            _context.Adresse.Add(entity);
-            await _context.SaveChangesAsync();
+
+            await dataAccess.AddAdresseAsync(entity);
+
             return Created($"api/Adresses/{entity.Id}", Mapper.Map<AdresseModel>(entity));
         }
 
@@ -72,18 +70,12 @@ namespace CroixRouge.api.Controllers
         public async Task<IActionResult> Put(int id, [FromBody]CroixRouge.DTO.AdresseModel dto)
         {
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
-            CroixRouge.Model.Adresse entity = await FindAdresseById(id);
+            CroixRouge.Model.Adresse entity = await dataAccess.FindAdresseByIdAsync(id);
             if (entity == null)
                 return NotFound();
             //fixme: améliorer cette implémentation
-            entity.Ville = dto.Ville;
-            entity.Rue = dto.Rue; 
-            entity.Numero = dto.Numero;
-            //fixme: le premier RowVersion n'a pas d'impact. 
-            //Accès concurrents
-            _context.Entry(entity).OriginalValues["Rv"] = dto.Rv;
+            await dataAccess.UpdateAdresseAsync(entity, dto);
 
-            await _context.SaveChangesAsync();
             return Ok(Mapper.Map<CroixRouge.DTO.AdresseModel>(entity));
         }
 
@@ -91,7 +83,7 @@ namespace CroixRouge.api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            CroixRouge.Model.Adresse adr = await FindAdresseById(id);
+            CroixRouge.Model.Adresse adr = await dataAccess.FindAdresseByIdAsync(id);
             if (adr == null)
                 // todo: débat: si l'on demande une suppression d'une entité qui n'existe pas
                 // s'agit-il vraiment d'un cas d'erreur? 
@@ -99,14 +91,8 @@ namespace CroixRouge.api.Controllers
             //if (adr.Utilisateur != null)
                 //return BadRequest("FK UTILISATEUR");
 
-            _context.Adresse.Remove(adr);
-            await _context.SaveChangesAsync();
+            await dataAccess.RemoveAdresseAsync(adr);
             return Ok();
-        }
-
-        public Task<CroixRouge.Model.Adresse> FindAdresseById(int id)
-        {
-            return _context.Adresse.FindAsync(id);
         }
     }
 }
