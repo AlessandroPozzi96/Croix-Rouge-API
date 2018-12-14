@@ -19,18 +19,18 @@ namespace CroixRouge.api.Controllers
     public class GroupesSanguinsController : Controller
     {
         private bdCroixRougeContext _context;
+        private DataAccess dataAccess;
 
         public GroupesSanguinsController(bdCroixRougeContext context)
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
+            this.dataAccess = new DataAccess(this._context);
         }
         // GET api/GroupesSanguins
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            IEnumerable<CroixRouge.Model.Groupesanguin> entities = await _context.Groupesanguin
-            .OrderBy(g => g.Nom)
-            .ToArrayAsync();
+            IEnumerable<CroixRouge.Model.Groupesanguin> entities = await dataAccess.GetGroupesanguinsAsync();
             
             var results = Mapper.Map<IEnumerable<GroupesanguinModel>>(entities);
 

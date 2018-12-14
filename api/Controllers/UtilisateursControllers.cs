@@ -19,10 +19,12 @@ namespace CroixRouge.api.Controllers
     public class UtilisateursController : Controller
     {
         private bdCroixRougeContext _context;
+        private DataAccess dataAccess;
 
         public UtilisateursController(bdCroixRougeContext context)
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
+            this.dataAccess = new DataAccess(this._context);
         }
 
         // GET api/Utilisateurs
@@ -30,12 +32,7 @@ namespace CroixRouge.api.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
         public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 20, string login = null)
         {
-            IEnumerable<CroixRouge.Model.Utilisateur> entities = await _context.Utilisateur
-            .Where(u => login == null || u.Login.Contains(login))
-            .OrderBy(u => u.Login)
-            .Take(pageSize.Value)
-            .Skip(pageIndex.Value * pageSize.Value)
-            .ToArrayAsync();
+            IEnumerable<CroixRouge.Model.Utilisateur> entities = await dataAccess.GetUtilisateursAsync(pageIndex, pageSize, login);
             
             var results = Mapper.Map<IEnumerable<UtilisateurModel>>(entities);
 
@@ -48,11 +45,11 @@ namespace CroixRouge.api.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetById(string login)
         {
-            CroixRouge.Model.Utilisateur entity = await FindUtilisateurByLogin(login);
+            CroixRouge.Model.Utilisateur entity = await dataAccess.FindUtilisateurByLogin(login);
             if (entity == null)
                 return NotFound();
             
-            var loginToken = User.Claims.ElementAt(0).Value;
+            var loginToken = GetLoginToken();
 
             if (login != loginToken)
                 return NotFound("Login passé en paramètre différends de celui du token ");
@@ -76,8 +73,9 @@ namespace CroixRouge.api.Controllers
             dto.Score = 0;
 
             var entity = Mapper.Map<CroixRouge.Model.Utilisateur>(dto);
-            _context.Utilisateur.Add(entity);
-            await _context.SaveChangesAsync();
+
+            await dataAccess.AddUtilisateurAsync(entity);
+
             return Created($"api/Utilisateurs/{entity.Login}", Mapper.Map<UtilisateurModel>(entity));
         }
 
@@ -87,7 +85,7 @@ namespace CroixRouge.api.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Put(string login, [FromBody]CroixRouge.DTO.UtilisateurModel dto)
         {
-            var loginToken = User.Claims.ElementAt(0).Value;
+            var loginToken = GetLoginToken();
 
             if(login != dto.Login)
              {
@@ -99,27 +97,12 @@ namespace CroixRouge.api.Controllers
              }
 
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
-            CroixRouge.Model.Utilisateur entity = await FindUtilisateurByLogin(login);
+            CroixRouge.Model.Utilisateur entity = await dataAccess.FindUtilisateurByLogin(login);
             if (entity == null)
                 return NotFound();
 
-            //fixme: améliorer cette implémentation
-            entity.Nom = dto.Nom;
-            entity.Mail = dto.Mail;
-            entity.Prenom = dto.Prenom;
-            entity.NumGsm = dto.NumGsm;
-            entity.DateNaissance = dto.DateNaissance;
-            entity.IsMale = dto.IsMale;
-            entity.Score = dto.Score;
-            entity.Password = dto.Password;
-            
-            //fixme: le premier RowVersion n'a pas d'impact. 
-            //Accès concurrents
-            //_context.Entry(entity).OriginalValues["Rv"] = dto.Rv;   --> ?
+            await dataAccess.UpdateUtilisateurAsync(entity, dto);
 
-
-            _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
             return Ok(Mapper.Map<CroixRouge.DTO.UtilisateurModel>(entity));
         }
 
@@ -129,25 +112,25 @@ namespace CroixRouge.api.Controllers
         //Vérifier si le login passé en paramètre est le même que celui du token
         public async Task<IActionResult> Delete(string login)
         {
-            CroixRouge.Model.Utilisateur utilisateur = await FindUtilisateurByLogin(login);
+            CroixRouge.Model.Utilisateur utilisateur = await dataAccess.FindUtilisateurByLogin(login);
             if (utilisateur == null)
                 // todo: débat: si l'on demande une suppression d'une entité qui n'existe pas
                 // s'agit-il vraiment d'un cas d'erreur? 
                 return NotFound();
 
-            var loginToken = User.Claims.ElementAt(0).Value;
+            var loginToken = GetLoginToken();
 
             if (login != loginToken)
                 return NotFound("Login passé en paramètre différends de celui du token ");
 
-            _context.Utilisateur.Remove(utilisateur);
-            await _context.SaveChangesAsync();
+            await dataAccess.RemoveUtilisateurAsync(utilisateur);
+
             return Ok();
         }
 
-        public Task<CroixRouge.Model.Utilisateur> FindUtilisateurByLogin(string login)
+        public string GetLoginToken()
         {
-            return _context.Utilisateur.FindAsync(login);
+            return User.Claims.ElementAt(0).Value;
         }
     }
 }

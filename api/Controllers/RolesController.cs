@@ -18,18 +18,19 @@ namespace CroixRouge.api.Controllers
     public class RolesController : Controller
     {
         private bdCroixRougeContext _context;
+        private DataAccess dataAccess;
 
         public RolesController(bdCroixRougeContext context)
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
+            this.dataAccess = new DataAccess(this._context);
         }
         // GET api/Roles
         // Recuperer les roles pour ne pas les hards coder en angular
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            IEnumerable<CroixRouge.Model.Role> entities = await _context.Role
-            .ToArrayAsync();
+            IEnumerable<CroixRouge.Model.Role> entities = await dataAccess.GetRolesAsync();
             var results = Mapper.Map<IEnumerable<RoleModel>>(entities);
             //return Ok(entities.Select(CreateDTOFromEntity));
             return Ok(results);
