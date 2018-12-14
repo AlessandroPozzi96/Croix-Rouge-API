@@ -53,9 +53,50 @@ namespace CroixRouge.Dal
             await _context.SaveChangesAsync();
         }
 
-        public Task<CroixRouge.Model.Adresse> FindAdresseByIdAsync(int id)
+        public Task<CroixRouge.Model.Adresse> FindAdresseById(int id)
         {
             return _context.Adresse.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<CroixRouge.Model.Alerte>> GetAlertesAsync(int? pageIndex=0, int? pageSize = 10, string nom = null)
+        {
+             return await _context.Alerte
+            .Where(alerte => nom == null || alerte.Nom.Contains(nom))
+            .OrderBy(alerte => alerte.Id)
+            .Take(pageSize.Value)
+            .Skip(pageIndex.Value * pageSize.Value)
+            .ToArrayAsync();
+        }
+
+        public async Task AddAlerteAsync(CroixRouge.Model.Alerte alerte)
+        {
+            if (alerte != null)
+            {
+                _context.Alerte.Add(alerte);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task UpdateAlerteAsync(CroixRouge.Model.Alerte alerte, CroixRouge.DTO.AlerteModel dto)
+        {
+            alerte.Nom = dto.Nom;
+            alerte.Contenu = dto.Contenu;
+            //fixme: le premier RowVersion n'a pas d'impact. 
+            //Accès concurrents
+            _context.Entry(alerte).OriginalValues["Rv"] = dto.Rv;
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveAlerteAsync(CroixRouge.Model.Alerte alerte)
+        {
+            _context.Alerte.Remove(alerte);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task<CroixRouge.Model.Alerte> FindAlerteById(int id)
+        {
+            return _context.Alerte.FindAsync(id);
         }
     }
 }

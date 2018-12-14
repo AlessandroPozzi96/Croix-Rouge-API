@@ -41,7 +41,7 @@ namespace CroixRouge.api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            CroixRouge.Model.Adresse entity = await dataAccess.FindAdresseByIdAsync(id);
+            CroixRouge.Model.Adresse entity = await dataAccess.FindAdresseById(id);
             if (entity == null)
                 return NotFound();
 
@@ -70,7 +70,7 @@ namespace CroixRouge.api.Controllers
         public async Task<IActionResult> Put(int id, [FromBody]CroixRouge.DTO.AdresseModel dto)
         {
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
-            CroixRouge.Model.Adresse entity = await dataAccess.FindAdresseByIdAsync(id);
+            CroixRouge.Model.Adresse entity = await dataAccess.FindAdresseById(id);
             if (entity == null)
                 return NotFound();
             //fixme: améliorer cette implémentation
@@ -83,7 +83,7 @@ namespace CroixRouge.api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            CroixRouge.Model.Adresse adr = await dataAccess.FindAdresseByIdAsync(id);
+            CroixRouge.Model.Adresse adr = await dataAccess.FindAdresseById(id);
             if (adr == null)
                 // todo: débat: si l'on demande une suppression d'une entité qui n'existe pas
                 // s'agit-il vraiment d'un cas d'erreur? 

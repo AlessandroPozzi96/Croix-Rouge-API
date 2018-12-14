@@ -19,21 +19,18 @@ namespace CroixRouge.api.Controllers
     public class AlertesController : Controller
     {
         private bdCroixRougeContext _context;
+        private DataAccess dataAccess;
 
         public AlertesController(bdCroixRougeContext context)
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
+            this.dataAccess = new DataAccess(this._context);
         }
         // GET api/alertes
         [HttpGet]
         public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 10, string nom = null)
         {
-            IEnumerable<CroixRouge.Model.Alerte> entities = await _context.Alerte
-            .Where(alerte => nom == null || alerte.Nom.Contains(nom))
-            .OrderBy(alerte => alerte.Id)
-            .Take(pageSize.Value)
-            .Skip(pageIndex.Value * pageSize.Value)
-            .ToArrayAsync();
+            IEnumerable<CroixRouge.Model.Alerte> entities = await dataAccess.GetAlertesAsync(pageIndex, pageSize, nom);
             
             var results = Mapper.Map<IEnumerable<AlerteModel>>(entities);
 
@@ -44,7 +41,7 @@ namespace CroixRouge.api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            CroixRouge.Model.Alerte entity = await FindAlerteById(id);
+            CroixRouge.Model.Alerte entity = await dataAccess.FindAlerteById(id);
             if (entity == null)
                 return NotFound();
 
@@ -62,8 +59,9 @@ namespace CroixRouge.api.Controllers
                 return BadRequest(ModelState);
 
             var entity = Mapper.Map<CroixRouge.Model.Alerte>(dto);
-            _context.Alerte.Add(entity);
-            await _context.SaveChangesAsync();
+
+            await dataAccess.AddAlerteAsync(entity);
+
             return Created($"api/Alertes/{entity.Id}", Mapper.Map<AlerteModel>(entity));
         }
 
@@ -72,17 +70,11 @@ namespace CroixRouge.api.Controllers
         public async Task<IActionResult> Put(int id, [FromBody]CroixRouge.DTO.AlerteModel dto)
         {
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
-            CroixRouge.Model.Alerte entity = await FindAlerteById(id);
+            CroixRouge.Model.Alerte entity = await dataAccess.FindAlerteById(id);
             if (entity == null)
                 return NotFound();
-            //fixme: améliorer cette implémentation
-            entity.Nom = dto.Nom;
-            entity.Contenu = dto.Contenu;
-            //fixme: le premier RowVersion n'a pas d'impact. 
-            //Accès concurrents
-            _context.Entry(entity).OriginalValues["Rv"] = dto.Rv;
+            await dataAccess.UpdateAlerteAsync(entity, dto);
 
-            await _context.SaveChangesAsync();
             return Ok(Mapper.Map<CroixRouge.DTO.AlerteModel>(entity));
         }
 
@@ -90,19 +82,17 @@ namespace CroixRouge.api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            CroixRouge.Model.Alerte alerte = await FindAlerteById(id);
+            CroixRouge.Model.Alerte alerte = await dataAccess.FindAlerteById(id);
             if (alerte == null)
                 // todo: débat: si l'on demande une suppression d'une entité qui n'existe pas
                 // s'agit-il vraiment d'un cas d'erreur? 
                 return NotFound();
-            _context.Alerte.Remove(alerte);
-            await _context.SaveChangesAsync();
+                
+            await dataAccess.RemoveAlerteAsync(alerte);
+
             return Ok();
         }
 
-        public Task<CroixRouge.Model.Alerte> FindAlerteById(int id)
-        {
-            return _context.Alerte.FindAsync(id);
-        }
+
     }
 }
