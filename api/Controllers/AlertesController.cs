@@ -28,7 +28,7 @@ namespace CroixRouge.api.Controllers
         }
         // GET api/alertes
         [HttpGet]
-        public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 10, string nom = null)
+        public async Task<IActionResult> Get(int? pageIndex=Constants.Paging.PAGE_INDEX, int? pageSize = Constants.Paging.PAGE_SIZE, string nom = null)
         {
             IEnumerable<CroixRouge.Model.Alerte> entities = await dataAccess.GetAlertesAsync(pageIndex, pageSize, nom);
             

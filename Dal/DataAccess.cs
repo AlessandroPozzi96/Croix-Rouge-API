@@ -58,7 +58,7 @@ namespace CroixRouge.Dal
             return _context.Adresse.FindAsync(id);
         }
 
-        public async Task<IEnumerable<CroixRouge.Model.Alerte>> GetAlertesAsync(int? pageIndex=0, int? pageSize = 10, string nom = null)
+        public async Task<IEnumerable<CroixRouge.Model.Alerte>> GetAlertesAsync(int pageIndex, int pageSize, string nom)
         {
              return await _context.Alerte
             .Where(alerte => nom == null || alerte.Nom.Contains(nom))
@@ -99,7 +99,7 @@ namespace CroixRouge.Dal
             return _context.Alerte.FindAsync(id);
         }
 
-        public async Task<IEnumerable<CroixRouge.Model.Collecte>> GetCollectesAsync(int? pageIndex=0, int? pageSize = 10)
+        public async Task<IEnumerable<CroixRouge.Model.Collecte>> GetCollectesAsync(int pageIndex, int pageSize)
         {
              return await _context.Collecte
             .OrderBy(collecte => collecte.Id)
@@ -160,7 +160,7 @@ namespace CroixRouge.Dal
             .ToArrayAsync();
         }
 
-        public async Task<IEnumerable<CroixRouge.Model.Utilisateur>> GetUtilisateursAsync(int? pageIndex=0, int? pageSize = 20, string login = null)
+        public async Task<IEnumerable<CroixRouge.Model.Utilisateur>> GetUtilisateursAsync(int pageIndex, int pageSize, string login)
         {
              return await _context.Utilisateur
             .Where(u => login == null || u.Login.Contains(login))

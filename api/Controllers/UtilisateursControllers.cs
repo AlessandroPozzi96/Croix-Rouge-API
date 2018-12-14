@@ -30,7 +30,7 @@ namespace CroixRouge.api.Controllers
         // GET api/Utilisateurs
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
-        public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 20, string login = null)
+        public async Task<IActionResult> Get(int? pageIndex= Constants.Paging.PAGE_INDEX, int? pageSize = Constants.Paging.PAGE_SIZE, string login = null)
         {
             IEnumerable<CroixRouge.Model.Utilisateur> entities = await dataAccess.GetUtilisateursAsync(pageIndex, pageSize, login);
             

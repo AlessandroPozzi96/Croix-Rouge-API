@@ -9,5 +9,11 @@ namespace CroixRouge.Model
             public const string User = "USER";
             public const string SuperUser = "SUPERUSER";
         }
+
+        public static class Paging
+        {
+            public const int PAGE_SIZE = 20;
+            public const int PAGE_INDEX = 0;
+        }
     }
 }

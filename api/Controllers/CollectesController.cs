@@ -27,7 +27,7 @@ namespace CroixRouge.api.Controllers
         }
         // GET api/Collectes
         [HttpGet]
-        public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 10)
+        public async Task<IActionResult> Get(int? pageIndex= Constants.Paging.PAGE_INDEX, int? pageSize = Constants.Paging.PAGE_SIZE)
         {
             IEnumerable<CroixRouge.Model.Collecte> entities = await dataAccess.GetCollectesAsync(pageIndex, pageSize);
 
