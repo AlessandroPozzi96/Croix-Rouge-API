@@ -18,22 +18,18 @@ namespace CroixRouge.api.Controllers
     public class CollectesController : Controller
     {
         private bdCroixRougeContext _context;
+        private DataAccess dataAccess;
 
         public CollectesController(bdCroixRougeContext context)
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
+            this.dataAccess = new DataAccess(this._context);
         }
         // GET api/Collectes
         [HttpGet]
         public async Task<IActionResult> Get(int? pageIndex=0, int? pageSize = 10)
         {
-            IEnumerable<CroixRouge.Model.Collecte> entities = await _context.Collecte
-            .OrderBy(collecte => collecte.Id)
-            .Include(c => c.Jourouverture)
-                .ThenInclude(j => j.FkTrancheHoraireNavigation)
-            .Take(pageSize.Value)
-            .Skip(pageIndex.Value * pageSize.Value)
-            .ToArrayAsync();
+            IEnumerable<CroixRouge.Model.Collecte> entities = await dataAccess.GetCollectesAsync(pageIndex, pageSize);
 
             var results = Mapper.Map<IEnumerable<CollecteModel>>(entities);
 
@@ -44,7 +40,7 @@ namespace CroixRouge.api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            CroixRouge.Model.Collecte entity = await FindCollecteById(id);
+            CroixRouge.Model.Collecte entity = await dataAccess.FindCollecteById(id);
             if (entity == null)
                 return NotFound();
 
@@ -62,8 +58,9 @@ namespace CroixRouge.api.Controllers
                 return BadRequest(ModelState);
 
             var entity = Mapper.Map<CroixRouge.Model.Collecte>(dto);
-            _context.Collecte.Add(entity);
-            await _context.SaveChangesAsync();
+
+            await dataAccess.AddCollecteAsync(entity);
+            
             return Created($"api/Collectes/{entity.Id}", Mapper.Map<CollecteModel>(entity));
         }
 
@@ -73,19 +70,12 @@ namespace CroixRouge.api.Controllers
         public async Task<IActionResult> Put(int id, [FromBody]CroixRouge.DTO.CollecteModel dto)
         {
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
-            CroixRouge.Model.Collecte entity = await FindCollecteById(id);
+            CroixRouge.Model.Collecte entity = await dataAccess.FindCollecteById(id);
             if (entity == null)
                 return NotFound();
-            //fixme: améliorer cette implémentation
-            entity.Nom = dto.Nom;
-            entity.Latitude = dto.Latitude;
-            entity.Longitude = dto.Longitude;
-            entity.Telephone = dto.Telephone;
-            //fixme: le premier RowVersion n'a pas d'impact. 
-            //Accès concurrents
-            _context.Entry(entity).OriginalValues["Rv"] = dto.Rv;
 
-            await _context.SaveChangesAsync();
+            await dataAccess.UpdateCollecteAsync(entity, dto);
+
             return Ok(Mapper.Map<CroixRouge.DTO.CollecteModel>(entity));
         }
 
@@ -94,23 +84,15 @@ namespace CroixRouge.api.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
         public async Task<IActionResult> Delete(int id)
         {
-            CroixRouge.Model.Collecte entity = await FindCollecteById(id);
+            CroixRouge.Model.Collecte entity = await dataAccess.FindCollecteById(id);
             if (entity == null)
                 // todo: débat: si l'on demande une suppression d'une entité qui n'existe pas
                 // s'agit-il vraiment d'un cas d'erreur? 
                 return NotFound();
 
-            _context.Collecte.Remove(entity);
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
+            await dataAccess.RemoveCollecteAsync(entity);
 
-        public Task<CroixRouge.Model.Collecte> FindCollecteById(int id)
-        {
-            return _context.Collecte
-            .Include(c => c.Jourouverture)
-                .ThenInclude(j => j.FkTrancheHoraireNavigation)
-            .FirstOrDefaultAsync(c => c.Id == id);
+            return Ok();
         }
     }
 }

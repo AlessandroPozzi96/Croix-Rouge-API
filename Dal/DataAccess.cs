@@ -98,5 +98,53 @@ namespace CroixRouge.Dal
         {
             return _context.Alerte.FindAsync(id);
         }
+
+        public async Task<IEnumerable<CroixRouge.Model.Collecte>> GetCollectesAsync(int? pageIndex=0, int? pageSize = 10)
+        {
+             return await _context.Collecte
+            .OrderBy(collecte => collecte.Id)
+            .Include(c => c.Jourouverture)
+                .ThenInclude(j => j.FkTrancheHoraireNavigation)
+            .Take(pageSize.Value)
+            .Skip(pageIndex.Value * pageSize.Value)
+            .ToArrayAsync();
+        }
+
+        public async Task AddCollecteAsync(CroixRouge.Model.Collecte collecte)
+        {
+            if (collecte != null)
+            {
+                _context.Collecte.Add(collecte);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task UpdateCollecteAsync(CroixRouge.Model.Collecte collecte, CroixRouge.DTO.CollecteModel dto)
+        {
+            //fixme: améliorer cette implémentation
+            collecte.Nom = dto.Nom;
+            collecte.Latitude = dto.Latitude;
+            collecte.Longitude = dto.Longitude;
+            collecte.Telephone = dto.Telephone;
+            //fixme: le premier RowVersion n'a pas d'impact. 
+            //Accès concurrents
+            _context.Entry(collecte).OriginalValues["Rv"] = dto.Rv;
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveCollecteAsync(CroixRouge.Model.Collecte collecte)
+        {
+            _context.Collecte.Remove(collecte);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task<CroixRouge.Model.Collecte> FindCollecteById(int id)
+        {
+            return _context.Collecte
+            .Include(c => c.Jourouverture)
+                .ThenInclude(j => j.FkTrancheHoraireNavigation)
+            .FirstOrDefaultAsync(c => c.Id == id);
+        }
     }
 }
