@@ -14,7 +14,7 @@ using AutoMapper;
 
 namespace CroixRouge.api.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class GroupesSanguinsController : Controller
     {
