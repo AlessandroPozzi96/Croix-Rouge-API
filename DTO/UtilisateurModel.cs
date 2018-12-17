@@ -24,11 +24,9 @@ namespace CroixRouge.DTO
         public int Score { get; set; }
         [StringLength(50, MinimumLength=3)]
         public string FkRole { get; set; }
-        public int? FkAdresse { get; set; }
-        [StringLength(3, MinimumLength=2)]
-        public string FkGroupesanguin { get; set; }
         public byte[] Rv { get; set; }
-
+        public AdresseModel FkAdresseNavigation;
+        public GroupesanguinModel FkGroupesanguinNavigation;
         public UtilisateurModel ()
         {
 

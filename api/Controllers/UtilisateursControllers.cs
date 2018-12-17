@@ -101,6 +101,14 @@ namespace CroixRouge.api.Controllers
             if (entity == null)
                 return NotFound();
 
+            if(dto.FkAdresseNavigation != null){
+                var entityAdresse = Mapper.Map<CroixRouge.Model.Adresse>(dto.FkAdresseNavigation);
+                if(entity.FkAdresse==null){
+                    entity.FkAdresse = await dataAccess.AddAdresseAsync(entityAdresse);
+                    entity.FkAdresseNavigation = new Adresse();
+                }
+            }
+            
             await dataAccess.UpdateUtilisateurAsync(entity, dto);
 
             return Ok(Mapper.Map<CroixRouge.DTO.UtilisateurModel>(entity));

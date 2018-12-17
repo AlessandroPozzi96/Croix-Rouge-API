@@ -20,7 +20,6 @@ namespace CroixRouge.api.Controllers
     {
         private bdCroixRougeContext _context;
         private DataAccess dataAccess;
-
         public AdressesController(bdCroixRougeContext context)
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));

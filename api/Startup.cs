@@ -116,6 +116,7 @@ namespace api
                 cfg.CreateMap<CroixRouge.DTO.AdresseModel, CroixRouge.Model.Adresse>();
                 cfg.CreateMap<CroixRouge.DTO.CollecteModel, CroixRouge.Model.Collecte>();
                 cfg.CreateMap<CroixRouge.Model.Collecte, CroixRouge.DTO.CollecteModel>();
+
             });
             if (env.IsDevelopment())
             {

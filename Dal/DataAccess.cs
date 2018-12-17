@@ -26,13 +26,15 @@ namespace CroixRouge.Dal
             .ToArrayAsync();
         }
 
-        public async Task AddAdresseAsync(CroixRouge.Model.Adresse adresse)
+        public async Task<int> AddAdresseAsync(CroixRouge.Model.Adresse adresse)
         {
             if (adresse != null)
             {
                 _context.Adresse.Add(adresse);
                 await _context.SaveChangesAsync();
+                return adresse.Id;
             }
+            return 0;
         }
 
         public async Task UpdateAdresseAsync(CroixRouge.Model.Adresse adresse, CroixRouge.DTO.AdresseModel dto)
@@ -42,7 +44,10 @@ namespace CroixRouge.Dal
             adresse.Numero = dto.Numero;
             //fixme: le premier RowVersion n'a pas d'impact. 
             //Accès concurrents
+            Console.WriteLine("LA RUEEEEEEEEEE"+adresse.Id);
+
             _context.Entry(adresse).OriginalValues["Rv"] = dto.Rv;
+            //_context.Entry(adresse).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
         }
@@ -190,13 +195,25 @@ namespace CroixRouge.Dal
             utilisateur.IsMale = dto.IsMale;
             utilisateur.Score = dto.Score;
             utilisateur.Password = dto.Password;
-            
+                            
+            if(dto.FkGroupesanguinNavigation != null){
+                Console.WriteLine(dto.FkGroupesanguinNavigation.Nom);
+                utilisateur.FkGroupesanguin = dto.FkGroupesanguinNavigation.Nom;
+                utilisateur.FkGroupesanguinNavigation.Nom = dto.FkGroupesanguinNavigation.Nom;
+            }else{
+                utilisateur.FkGroupesanguinNavigation = null;
+            }
+
+            if(dto.FkAdresseNavigation != null){
+            utilisateur.FkAdresseNavigation.Rue = dto.FkAdresseNavigation.Rue;
+            utilisateur.FkAdresseNavigation.Ville = dto.FkAdresseNavigation.Ville;
+            utilisateur.FkAdresseNavigation.Numero = dto.FkAdresseNavigation.Numero;
+            }
             //fixme: le premier RowVersion n'a pas d'impact. 
             //Accès concurrents
-            //_context.Entry(utilisateur).OriginalValues["Rv"] = dto.Rv;   --> ?
+            _context.Entry(utilisateur).OriginalValues["Rv"] = dto.Rv;
 
-
-            _context.Entry(utilisateur).State = EntityState.Modified;
+            //_context.Entry(utilisateur).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
@@ -206,9 +223,27 @@ namespace CroixRouge.Dal
             await _context.SaveChangesAsync();
         }
 
-        public Task<CroixRouge.Model.Utilisateur> FindUtilisateurByLogin(string login)
+        public async Task<CroixRouge.Model.Utilisateur> FindUtilisateurByLogin(string login)
         {
-            return _context.Utilisateur.FindAsync(login);
+            //return _context.Utilisateur.FindAsync(login);
+             return await _context.Utilisateur
+                    .Include(u => u.FkAdresseNavigation)
+                    .Include(u=>u.FkGroupesanguinNavigation)
+                    .FirstOrDefaultAsync(c => c.Login == login);
+
+
+/* .Include(c => c.Jourouverture)
+                .ThenInclude(j => j.FkTrancheHoraireNavigation)
+            .FirstOrDefaultAsync(c => c.Id == id);*/
+
+            /*  return await _context.Collecte
+            .OrderBy(collecte => collecte.Id)
+            .Include(c => c.Jourouverture)
+                .ThenInclude(j => j.FkTrancheHoraireNavigation)
+            .Take(pageSize.Value)
+            .Skip(pageIndex.Value * pageSize.Value)
+            .ToArrayAsync();*/
+
         }
     }
 }
