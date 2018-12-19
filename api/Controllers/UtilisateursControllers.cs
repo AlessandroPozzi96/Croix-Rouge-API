@@ -20,6 +20,7 @@ namespace CroixRouge.api.Controllers
     {
         private bdCroixRougeContext _context;
         private DataAccess dataAccess;
+        private string ANONYMOUS = "anonymous";
 
         public UtilisateursController(bdCroixRougeContext context)
         {
@@ -45,14 +46,17 @@ namespace CroixRouge.api.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetById(string login)
         {
+            string loginToken = GetLoginToken();
+            string role = GetRoleToken();
+
+            if (role == CroixRouge.Model.Constants.Roles.User && login != loginToken)
+            {
+                return BadRequest("Vous n'avez pas accès à cet utilisateur");
+            }
+
             CroixRouge.Model.Utilisateur entity = await dataAccess.FindUtilisateurByLogin(login);
             if (entity == null)
                 return NotFound();
-            
-            var loginToken = GetLoginToken();
-
-            if (login != loginToken)
-                return NotFound("Vous n'avez pas accès à cet utilisateur");
 
             var result = Mapper.Map<UtilisateurModel>(entity);
 
@@ -61,15 +65,20 @@ namespace CroixRouge.api.Controllers
 
         // POST api/Utilisateurs
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody]CroixRouge.DTO.UtilisateurModel dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            
+            string roleToken = GetRoleToken();
 
-            if(dto.FkRole == null)
+            if ((roleToken == ANONYMOUS || roleToken == CroixRouge.Model.Constants.Roles.User) && dto.FkRole != CroixRouge.Model.Constants.Roles.User)
             {
-                dto.FkRole = "USER";
+                return BadRequest("You don't have the role to create this type of user");
             }
+
             dto.Score = 0;
 
             var entity = Mapper.Map<CroixRouge.Model.Utilisateur>(dto);
@@ -148,7 +157,10 @@ namespace CroixRouge.api.Controllers
 
         public string GetRoleToken()
         {
-            return User.Claims.ElementAt(3).Value;
+            if (User.Identity.IsAuthenticated)
+                return User.Claims.ElementAt(3).Value;
+            else
+                return ANONYMOUS;
         }
     }
 }
