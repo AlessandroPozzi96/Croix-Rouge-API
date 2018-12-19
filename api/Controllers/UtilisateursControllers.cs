@@ -52,7 +52,7 @@ namespace CroixRouge.api.Controllers
             var loginToken = GetLoginToken();
 
             if (login != loginToken)
-                return NotFound("Login passé en paramètre différends de celui du token ");
+                return NotFound("Vous n'avez pas accès à cet utilisateur");
 
             var result = Mapper.Map<UtilisateurModel>(entity);
 
@@ -86,15 +86,20 @@ namespace CroixRouge.api.Controllers
         public async Task<IActionResult> Put(string login, [FromBody]CroixRouge.DTO.UtilisateurModel dto)
         {
             var loginToken = GetLoginToken();
+            var role = GetRoleToken();
+            string msgErreur = "Impossible de mettre à jour cet utilisateur";
 
-            if(login != dto.Login)
-             {
-                 return BadRequest();
-             }
-             if (login != loginToken) // --> impossible de changer le login de qqn pour un admin
-             {
-                return NotFound("Login passé en paramètre différends de celui du token ");
-             }
+            if (role != CroixRouge.Model.Constants.Roles.Admin)
+            {
+                if(login != dto.Login)
+                {
+                    return BadRequest(msgErreur);
+                }
+                if (login != loginToken)
+                {
+                    return BadRequest(msgErreur);
+                }
+            }
 
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
             CroixRouge.Model.Utilisateur entity = await dataAccess.FindUtilisateurByLogin(login);
@@ -139,6 +144,11 @@ namespace CroixRouge.api.Controllers
         public string GetLoginToken()
         {
             return User.Claims.ElementAt(0).Value;
+        }
+
+        public string GetRoleToken()
+        {
+            return User.Claims.ElementAt(3).Value;
         }
     }
 }
