@@ -104,15 +104,25 @@ namespace CroixRouge.Dal
             return _context.Alerte.FindAsync(id);
         }
 
-        public async Task<IEnumerable<CroixRouge.Model.Collecte>> GetCollectesAsync(int? pageIndex, int? pageSize)
+        public async Task<IEnumerable<CroixRouge.Model.Collecte>> GetCollectesAsync(int? pageIndex, int? pageSize, bool horairesAJour)
         {
-             return await _context.Collecte
+            var collectes = await _context.Collecte
             .OrderBy(collecte => collecte.Id)
             .Include(c => c.Jourouverture)
                 .ThenInclude(j => j.FkTrancheHoraireNavigation)
             .Take(pageSize.Value)
             .Skip(pageIndex.Value * pageSize.Value)
             .ToArrayAsync();
+
+            if (horairesAJour)
+            {
+                foreach(var collecte in collectes)
+                {
+                    collecte.Jourouverture = collecte.Jourouverture.Where(j => j.Date == null || j.Date >= DateTime.Now).ToList();
+                }
+            }
+
+            return collectes;
         }
 
         public async Task AddCollecteAsync(CroixRouge.Model.Collecte collecte)
