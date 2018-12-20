@@ -15,5 +15,10 @@ namespace CroixRouge.Model
             public const int PAGE_SIZE = 20;
             public const int PAGE_INDEX = 0;
         }
+
+        public static class MsgErrors 
+        {
+            public const string ROLE_INCORRECT = "Vous n'avez pas le role nécéssaire pour effectuer cette action";
+        }
     }
 }

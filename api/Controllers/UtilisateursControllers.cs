@@ -51,7 +51,7 @@ namespace CroixRouge.api.Controllers
 
             if (role == CroixRouge.Model.Constants.Roles.User && login != loginToken)
             {
-                return BadRequest("Vous n'avez pas accès à cet utilisateur");
+                return BadRequest(CroixRouge.Model.Constants.MsgErrors.ROLE_INCORRECT);
             }
 
             CroixRouge.Model.Utilisateur entity = await dataAccess.FindUtilisateurByLogin(login);
@@ -76,7 +76,7 @@ namespace CroixRouge.api.Controllers
 
             if ((roleToken == ANONYMOUS || roleToken == CroixRouge.Model.Constants.Roles.User) && dto.FkRole != CroixRouge.Model.Constants.Roles.User)
             {
-                return BadRequest("You don't have the role to create this type of user");
+                return BadRequest(CroixRouge.Model.Constants.MsgErrors.ROLE_INCORRECT);
             }
 
             dto.Score = 0;
@@ -95,19 +95,11 @@ namespace CroixRouge.api.Controllers
         public async Task<IActionResult> Put(string login, [FromBody]CroixRouge.DTO.UtilisateurModel dto)
         {
             var loginToken = GetLoginToken();
-            var role = GetRoleToken();
-            string msgErreur = "Impossible de mettre à jour cet utilisateur";
+            var roleToken = GetRoleToken();
 
-            if (role != CroixRouge.Model.Constants.Roles.Admin)
+            if (roleToken == CroixRouge.Model.Constants.Roles.User && (login != loginToken || loginToken != dto.Login || dto.FkRole != CroixRouge.Model.Constants.Roles.User))
             {
-                if(login != dto.Login)
-                {
-                    return BadRequest(msgErreur);
-                }
-                if (login != loginToken)
-                {
-                    return BadRequest(msgErreur);
-                }
+                return BadRequest(CroixRouge.Model.Constants.MsgErrors.ROLE_INCORRECT);
             }
 
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
@@ -134,16 +126,19 @@ namespace CroixRouge.api.Controllers
         //Vérifier si le login passé en paramètre est le même que celui du token
         public async Task<IActionResult> Delete(string login)
         {
+            var loginToken = GetLoginToken();
+            string roleToken = GetRoleToken();
+
+            if (roleToken == CroixRouge.Model.Constants.Roles.User && login != loginToken)
+            {
+                return BadRequest(CroixRouge.Model.Constants.MsgErrors.ROLE_INCORRECT);
+            }
+
             CroixRouge.Model.Utilisateur utilisateur = await dataAccess.FindUtilisateurByLogin(login);
             if (utilisateur == null)
                 // todo: débat: si l'on demande une suppression d'une entité qui n'existe pas
                 // s'agit-il vraiment d'un cas d'erreur? 
                 return NotFound();
-
-            var loginToken = GetLoginToken();
-
-            if (login != loginToken)
-                return NotFound("Login passé en paramètre différends de celui du token ");
 
             await dataAccess.RemoveUtilisateurAsync(utilisateur);
 
