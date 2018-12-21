@@ -104,6 +104,7 @@ namespace api
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             AutoMapper.Mapper.Initialize(cfg => cfg.AddProfile<CroixRouge.api.Infrastructure.MappingProfile>() );
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

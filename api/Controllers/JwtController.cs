@@ -47,8 +47,8 @@ namespace CroixRouge.api.Controllers
             var users = await repository.GetUsers();
 
             users.FirstOrDefault(u => {
-                Console.Write(u.Login);
-                Console.Write(u.Password);
+                Console.Write("LOGIN : " + u.Login);
+                Console.Write("PASSWORD : " + u.Password);
                 return true;
             });
 

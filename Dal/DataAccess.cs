@@ -195,7 +195,16 @@ namespace CroixRouge.Dal
         }
 
         public async Task UpdateUtilisateurAsync(CroixRouge.Model.Utilisateur utilisateur, CroixRouge.DTO.UtilisateurModel dto)
-        {       
+        {   
+            //Pas top avec le mapper car il remplace tous les champs    
+            utilisateur.Nom = dto.Nom;
+            utilisateur.Mail = dto.Mail;
+            utilisateur.Prenom = dto.Prenom;
+            utilisateur.NumGsm = dto.NumGsm;
+            utilisateur.DateNaissance = dto.DateNaissance;
+            utilisateur.IsMale = dto.IsMale;
+            utilisateur.Score = dto.Score;
+
             if(dto.FkGroupesanguinNavigation != null){
                 Console.WriteLine(dto.FkGroupesanguinNavigation.Nom);
                 utilisateur.FkGroupesanguin = dto.FkGroupesanguinNavigation.Nom;
