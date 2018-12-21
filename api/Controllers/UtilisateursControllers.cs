@@ -116,9 +116,8 @@ namespace CroixRouge.api.Controllers
                 }
             }
 
-            dto.Password = Hashing.HashPassword(dto.Password);
-
             entity = Mapper.Map<CroixRouge.Model.Utilisateur>(dto);
+            entity.Password = Hashing.HashPassword(dto.Password);
             
             await dataAccess.UpdateUtilisateurAsync(entity, dto);
 

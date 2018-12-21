@@ -103,21 +103,7 @@ namespace api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            AutoMapper.Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<CroixRouge.Model.Role,RoleModel>();
-                cfg.CreateMap<RoleModel,CroixRouge.Model.Role>();
-                cfg.CreateMap<CroixRouge.Model.Alerte,AlerteModel>();
-                cfg.CreateMap<AlerteModel, CroixRouge.Model.Alerte>();
-                cfg.CreateMap<CroixRouge.Model.Groupesanguin, GroupesanguinModel>();
-                cfg.CreateMap<CroixRouge.Model.Utilisateur, UtilisateurModel>();
-                cfg.CreateMap<UtilisateurModel, CroixRouge.Model.Utilisateur>();
-                cfg.CreateMap<CroixRouge.Model.Adresse, CroixRouge.DTO.AdresseModel>();
-                cfg.CreateMap<CroixRouge.DTO.AdresseModel, CroixRouge.Model.Adresse>();
-                cfg.CreateMap<CroixRouge.DTO.CollecteModel, CroixRouge.Model.Collecte>();
-                cfg.CreateMap<CroixRouge.Model.Collecte, CroixRouge.DTO.CollecteModel>();
-
-            });
+            AutoMapper.Mapper.Initialize(cfg => cfg.AddProfile<CroixRouge.api.Infrastructure.MappingProfile>() );
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
