@@ -145,8 +145,7 @@ INSERT INTO [dbo].[Role]
            ([Libelle])
      VALUES
            ('ADMIN'), 
-		   ('USER'), 
-		   ('SUPERUSER');
+		   ('USER');
 		   
 INSERT INTO [dbo].[Adresse]
            ([Ville]
@@ -170,8 +169,8 @@ INSERT INTO [dbo].[Utilisateur]
            ,[Fk_Adresse]
            ,[Fk_Groupesanguin])
      VALUES
-           ('Gwynbleidd', 'POZZI', 'Alessandro', 'MotDePasseNonHashé', 'alessandro.pozzi72@gmail.com', 473227085, '1996-07-14', 1, 0, 'ADMIN', 1, null), 
-		   ('Bob', 'BRAHY', 'Sébastien', '12345678', 'brahysebastien@hotmail.com', 473124578, '1993-01-01', 1, 0, 'ADMIN', 2, null);
+           ('Gwynbleidd', 'POZZI', 'Alessandro', '$2a$12$a0zO2D/85/qUy8N/bPKq4.beCTNdTYwTF7Zq/LmsaGDKfZAq.45sO', 'alessandro.pozzi72@gmail.com', 473227085, '1996-07-14', 1, 0, 'ADMIN', 1, null), 
+		   ('Bob', 'BRAHY', 'Sébastien', '$2a$12$n/QOzqYJRgQhAaiv6Jz5COxzy0g/hB6KeaRsqFJmeVOpczC2Tl6Hu', 'brahysebastien@hotmail.com', 473124578, '1993-01-01', 1, 0, 'ADMIN', 2, null);
 INSERT INTO [dbo].[Alerte]
            ([Nom]
            ,[Contenu])

@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 using CroixRouge.Dal;
 using AutoMapper;
+using CroixRouge.api.Infrastructure;
 
 namespace CroixRouge.api.Controllers
 {
@@ -80,6 +80,7 @@ namespace CroixRouge.api.Controllers
             }
 
             dto.Score = 0;
+            dto.Password = Hashing.HashPassword(dto.Password);
 
             var entity = Mapper.Map<CroixRouge.Model.Utilisateur>(dto);
 
@@ -114,6 +115,10 @@ namespace CroixRouge.api.Controllers
                     entity.FkAdresseNavigation = new Adresse();
                 }
             }
+
+            dto.Password = Hashing.HashPassword(dto.Password);
+
+            entity = Mapper.Map<CroixRouge.Model.Utilisateur>(dto);
             
             await dataAccess.UpdateUtilisateurAsync(entity, dto);
 

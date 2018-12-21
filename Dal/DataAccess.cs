@@ -195,17 +195,7 @@ namespace CroixRouge.Dal
         }
 
         public async Task UpdateUtilisateurAsync(CroixRouge.Model.Utilisateur utilisateur, CroixRouge.DTO.UtilisateurModel dto)
-        {
-            //fixme: améliorer cette implémentation
-            utilisateur.Nom = dto.Nom;
-            utilisateur.Mail = dto.Mail;
-            utilisateur.Prenom = dto.Prenom;
-            utilisateur.NumGsm = dto.NumGsm;
-            utilisateur.DateNaissance = dto.DateNaissance;
-            utilisateur.IsMale = dto.IsMale;
-            utilisateur.Score = dto.Score;
-            utilisateur.Password = dto.Password;
-                            
+        {       
             if(dto.FkGroupesanguinNavigation != null){
                 Console.WriteLine(dto.FkGroupesanguinNavigation.Nom);
                 utilisateur.FkGroupesanguin = dto.FkGroupesanguinNavigation.Nom;

@@ -29,7 +29,6 @@ namespace CroixRouge.api.Controllers
         {
             _jwtOptions = jwtOptions.Value;
             this._context = context ?? throw new ArgumentNullException(nameof(context));
-
         }
 
         // POST api/Jwt
@@ -52,7 +51,8 @@ namespace CroixRouge.api.Controllers
                 Console.Write(u.Password);
                 return true;
             });
-            Model.Utilisateur utilisateurFound = users.FirstOrDefault(utilisateur => utilisateur.Login == loginModel.UserName && utilisateur.Password == loginModel.Password);
+
+            Model.Utilisateur utilisateurFound = users.FirstOrDefault(utilisateur => utilisateur.Login == loginModel.UserName && Hashing.ValidatePassword(loginModel.Password, utilisateur.Password));
             if (utilisateurFound == null)
                 return Unauthorized();
 
