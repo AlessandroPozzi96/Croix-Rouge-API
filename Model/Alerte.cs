@@ -7,16 +7,16 @@ namespace CroixRouge.Model
     {
         public Alerte()
         {
-            Concerne = new HashSet<Concerne>();
             Lanceralerte = new HashSet<Lanceralerte>();
         }
 
         public int Id { get; set; }
         public string Nom { get; set; }
         public string Contenu { get; set; }
+        public string FkGroupesanguin { get; set; }
         public byte[] Rv { get; set; }
 
-        public ICollection<Concerne> Concerne { get; set; }
+        public Groupesanguin FkGroupesanguinNavigation { get; set; }
         public ICollection<Lanceralerte> Lanceralerte { get; set; }
     }
 }

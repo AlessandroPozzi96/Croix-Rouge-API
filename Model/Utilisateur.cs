@@ -9,6 +9,7 @@ namespace CroixRouge.Model
         {
             Diffuserimage = new HashSet<Diffuserimage>();
             Don = new HashSet<Don>();
+            Information = new HashSet<Information>();
             Lanceralerte = new HashSet<Lanceralerte>();
             Partagerimage = new HashSet<Partagerimage>();
         }
@@ -32,6 +33,7 @@ namespace CroixRouge.Model
         public Role FkRoleNavigation { get; set; }
         public ICollection<Diffuserimage> Diffuserimage { get; set; }
         public ICollection<Don> Don { get; set; }
+        public ICollection<Information> Information { get; set; }
         public ICollection<Lanceralerte> Lanceralerte { get; set; }
         public ICollection<Partagerimage> Partagerimage { get; set; }
     }

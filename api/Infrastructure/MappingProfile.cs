@@ -34,6 +34,10 @@ namespace CroixRouge.api.Infrastructure
             CreateMap<CroixRouge.DTO.CollecteModel, CroixRouge.Model.Collecte>();
 
             CreateMap<CroixRouge.Model.Collecte, CroixRouge.DTO.CollecteModel>();
+
+            CreateMap<Information, InformationModel>();
+
+            CreateMap<InformationModel, Information>();
         }
     } 
 }

@@ -14,12 +14,12 @@ using AutoMapper;
 namespace CroixRouge.api.Controllers
 {
     [Route("api/[controller]")]
-    public class GroupesSanguinsController : Controller
+    public class InformationsController : Controller
     {
         private bdCroixRougeContext _context;
         private DataAccess dataAccess;
 
-        public GroupesSanguinsController(bdCroixRougeContext context)
+        public InformationsController(bdCroixRougeContext context)
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
             this.dataAccess = new DataAccess(this._context);
@@ -28,12 +28,12 @@ namespace CroixRouge.api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            IEnumerable<CroixRouge.Model.Groupesanguin> entities = await dataAccess.GetGroupesanguinsAsync();
+            IEnumerable<CroixRouge.Model.Information> entities = await dataAccess.GetInformationsAsync();
             
-            var results = Mapper.Map<IEnumerable<GroupesanguinModel>>(entities);
+            var results = Mapper.Map<IEnumerable<InformationModel>>(entities);
 
-            //return Ok(entities.Select(CreateDTOFromEntity));
             return Ok(results);
         }
     }
+
 }

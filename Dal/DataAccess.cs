@@ -254,5 +254,12 @@ namespace CroixRouge.Dal
             .ToArrayAsync();*/
 
         }
+
+        public async Task<IEnumerable<CroixRouge.Model.Information>> GetInformationsAsync()
+        {
+            return await _context.Information
+            .OrderBy(i => i.Id)
+            .ToArrayAsync();
+        }
     }
 }

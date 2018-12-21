@@ -7,13 +7,13 @@ namespace CroixRouge.Model
     {
         public Groupesanguin()
         {
-            Concerne = new HashSet<Concerne>();
+            Alerte = new HashSet<Alerte>();
             Utilisateur = new HashSet<Utilisateur>();
         }
 
         public string Nom { get; set; }
 
-        public ICollection<Concerne> Concerne { get; set; }
+        public ICollection<Alerte> Alerte { get; set; }
         public ICollection<Utilisateur> Utilisateur { get; set; }
     }
 }
