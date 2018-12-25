@@ -13,9 +13,6 @@ namespace CroixRouge.DTO
         [Required]
         [StringLength(4000, MinimumLength=1)]
         public string Reponse { get; set; }
-        [StringLength(50, MinimumLength=3)]
-        [Required]
-        public string FkUtilisateur { get; set; }
         public InformationModel()
         {
 

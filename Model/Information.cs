@@ -8,8 +8,5 @@ namespace CroixRouge.Model
         public int Id { get; set; }
         public string Question { get; set; }
         public string Reponse { get; set; }
-        public string FkUtilisateur { get; set; }
-
-        public Utilisateur FkUtilisateurNavigation { get; set; }
     }
 }

@@ -13,6 +13,9 @@ namespace CroixRouge.DTO
         [StringLength(500, MinimumLength=2)]
         [Required]
         public string Contenu { get; set; }
+        [Required]
+        [StringLength(3, MinimumLength=2)]
+        public string FkGroupesanguin { get; set; }
         public byte[] Rv { get; set; }
 
         public AlerteModel ()

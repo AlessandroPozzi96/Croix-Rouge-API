@@ -127,6 +127,7 @@ namespace CroixRouge.api.Controllers
         [HttpDelete("{login}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         //Vérifier si le login passé en paramètre est le même que celui du token
+        //Vérifier les clés étrangères
         public async Task<IActionResult> Delete(string login)
         {
             var loginToken = GetLoginToken();
