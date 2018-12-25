@@ -170,8 +170,9 @@ INSERT INTO [dbo].[Utilisateur]
            ,[Fk_Groupesanguin])
      VALUES
            ('Gwynbleidd', 'POZZI', 'Alessandro', '$2a$12$a0zO2D/85/qUy8N/bPKq4.beCTNdTYwTF7Zq/LmsaGDKfZAq.45sO', 'alessandro.pozzi72@gmail.com', 473227085, '1996-07-14', 1, 0, 'ADMIN', 1, null), 
-		   ('Bob', 'BRAHY', 'Sébastien', '$2a$12$n/QOzqYJRgQhAaiv6Jz5COxzy0g/hB6KeaRsqFJmeVOpczC2Tl6Hu', 'brahysebastien@hotmail.com', 473124578, '1993-01-01', 1, 0, 'ADMIN', 2, null);
---PASSWORD : Gwynbleidd → 11111111 | Bob → 12345678		   
+		   ('Bob', 'BRAHY', 'Sébastien', '$2a$12$n/QOzqYJRgQhAaiv6Jz5COxzy0g/hB6KeaRsqFJmeVOpczC2Tl6Hu', 'brahysebastien@hotmail.com', 473124578, '1993-01-01', 1, 0, 'ADMIN', 2, null),
+		   ('john', 'DOE', 'John', '$2a$12$P1spYG7Ke67LiUNH594KG.9rF0sDncajbB.tzCETmGR2MWBHG04z.', 'johndoe@hotmail.com', 473124574, '1980-01-01', 1, 0, 'USER', 2, null);
+--PASSWORD : Gwynbleidd et john → 11111111 | Bob → 12345678		   
 		   
 INSERT INTO [dbo].[Groupesanguin]
 ([Nom])

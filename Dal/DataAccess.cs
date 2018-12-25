@@ -261,11 +261,5 @@ namespace CroixRouge.Dal
             .OrderBy(i => i.Id)
             .ToArrayAsync();
         }
-
-        public async Task RemoveInformationAsync(CroixRouge.Model.Information information)
-        {
-            _context.Information.Remove(information);
-            await _context.SaveChangesAsync();
-        }
     }
 }

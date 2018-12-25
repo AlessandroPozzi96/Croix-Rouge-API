@@ -21,11 +21,11 @@ namespace CroixRouge.api.Infrastructure
 
             CreateMap<CroixRouge.Model.Groupesanguin, GroupesanguinModel>();
 
-            CreateMap<CroixRouge.Model.Utilisateur, UtilisateurModel>()
-            .ForMember(u => u.Password, opt => opt.Ignore());
+            CreateMap<CroixRouge.Model.Utilisateur, UtilisateurModel>();
+            //.ForMember(u => u.Password, opt => opt.Ignore());
 
-            CreateMap<UtilisateurModel, CroixRouge.Model.Utilisateur>()
-            .ForMember(u => u.Password, opt => opt.Ignore());
+            CreateMap<UtilisateurModel, CroixRouge.Model.Utilisateur>();
+            //.ForMember(u => u.Password, opt => opt.Ignore());
 
             CreateMap<CroixRouge.Model.Adresse, CroixRouge.DTO.AdresseModel>();
 
