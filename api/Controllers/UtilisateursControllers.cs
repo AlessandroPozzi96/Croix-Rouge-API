@@ -115,8 +115,8 @@ namespace CroixRouge.api.Controllers
             if (entity == null)
                 return NotFound();
             
-
-            entity.Password = Hashing.HashPassword(dto.Password);
+            if (dto.Password != null)
+                entity.Password = Hashing.HashPassword(dto.Password);
             
             await dataAccess.UpdateUtilisateurAsync(entity, dto);
 

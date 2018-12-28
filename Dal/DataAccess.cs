@@ -165,9 +165,8 @@ namespace CroixRouge.Dal
             if(dto.FkGroupesanguin != null){
                 Console.WriteLine(dto.FkGroupesanguin);
                 utilisateur.FkGroupesanguin = dto.FkGroupesanguin;
-                utilisateur.FkGroupesanguinNavigation.Nom = dto.FkGroupesanguin;
             }else{
-                utilisateur.FkGroupesanguinNavigation = null;
+                utilisateur.FkGroupesanguin = null;
             }
 
             //fixme: le premier RowVersion n'a pas d'impact. 
