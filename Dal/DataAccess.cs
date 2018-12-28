@@ -162,10 +162,10 @@ namespace CroixRouge.Dal
             utilisateur.Rue = dto.Rue;
             utilisateur.Numero = dto.Numero;
 
-            if(dto.FkGroupesanguinNavigation != null){
-                Console.WriteLine(dto.FkGroupesanguinNavigation.Nom);
-                utilisateur.FkGroupesanguin = dto.FkGroupesanguinNavigation.Nom;
-                utilisateur.FkGroupesanguinNavigation.Nom = dto.FkGroupesanguinNavigation.Nom;
+            if(dto.FkGroupesanguin != null){
+                Console.WriteLine(dto.FkGroupesanguin);
+                utilisateur.FkGroupesanguin = dto.FkGroupesanguin;
+                utilisateur.FkGroupesanguinNavigation.Nom = dto.FkGroupesanguin;
             }else{
                 utilisateur.FkGroupesanguinNavigation = null;
             }

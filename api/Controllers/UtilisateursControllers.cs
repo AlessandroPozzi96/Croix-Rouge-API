@@ -57,6 +57,7 @@ namespace CroixRouge.api.Controllers
             CroixRouge.Model.Utilisateur entity = await dataAccess.FindUtilisateurByLogin(login);
             if (entity == null)
                 return NotFound();
+            
 
             var result = Mapper.Map<UtilisateurModel>(entity);
 
@@ -77,6 +78,12 @@ namespace CroixRouge.api.Controllers
             if ((roleToken == ANONYMOUS || roleToken == CroixRouge.Model.Constants.Roles.User) && dto.FkRole != CroixRouge.Model.Constants.Roles.User)
             {
                 return BadRequest(CroixRouge.Model.Constants.MsgErrors.ROLE_INCORRECT);
+            }
+
+            CroixRouge.Model.Utilisateur nouveauUtilisateur = await dataAccess.FindUtilisateurByLogin(dto.Login);
+            if (nouveauUtilisateur != null)
+            {
+                return BadRequest(Constants.MsgErrors.LOGIN_EXISTANT);
             }
 
             dto.Score = 0;
@@ -107,6 +114,7 @@ namespace CroixRouge.api.Controllers
             CroixRouge.Model.Utilisateur entity = await dataAccess.FindUtilisateurByLogin(login);
             if (entity == null)
                 return NotFound();
+            
 
             entity.Password = Hashing.HashPassword(dto.Password);
             

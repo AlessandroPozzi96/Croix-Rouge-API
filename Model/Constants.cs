@@ -19,6 +19,7 @@ namespace CroixRouge.Model
         public static class MsgErrors 
         {
             public const string ROLE_INCORRECT = "Vous n'avez pas le role nécéssaire pour effectuer cette action";
+            public const string LOGIN_EXISTANT = "Login non disponible";
         }
     }
 }

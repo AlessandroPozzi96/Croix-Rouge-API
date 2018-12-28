@@ -31,7 +31,7 @@ namespace CroixRouge.DTO
         [StringLength(6, MinimumLength=1)]
         public string FkRole { get; set; }
         public byte[] Rv { get; set; }
-        public GroupesanguinModel FkGroupesanguinNavigation;
+        public string FkGroupesanguin;
         public UtilisateurModel ()
         {
 
