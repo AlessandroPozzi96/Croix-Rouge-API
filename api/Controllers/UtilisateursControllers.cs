@@ -108,14 +108,6 @@ namespace CroixRouge.api.Controllers
             if (entity == null)
                 return NotFound();
 
-            if(dto.FkAdresseNavigation != null){
-                var entityAdresse = Mapper.Map<CroixRouge.Model.Adresse>(dto.FkAdresseNavigation);
-                if(entity.FkAdresse==null){
-                    entity.FkAdresse = await dataAccess.AddAdresseAsync(entityAdresse);
-                    entity.FkAdresseNavigation = new Adresse();
-                }
-            }
-
             entity.Password = Hashing.HashPassword(dto.Password);
             
             await dataAccess.UpdateUtilisateurAsync(entity, dto);

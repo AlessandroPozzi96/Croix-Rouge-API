@@ -18,51 +18,6 @@ namespace CroixRouge.Dal
             this._context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<IEnumerable<CroixRouge.Model.Adresse>> GetAdressesAsync(string ville = null)
-        {
-            return await _context.Adresse
-            .Where(adr => ville == null || adr.Ville.Contains(ville))
-            .OrderBy(adr => adr.Id)
-            .ToArrayAsync();
-        }
-
-        public async Task<int> AddAdresseAsync(CroixRouge.Model.Adresse adresse)
-        {
-            if (adresse != null)
-            {
-                _context.Adresse.Add(adresse);
-                await _context.SaveChangesAsync();
-                return adresse.Id;
-            }
-            return 0;
-        }
-
-        public async Task UpdateAdresseAsync(CroixRouge.Model.Adresse adresse, CroixRouge.DTO.AdresseModel dto)
-        {
-            adresse.Ville = dto.Ville;
-            adresse.Rue = dto.Rue; 
-            adresse.Numero = dto.Numero;
-            //fixme: le premier RowVersion n'a pas d'impact. 
-            //Accès concurrents
-            Console.WriteLine("LA RUEEEEEEEEEE"+adresse.Id);
-
-            _context.Entry(adresse).OriginalValues["Rv"] = dto.Rv;
-            //_context.Entry(adresse).State = EntityState.Modified;
-
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task RemoveAdresseAsync(CroixRouge.Model.Adresse adresse)
-        {
-            _context.Adresse.Remove(adresse);
-            await _context.SaveChangesAsync();
-        }
-
-        public Task<CroixRouge.Model.Adresse> FindAdresseById(int id)
-        {
-            return _context.Adresse.FindAsync(id);
-        }
-
         public async Task<IEnumerable<CroixRouge.Model.Alerte>> GetAlertesAsync(int? pageIndex, int? pageSize, string nom)
         {
              return await _context.Alerte
@@ -204,6 +159,8 @@ namespace CroixRouge.Dal
             utilisateur.DateNaissance = dto.DateNaissance;
             utilisateur.IsMale = dto.IsMale;
             utilisateur.Score = dto.Score;
+            utilisateur.Rue = dto.Rue;
+            utilisateur.Numero = dto.Numero;
 
             if(dto.FkGroupesanguinNavigation != null){
                 Console.WriteLine(dto.FkGroupesanguinNavigation.Nom);
@@ -213,11 +170,6 @@ namespace CroixRouge.Dal
                 utilisateur.FkGroupesanguinNavigation = null;
             }
 
-            if(dto.FkAdresseNavigation != null){
-            utilisateur.FkAdresseNavigation.Rue = dto.FkAdresseNavigation.Rue;
-            utilisateur.FkAdresseNavigation.Ville = dto.FkAdresseNavigation.Ville;
-            utilisateur.FkAdresseNavigation.Numero = dto.FkAdresseNavigation.Numero;
-            }
             //fixme: le premier RowVersion n'a pas d'impact. 
             //Accès concurrents
             _context.Entry(utilisateur).OriginalValues["Rv"] = dto.Rv;
@@ -236,7 +188,6 @@ namespace CroixRouge.Dal
         {
             //return _context.Utilisateur.FindAsync(login);
              return await _context.Utilisateur
-                    .Include(u => u.FkAdresseNavigation)
                     .Include(u=>u.FkGroupesanguinNavigation)
                     .FirstOrDefaultAsync(c => c.Login == login);
 

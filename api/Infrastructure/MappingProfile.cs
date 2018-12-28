@@ -27,10 +27,6 @@ namespace CroixRouge.api.Infrastructure
             CreateMap<UtilisateurModel, CroixRouge.Model.Utilisateur>();
             //.ForMember(u => u.Password, opt => opt.Ignore());
 
-            CreateMap<CroixRouge.Model.Adresse, CroixRouge.DTO.AdresseModel>();
-
-            CreateMap<CroixRouge.DTO.AdresseModel, CroixRouge.Model.Adresse>();
-
             CreateMap<CroixRouge.DTO.CollecteModel, CroixRouge.Model.Collecte>();
 
             CreateMap<CroixRouge.Model.Collecte, CroixRouge.DTO.CollecteModel>();

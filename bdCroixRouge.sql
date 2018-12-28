@@ -10,7 +10,6 @@ DROP TABLE IF EXISTS Utilisateur;
 DROP TABLE IF EXISTS Groupesanguin;
 DROP TABLE IF EXISTS Role;
 DROP TABLE IF EXISTS Collecte;
-DROP TABLE IF EXISTS Adresse;
 DROP TABLE IF EXISTS Imagepromotion;
 
 
@@ -29,32 +28,24 @@ CREATE TABLE Role (
 	PRIMARY KEY CLUSTERED (Libelle ASC)
 );
 
-CREATE TABLE Adresse (
-	Id 		INT IDENTITY(1,1) 	NOT NULL,
-	Ville	NVARCHAR(100) 		NOT NULL, 
-	Rue		NVARCHAR(100) 		NOT NULL, 
-	Numero 	NVARCHAR(4)			NOT NULL, 
-	Rv		ROWVERSION 			NOT NULL,
-	PRIMARY KEY CLUSTERED(Id ASC)
-);
 
 CREATE TABLE Utilisateur (
 	Login 				NVARCHAR(50)	NOT NULL, 
-	Nom 				NVARCHAR(100), 
-	Prenom				NVARCHAR(100), 
+	Nom 				NVARCHAR(100)	NOT NULL,
+	Prenom				NVARCHAR(100) 	NOT NULL, 
 	Password 			NVARCHAR(200)	NOT NULL, 
 	Mail				NVARCHAR(320)	NOT NULL, 
 	NumGSM				INT, 
-	DateNaissance		DATE, 
-	IsMale				BIT,
+	DateNaissance		DATE			NOT NULL, 
+	IsMale				BIT				NOT NULL,
 	Score				INT				NOT NULL,
-	Fk_Role				NVARCHAR(50)	NOT NULL,
-	Fk_Adresse			INT, 
+	Rue					NVARCHAR(200)	NOT NULL,
+	Numero				NVARCHAR(6)		NOT NULL,
+	Fk_Role				NVARCHAR(50)	NOT NULL, 
 	Fk_Groupesanguin	NVARCHAR(3),
 	Rv					ROWVERSION		NOT NULL,
 	PRIMARY KEY CLUSTERED (Login), 
-	FOREIGN KEY (Fk_Role) REFERENCES Role(Libelle), 
-	FOREIGN KEY (Fk_Adresse) REFERENCES Adresse(Id), 
+	FOREIGN KEY (Fk_Role) REFERENCES Role(Libelle),
 	FOREIGN KEY (Fk_Groupesanguin) REFERENCES Groupesanguin(Nom)
 );
 
@@ -146,14 +137,7 @@ INSERT INTO [dbo].[Role]
      VALUES
            ('ADMIN'), 
 		   ('USER');
-		   
-INSERT INTO [dbo].[Adresse]
-           ([Ville]
-           ,[Rue]
-           ,[Numero])
-     VALUES
-           ('Dinant', 'Place du Baty', '6B'), 
-		   ('Libramont', 'Rue de Libramont', '77A');
+		  
 		   
 INSERT INTO [dbo].[Utilisateur]
            ([Login]
@@ -165,13 +149,14 @@ INSERT INTO [dbo].[Utilisateur]
            ,[DateNaissance]
 		   ,[IsMale]
            ,[Score]
+		   ,[Rue]
+		   ,[Numero]
            ,[Fk_Role]
-           ,[Fk_Adresse]
            ,[Fk_Groupesanguin])
      VALUES
-           ('Gwynbleidd', 'POZZI', 'Alessandro', '$2a$12$a0zO2D/85/qUy8N/bPKq4.beCTNdTYwTF7Zq/LmsaGDKfZAq.45sO', 'alessandro.pozzi72@gmail.com', 473227085, '1996-07-14', 1, 0, 'ADMIN', 1, null), 
-		   ('Bob', 'BRAHY', 'Sébastien', '$2a$12$n/QOzqYJRgQhAaiv6Jz5COxzy0g/hB6KeaRsqFJmeVOpczC2Tl6Hu', 'brahysebastien@hotmail.com', 473124578, '1993-01-01', 1, 0, 'ADMIN', 2, null),
-		   ('john', 'DOE', 'John', '$2a$12$P1spYG7Ke67LiUNH594KG.9rF0sDncajbB.tzCETmGR2MWBHG04z.', 'johndoe@hotmail.com', 473124574, '1980-01-01', 1, 0, 'USER', 2, null);
+           ('Gwynbleidd', 'POZZI', 'Alessandro', '$2a$12$a0zO2D/85/qUy8N/bPKq4.beCTNdTYwTF7Zq/LmsaGDKfZAq.45sO', 'alessandro.pozzi72@gmail.com', 473227085, '1996-07-14', 1, 0, 'Place du Baty', '6B','ADMIN', null), 
+		   ('Bob', 'BRAHY', 'Sébastien', '$2a$12$n/QOzqYJRgQhAaiv6Jz5COxzy0g/hB6KeaRsqFJmeVOpczC2Tl6Hu', 'brahysebastien@hotmail.com', 473124578, '1993-01-01', 1, 0, 'Rue du cheval Noir', '12C','ADMIN', null),
+		   ('john', 'DOE', 'John', '$2a$12$P1spYG7Ke67LiUNH594KG.9rF0sDncajbB.tzCETmGR2MWBHG04z.', 'johndoe@hotmail.com', 473124574, '1980-01-01', 1, 0, 'Rue Charles-De-Gaules', '4', 'USER', null);
 --PASSWORD : Gwynbleidd et john → 11111111 | Bob → 12345678		   
 		   
 INSERT INTO [dbo].[Groupesanguin]
