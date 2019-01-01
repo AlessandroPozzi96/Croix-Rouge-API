@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using CroixRouge.api.Infrastructure;
+using CroixRouge.api.Exceptions;
 using CroixRouge.Dal;
 using CroixRouge.DTO;
 using AutoMapper;
@@ -96,6 +97,11 @@ namespace api
                 });
               }
             );
+
+            services.AddMvc((options) =>
+            {
+                options.Filters.Add(typeof(PersonnalExceptionFilter));
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
