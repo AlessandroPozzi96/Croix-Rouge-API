@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using CroixRouge.Dal;
 using AutoMapper;
 using CroixRouge.api.Infrastructure;
+using CroixRouge.Model.Exceptions;
 
 namespace CroixRouge.api.Controllers
 {
@@ -51,12 +52,12 @@ namespace CroixRouge.api.Controllers
 
             if (role == CroixRouge.Model.Constants.Roles.User && login != loginToken)
             {
-                return BadRequest(CroixRouge.Model.Constants.MsgErrors.ROLE_INCORRECT);
+                return Forbid();
             }
 
             CroixRouge.Model.Utilisateur entity = await dataAccess.FindUtilisateurByLogin(login);
             if (entity == null)
-                return NotFound();
+                throw new NotFoundException("Utilisateur");
             
 
             var result = Mapper.Map<UtilisateurModel>(entity);
@@ -77,7 +78,7 @@ namespace CroixRouge.api.Controllers
 
             if ((roleToken == ANONYMOUS || roleToken == CroixRouge.Model.Constants.Roles.User) && dto.FkRole != CroixRouge.Model.Constants.Roles.User)
             {
-                return BadRequest(CroixRouge.Model.Constants.MsgErrors.ROLE_INCORRECT);
+                return Forbid();
             }
 
             CroixRouge.Model.Utilisateur nouveauUtilisateur = await dataAccess.FindUtilisateurByLogin(dto.Login);
@@ -107,7 +108,7 @@ namespace CroixRouge.api.Controllers
 
             if (roleToken == CroixRouge.Model.Constants.Roles.User && (login != loginToken || loginToken != dto.Login || dto.FkRole != CroixRouge.Model.Constants.Roles.User))
             {
-                return BadRequest(CroixRouge.Model.Constants.MsgErrors.ROLE_INCORRECT);
+                return Forbid();
             }
 
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
@@ -135,7 +136,7 @@ namespace CroixRouge.api.Controllers
 
             if (roleToken == CroixRouge.Model.Constants.Roles.User && login != loginToken)
             {
-                return BadRequest(CroixRouge.Model.Constants.MsgErrors.ROLE_INCORRECT);
+                return Forbid();
             }
 
             CroixRouge.Model.Utilisateur utilisateur = await dataAccess.FindUtilisateurByLogin(login);

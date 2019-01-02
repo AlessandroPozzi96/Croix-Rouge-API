@@ -54,6 +54,9 @@ namespace CroixRouge.api.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
         public async Task<IActionResult> Post([FromBody]CroixRouge.DTO.JourouvertureModel dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+                
             var entity = Mapper.Map<CroixRouge.Model.Jourouverture>(dto);
 
             Collecte collecte = await dataAccess.FindCollecteById(dto.FkCollecte);
