@@ -102,6 +102,9 @@ namespace CroixRouge.Dal
 
         public async Task RemoveCollecteAsync(CroixRouge.Model.Collecte collecte)
         {
+            //suppression des joursouvertures lié
+            
+
             _context.Collecte.Remove(collecte);
             await _context.SaveChangesAsync();
         }
@@ -143,6 +146,7 @@ namespace CroixRouge.Dal
                 _context.Utilisateur.Add(utilisateur);
                 await _context.SaveChangesAsync();
             }
+            //lancer exception
         }
 
         public async Task UpdateUtilisateurAsync(CroixRouge.Model.Utilisateur utilisateur, CroixRouge.DTO.UtilisateurModel dto)
@@ -186,19 +190,6 @@ namespace CroixRouge.Dal
                     .Include(u=>u.FkGroupesanguinNavigation)
                     .FirstOrDefaultAsync(c => c.Login == login);
 
-
-/* .Include(c => c.Jourouverture)
-                .ThenInclude(j => j.FkTrancheHoraireNavigation)
-            .FirstOrDefaultAsync(c => c.Id == id);*/
-
-            /*  return await _context.Collecte
-            .OrderBy(collecte => collecte.Id)
-            .Include(c => c.Jourouverture)
-                .ThenInclude(j => j.FkTrancheHoraireNavigation)
-            .Take(pageSize.Value)
-            .Skip(pageIndex.Value * pageSize.Value)
-            .ToArrayAsync();*/
-
         }
 
         public async Task<IEnumerable<CroixRouge.Model.Information>> GetInformationsAsync()
@@ -215,6 +206,43 @@ namespace CroixRouge.Dal
                 _context.Don.Add(don);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<IEnumerable<CroixRouge.Model.Jourouverture>> GetJoursouverturesAsync()
+        {
+             return await _context.Jourouverture
+            .OrderBy(j => j.Id)
+            .ToArrayAsync();
+        }
+
+        public async Task AddJourouvertureAsync(CroixRouge.Model.Jourouverture jourouverture)
+        {
+            if (jourouverture != null)
+            {
+                _context.Jourouverture.Add(jourouverture);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task UpdateJourouvertureAsync(CroixRouge.Model.Jourouverture jourouverture, JourouvertureModel dto)
+        {   
+            if (jourouverture != null)
+            {
+                _context.Entry(jourouverture).OriginalValues["Rv"] = dto.Rv;
+                await _context.SaveChangesAsync();
+            }
+            //exception
+        }
+
+        public async Task RemoveJourouvertureAsync(Jourouverture jourouverture)
+        {
+            _context.Jourouverture.Remove(jourouverture);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task<CroixRouge.Model.Jourouverture> FindJourouvertureById(int id)
+        {
+            return _context.Jourouverture.FindAsync(id);
         }
     }
 }

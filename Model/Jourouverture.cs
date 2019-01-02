@@ -11,6 +11,7 @@ namespace CroixRouge.Model
         public int FkCollecte { get; set; }
         public TimeSpan HeureDebut { get; set; }
         public TimeSpan HeureFin { get; set; }
+        public byte[] Rv { get; set; }
 
         public Collecte FkCollecteNavigation { get; set; }
     }

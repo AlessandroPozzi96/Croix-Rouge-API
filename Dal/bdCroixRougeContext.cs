@@ -152,6 +152,10 @@ namespace CroixRouge.Dal
 
                 entity.Property(e => e.LibelleJour).HasMaxLength(8);
 
+                entity.Property(e => e.Rv)
+                    .IsRequired()
+                    .IsRowVersion();
+
                 entity.HasOne(d => d.FkCollecteNavigation)
                     .WithMany(p => p.Jourouverture)
                     .HasForeignKey(d => d.FkCollecte)

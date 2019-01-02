@@ -7,7 +7,7 @@ namespace CroixRouge.DTO
     {
         [Required]
         public int Id { get; set; }
-        [StringLength(8, MinimumLength=5)]
+        [StringLength(8, MinimumLength=2)]
         public string LibelleJour { get; set; }
         public DateTime? Date { get; set; }
         [Required]
@@ -16,6 +16,7 @@ namespace CroixRouge.DTO
         public TimeSpan HeureDebut { get; set; }
         [Required]
         public TimeSpan HeureFin { get; set; }
+        public byte[] Rv { get; set; }
 
         public JourouvertureModel ()
         {

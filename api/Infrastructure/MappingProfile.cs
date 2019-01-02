@@ -38,6 +38,8 @@ namespace CroixRouge.api.Infrastructure
             CreateMap<DonModel, Don>();
 
             CreateMap<DonModel, DonModel>();
+            CreateMap<Jourouverture, JourouvertureModel>();
+            CreateMap<JourouvertureModel, Jourouverture>();
         }
     } 
 }

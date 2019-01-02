@@ -93,6 +93,7 @@ CREATE TABLE Jourouverture (
 	Fk_Collecte			INT 					NOT NULL,
 	HeureDebut			TIME 					NOT NULL, 
 	HeureFin			TIME 					NOT NULL, 
+	Rv					ROWVERSION				NOT NULL,
 	PRIMARY KEY CLUSTERED (Id ASC), 
 	FOREIGN KEY (Fk_Collecte) REFERENCES Collecte(Id)
 );
