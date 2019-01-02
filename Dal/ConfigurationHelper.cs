@@ -6,10 +6,10 @@ namespace CroixRouge.Dal
 {
     public class ConfigurationHelper
     {
-        public readonly string CONNECTION_STRING_CONFIG_KEY;
-        public ConfigurationHelper(string connectionStringConfigurationKey)
+        public readonly string KEY;
+        public ConfigurationHelper(string key)
         {
-            CONNECTION_STRING_CONFIG_KEY = connectionStringConfigurationKey;
+            KEY = key;
         }
 
         public string GetConnectionString ()
@@ -22,9 +22,9 @@ namespace CroixRouge.Dal
                .SetBasePath(Directory.GetCurrentDirectory())
                .AddJsonFile(configFileName)
                .Build();
-            string connectionString = config.GetConnectionString(CONNECTION_STRING_CONFIG_KEY);
+            string connectionString = config.GetConnectionString(KEY);
             if (String.IsNullOrEmpty(connectionString))
-                throw new InvalidOperationException($"Le fichier de configuration doit contenir une connection string nommée {CONNECTION_STRING_CONFIG_KEY}");
+                throw new InvalidOperationException($"Le fichier de configuration doit contenir une connection string nommée {KEY}");
             return connectionString;
         }
     }

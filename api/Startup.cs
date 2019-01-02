@@ -40,7 +40,7 @@ namespace api
                 options.UseSqlServer(connectionString);
             });
             #endregion
-            string SecretKey = "MaSuperCleSecreteANePasPublier";
+            string SecretKey = new ConfigurationHelper("serveurJetonKey").GetConnectionString();
             SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
             services.Configure<JwtIssuerOptions>(options =>
             {

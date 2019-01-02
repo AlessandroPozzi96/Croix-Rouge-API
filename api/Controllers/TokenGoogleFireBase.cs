@@ -8,15 +8,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using CroixRouge.Model;
+using CroixRouge.Dal;
 
 namespace CroixRouge.api.Controllers
 {
     [Route("api/[controller]")]
     public class TokenGoogleFireBaseController : Controller
     {
-        string token = "AAAAMHQFea8:APA91bEm2_7e00CxPDRsSZ4jBzn0Zvg8Txjfa_5JdLabQjxvYVmeLSWs1XQqexjjyDm9d06YlQaTNqCkBtSRcOOLSfjGFut-Uwsx34A-A1u7hulFZW66kIFNCtnXKqYthuv3Da-Xn519";
+        string token;
         public TokenGoogleFireBaseController()
         {
+            token = new ConfigurationHelper("googleFireBaseToken").GetConnectionString();
         }
 
         [HttpGet]
