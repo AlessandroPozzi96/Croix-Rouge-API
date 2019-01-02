@@ -34,6 +34,10 @@ namespace CroixRouge.api.Infrastructure
             CreateMap<Information, InformationModel>();
 
             CreateMap<InformationModel, Information>();
+
+            CreateMap<DonModel, Don>();
+
+            CreateMap<DonModel, DonModel>();
         }
     } 
 }

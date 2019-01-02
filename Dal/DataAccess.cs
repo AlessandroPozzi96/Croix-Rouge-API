@@ -211,5 +211,14 @@ namespace CroixRouge.Dal
             .OrderBy(i => i.Id)
             .ToArrayAsync();
         }
+
+        public async Task addDonAsync(CroixRouge.Model.Don don)
+        {
+            if(don != null)
+            {
+                _context.Don.Add(don);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }
