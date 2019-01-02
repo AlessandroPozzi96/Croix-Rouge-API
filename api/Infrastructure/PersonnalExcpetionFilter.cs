@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using CroixRouge.DTO;
+using CroixRouge.Model.Exceptions;
 
-namespace CroixRouge.api.Exceptions 
+namespace CroixRouge.api.Infrastructure 
 {
     public class PersonnalExceptionFilter : IExceptionFilter
     {
@@ -14,7 +15,7 @@ namespace CroixRouge.api.Exceptions
 
         public PersonnalExceptionFilter(ILoggerFactory loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger("CroixRouge-API.Exceptions");
+            _logger = loggerFactory.CreateLogger("CroixRouge.api.Exceptions");
         }
 
         void IExceptionFilter.OnException(ExceptionContext context)
@@ -28,22 +29,25 @@ namespace CroixRouge.api.Exceptions
                 var result = new ContentResult()
                 {
                     StatusCode = (int)HttpStatusCode.Conflict,
-                    Content = Newtonsoft.Json.JsonConvert.SerializeObject(new CroixRouge.DTO.PersonnalErrorModel() { Message = "Access concurent à la base de donnée" }),
+                    Content = Newtonsoft.Json.JsonConvert.SerializeObject(new CroixRouge.DTO.PersonnalErrorModel("Access concurent à la base de donnée")),
                     ContentType = "application/json"
 
                 };
                 context.Result = result;
-            }else
-            if (context.Exception.GetType().IsSubclassOf(typeof(CroixRouge.DTO.PersonnalErrorModel)))
+            }
+            else
             {
-                var result = new ContentResult()
+                if (context.Exception.GetType().IsSubclassOf(typeof(CroixRouge.Model.Exceptions.PersonnalException)))
                 {
-                    StatusCode = (int)HttpStatusCode.BadRequest,
-                    Content = Newtonsoft.Json.JsonConvert.SerializeObject(new CroixRouge.DTO.PersonnalErrorModel() { Message = context.Exception.Message }),
-                    ContentType = "application/json"
+                    var result = new ContentResult()
+                    {
+                        StatusCode = (int)HttpStatusCode.BadRequest,
+                        Content = Newtonsoft.Json.JsonConvert.SerializeObject(new CroixRouge.DTO.PersonnalErrorModel(context.Exception.Message)),
+                        ContentType = "application/json"
 
-                };
-                context.Result = result;
+                    };
+                    context.Result = result;
+                }
             }
         }
     }

@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using CroixRouge.Model;
+using CroixRouge.Model.Exceptions;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using CroixRouge.DTO;
@@ -219,6 +220,7 @@ namespace CroixRouge.Dal
         {
             if (jourouverture != null)
             {
+                verificationHoraire(jourouverture.HeureDebut, jourouverture.HeureFin);
                 _context.Jourouverture.Add(jourouverture);
                 await _context.SaveChangesAsync();
             }
@@ -243,6 +245,12 @@ namespace CroixRouge.Dal
         public Task<CroixRouge.Model.Jourouverture> FindJourouvertureById(int id)
         {
             return _context.Jourouverture.FindAsync(id);
+        }
+
+        public void verificationHoraire(TimeSpan h1, TimeSpan h2) 
+        {
+            if (h2 <= h1)
+                throw new ChevauchementHorairesException();
         }
     }
 }

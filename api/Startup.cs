@@ -15,7 +15,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using CroixRouge.api.Infrastructure;
-using CroixRouge.api.Exceptions;
 using CroixRouge.Dal;
 using CroixRouge.DTO;
 using AutoMapper;
