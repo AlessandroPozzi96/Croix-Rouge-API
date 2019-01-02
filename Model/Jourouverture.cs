@@ -9,9 +9,9 @@ namespace CroixRouge.Model
         public string LibelleJour { get; set; }
         public DateTime? Date { get; set; }
         public int FkCollecte { get; set; }
-        public int FkTrancheHoraire { get; set; }
+        public TimeSpan HeureDebut { get; set; }
+        public TimeSpan HeureFin { get; set; }
 
         public Collecte FkCollecteNavigation { get; set; }
-        public TrancheHoraire FkTrancheHoraireNavigation { get; set; }
     }
 }

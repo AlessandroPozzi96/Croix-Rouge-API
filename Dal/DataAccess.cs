@@ -64,7 +64,6 @@ namespace CroixRouge.Dal
             var collectes = await _context.Collecte
             .OrderBy(collecte => collecte.Id)
             .Include(c => c.Jourouverture)
-                .ThenInclude(j => j.FkTrancheHoraireNavigation)
             .Take(pageSize.Value)
             .Skip(pageIndex.Value * pageSize.Value)
             .ToArrayAsync();
@@ -91,13 +90,11 @@ namespace CroixRouge.Dal
 
         public async Task UpdateCollecteAsync(CroixRouge.Model.Collecte collecte, CroixRouge.DTO.CollecteModel dto)
         {
-            //fixme: améliorer cette implémentation
             collecte.Nom = dto.Nom;
             collecte.Latitude = dto.Latitude;
             collecte.Longitude = dto.Longitude;
             collecte.Telephone = dto.Telephone;
-            //fixme: le premier RowVersion n'a pas d'impact. 
-            //Accès concurrents
+
             _context.Entry(collecte).OriginalValues["Rv"] = dto.Rv;
 
             await _context.SaveChangesAsync();
@@ -113,7 +110,6 @@ namespace CroixRouge.Dal
         {
             return _context.Collecte
             .Include(c => c.Jourouverture)
-                .ThenInclude(j => j.FkTrancheHoraireNavigation)
             .FirstOrDefaultAsync(c => c.Id == id);
         }
 

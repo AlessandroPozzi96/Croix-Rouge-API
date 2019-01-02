@@ -23,8 +23,8 @@ namespace CroixRouge.Model
         public bool IsMale { get; set; }
         public int Score { get; set; }
         public string Rue { get; set; }
-        public string Numero { get; set; }
         public string FkRole { get; set; }
+        public string Numero { get; set; }
         public string FkGroupesanguin { get; set; }
         public byte[] Rv { get; set; }
 

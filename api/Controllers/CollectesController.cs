@@ -86,8 +86,6 @@ namespace CroixRouge.api.Controllers
         {
             CroixRouge.Model.Collecte entity = await dataAccess.FindCollecteById(id);
             if (entity == null)
-                // todo: débat: si l'on demande une suppression d'une entité qui n'existe pas
-                // s'agit-il vraiment d'un cas d'erreur? 
                 return NotFound();
 
             await dataAccess.RemoveCollecteAsync(entity);

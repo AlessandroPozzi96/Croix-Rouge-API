@@ -13,7 +13,9 @@ namespace CroixRouge.DTO
         [Required]
         public int FkCollecte { get; set; }
         [Required]
-        public TrancheHoraireModel FkTrancheHoraireNavigation { get; set; }
+        public TimeSpan HeureDebut { get; set; }
+        [Required]
+        public TimeSpan HeureFin { get; set; }
 
         public JourouvertureModel ()
         {

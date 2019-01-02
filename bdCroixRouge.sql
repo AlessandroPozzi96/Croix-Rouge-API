@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS Don;
 DROP TABLE IF EXISTS Lanceralerte;
 DROP TABLE IF EXISTS Jourouverture;
-DROP TABLE IF EXISTS TrancheHoraire;
 DROP TABLE IF EXISTS Diffuserimage;
 DROP TABLE IF EXISTS Partagerimage;
 DROP TABLE IF EXISTS Alerte;
@@ -40,8 +39,8 @@ CREATE TABLE Utilisateur (
 	IsMale				BIT				NOT NULL,
 	Score				INT				NOT NULL,
 	Rue					NVARCHAR(200)	NOT NULL,
-	Numero				NVARCHAR(6)		NOT NULL,
 	Fk_Role				NVARCHAR(50)	NOT NULL, 
+	Numero				NVARCHAR(6)		NOT NULL,
 	Fk_Groupesanguin	NVARCHAR(3),
 	Rv					ROWVERSION		NOT NULL,
 	PRIMARY KEY CLUSTERED (Login), 
@@ -87,22 +86,15 @@ CREATE TABLE Collecte (
 	PRIMARY KEY CLUSTERED (Id ASC)
 );
 
-CREATE TABLE TrancheHoraire (
-	Id 		INT IDENTITY(1, 1) 			NOT NULL, 
-	HeureDebut		TIME 				NOT NULL, 
-	HeureFin		TIME 				NOT NULL, 
-	PRIMARY KEY CLUSTERED (Id ASC)
-);
-
 CREATE TABLE Jourouverture (
 	Id 					INT 	IDENTITY(1, 1) 	NOT NULL,
 	LibelleJour 		NVARCHAR(8), 
 	Date 				DATE,
 	Fk_Collecte			INT 					NOT NULL,
-	Fk_TrancheHoraire	INT 					NOT NULL,
+	HeureDebut			TIME 					NOT NULL, 
+	HeureFin			TIME 					NOT NULL, 
 	PRIMARY KEY CLUSTERED (Id ASC), 
-	FOREIGN KEY (Fk_Collecte) REFERENCES Collecte(Id), 
-	FOREIGN KEY (Fk_TrancheHoraire) REFERENCES TrancheHoraire(Id)
+	FOREIGN KEY (Fk_Collecte) REFERENCES Collecte(Id)
 );
 
 CREATE TABLE Don (
@@ -162,7 +154,7 @@ INSERT INTO [dbo].[Utilisateur]
 INSERT INTO [dbo].[Groupesanguin]
 ([Nom])
      VALUES
-           ('A+'), ('A-'), ('B+'), ('B-'), ('AB+'), ('AB-'), ('O+'), ('O-');
+           ('O-'), ('O+'), ('B-'), ('B+'), ('A-'), ('A+'), ('AB-'), ('AB+');
 		   
 		   
 INSERT INTO [dbo].[Alerte]
@@ -190,38 +182,23 @@ INSERT INTO [dbo].[Collecte]
 		   ('Spy - École fondamentale autonome', 50.480150, 4.702640, null), 
 		   ('Site de prélèvement Huy', 50.510810, 5.240360, 085277588);
 		   
-INSERT INTO [dbo].[TrancheHoraire]
-           ([HeureDebut]
-           ,[HeureFin])
-     VALUES
-           ('08:00', '19:30'), 
-		   ('08:00', '12:30'), 
-		   ('08:00', '16:30'), 
-		   ('16:00', '19:30'), 
-		   ('15:30', '19:30'), 
-		   ('15:00', '18:30'), 
-		   ('10:00', '17:00'), 
-		   ('08:00', '14:00'), 
-		   ('11:00', '17:00'), 
-		   ('11:00', '16:30'), 
-		   ('13:00', '19:30'), 
-		   ('09:00', '13:00');
 
 INSERT INTO [dbo].[Jourouverture]
            ([LibelleJour]
            ,[Date]
            ,[Fk_Collecte]
-           ,[Fk_TrancheHoraire])
+           ,[HeureDebut]
+		   ,[HeureFin])
      VALUES
-           ('Lundi', null, 1, 1), ('Mardi', null, 1, 2), ('Mercredi', null, 1, 3), ('Jeudi', null, 1, 1), ('Vendredi', null, 1, 3), (null, '2018-12-15', 1, 7),(null, '2018-12-24', 1, 8),(null, '2018-12-29', 1, 8),(null, '2018-12-31', 1, 8),
-		   (null, '2018-12-20', 2, 4), (null, '2019-03-21', 2, 4), (null, '2019-06-20', 2, 4), (null, '2019-09-19', 2, 4), (null, '2019-12-19', 2, 4), 
-		   (null, '2019-02-15', 3, 5), (null, '2019-05-17', 3, 5), (null, '2019-08-16', 3, 5), (null, '2019-11-05', 3, 5), 
-		   (null, '2019-01-14', 4, 6), (null, '2019-04-01', 4, 6), (null, '2019-07-01', 4, 6), (null, '2019-10-14', 4, 6), 
-		   (null, '2018-12-26', 5, 9), (null, '2018-12-27', 5, 9), (null, '2018-12-28', 5, 10), 
-		   (null, '2019-02-04', 6, 6), (null, '2019-05-16', 6, 6), (null, '2019-08-08', 6, 6), (null, '2019-11-14', 6, 6), 
-		   (null, '2019-01-22', 7, 6), (null, '2019-04-23', 7, 6), (null, '2019-07-23', 7, 6), (null, '2019-10-22', 7, 6), 
-		   (null, '2019-02-25', 8, 6), (null, '2019-05-27', 8, 6), (null, '2019-08-26', 8, 6), (null, '2019-11-25', 8, 6), 
-		   ('Mardi', null, 9, 11), ('Mercredi', null, 9, 12), ('Jeudi', null, 9, 11);
+           ('Lundi', null, 1, '08:00', '19:30'), ('Mardi', null, 1, '08:00', '12:30'), ('Mercredi', null, 1, '08:00', '16:30'), ('Jeudi', null, 1, '08:00', '19:30'), ('Vendredi', null, 1, '08:00', '16:30'), (null, '2018-12-15', 1, '10:00', '17:00'),(null, '2018-12-24', 1, '08:00', '14:00'),(null, '2018-12-29', 1, '08:00', '14:00'),(null, '2018-12-31', 1, '08:00', '14:00'),
+		   (null, '2018-12-20', 2, '16:00', '19:30'), (null, '2019-03-21', 2, '16:00', '19:30'), (null, '2019-06-20', 2, '16:00', '19:30'), (null, '2019-09-19', 2, '16:00', '19:30'), (null, '2019-12-19', 2, '16:00', '19:30'), 
+		   (null, '2019-02-15', 3, '15:30', '19:30'), (null, '2019-05-17', 3, '15:30', '19:30'), (null, '2019-08-16', 3, '15:30', '19:30'), (null, '2019-11-05', 3, '15:30', '19:30'), 
+		   (null, '2019-01-14', 4, '15:00', '18:30'), (null, '2019-04-01', 4, '15:00', '18:30'), (null, '2019-07-01', 4, '15:00', '18:30'), (null, '2019-10-14', 4, '15:00', '18:30'), 
+		   (null, '2018-12-26', 5, '11:00', '17:00'), (null, '2018-12-27', 5, '11:00', '17:00'), (null, '2018-12-28', 5, '11:00', '16:30'), 
+		   (null, '2019-02-04', 6, '15:00', '18:30'), (null, '2019-05-16', 6, '15:00', '18:30'), (null, '2019-08-08', 6, '15:00', '18:30'), (null, '2019-11-14', 6, '15:00', '18:30'), 
+		   (null, '2019-01-22', 7, '15:00', '18:30'), (null, '2019-04-23', 7, '15:00', '18:30'), (null, '2019-07-23', 7, '15:00', '18:30'), (null, '2019-10-22', 7, '15:00', '18:30'), 
+		   (null, '2019-02-25', 8, '15:00', '18:30'), (null, '2019-05-27', 8, '15:00', '18:30'), (null, '2019-08-26', 8, '15:00', '18:30'), (null, '2019-11-25', 8, '15:00', '18:30'), 
+		   ('Mardi', null, 9, '13:00', '19:30'), ('Mercredi', null, 9, '09:00', '13:00'), ('Jeudi', null, 9, '13:00', '19:30');
 
 INSERT INTO [dbo].[Information]
            ([Question]
