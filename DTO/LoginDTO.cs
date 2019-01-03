@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CroixRouge.DTO
 {
-    public class LoginModel
+    public class LoginDTO
     {
         [StringLength(50, MinimumLength=3)]
         [Required]
@@ -12,7 +12,7 @@ namespace CroixRouge.DTO
         [Required]
         public string Password {get; set;}
 
-        public LoginModel ()
+        public LoginDTO ()
         {
 
         }

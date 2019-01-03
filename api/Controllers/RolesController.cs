@@ -29,15 +29,15 @@ namespace CroixRouge.api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            IEnumerable<CroixRouge.Model.Role> entities = await dataAccess.GetRolesAsync();
-            var results = Mapper.Map<IEnumerable<RoleModel>>(entities);
+            IEnumerable<Role> entities = await dataAccess.GetRolesAsync();
+            var results = Mapper.Map<IEnumerable<RoleDTO>>(entities);
             //return Ok(entities.Select(CreateDTOFromEntity));
             return Ok(results);
         }
-       /*        private static DTO.RoleModel CreateDTOFromEntity(Model.Role entity)
+       /*        private static DTO.RoleDTO CreateDTOFromEntity(Model.Role entity)
         {
             //fixme: comment améliorer cette implémentation?
-            return new DTO.RoleModel()
+            return new DTO.RoleDTO()
             {
                 Libelle = entity.Libelle
             };

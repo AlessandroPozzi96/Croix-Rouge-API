@@ -29,9 +29,9 @@ namespace CroixRouge.api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(int? pageIndex= Constants.Paging.PAGE_INDEX, int? pageSize = Constants.Paging.PAGE_SIZE, bool horairesAJour = true)
         {
-            IEnumerable<CroixRouge.Model.Collecte> entities = await dataAccess.GetCollectesAsync(pageIndex, pageSize, horairesAJour);
+            IEnumerable<Collecte> entities = await dataAccess.GetCollectesAsync(pageIndex, pageSize, horairesAJour);
 
-            var results = Mapper.Map<IEnumerable<CollecteModel>>(entities);
+            var results = Mapper.Map<IEnumerable<CollecteDTO>>(entities);
 
             return Ok(results);
         }
@@ -40,11 +40,11 @@ namespace CroixRouge.api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            CroixRouge.Model.Collecte entity = await dataAccess.FindCollecteById(id);
+            Collecte entity = await dataAccess.FindCollecteById(id);
             if (entity == null)
                 return NotFound();
 
-            var result = Mapper.Map<CollecteModel>(entity);
+            var result = Mapper.Map<CollecteDTO>(entity);
 
             return Ok(result);
         }
@@ -52,31 +52,31 @@ namespace CroixRouge.api.Controllers
         // POST api/Collectes
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
-        public async Task<IActionResult> Post([FromBody]CroixRouge.DTO.CollecteModel dto)
+        public async Task<IActionResult> Post([FromBody]CollecteDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var entity = Mapper.Map<CroixRouge.Model.Collecte>(dto);
+            var entity = Mapper.Map<Collecte>(dto);
 
             await dataAccess.AddCollecteAsync(entity);
             
-            return Created($"api/Collectes/{entity.Id}", Mapper.Map<CollecteModel>(entity));
+            return Created($"api/Collectes/{entity.Id}", Mapper.Map<CollecteDTO>(entity));
         }
 
         // PUT api/Collectes/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
-        public async Task<IActionResult> Put(int id, [FromBody]CroixRouge.DTO.CollecteModel dto)
+        public async Task<IActionResult> Put(int id, [FromBody]CollecteDTO dto)
         {
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
-            CroixRouge.Model.Collecte entity = await dataAccess.FindCollecteById(id);
+            Collecte entity = await dataAccess.FindCollecteById(id);
             if (entity == null)
                 return NotFound();
 
             await dataAccess.UpdateCollecteAsync(entity, dto);
 
-            return Ok(Mapper.Map<CroixRouge.DTO.CollecteModel>(entity));
+            return Ok(Mapper.Map<CollecteDTO>(entity));
         }
 
         // DELETE api/Collectes/5
@@ -84,7 +84,7 @@ namespace CroixRouge.api.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
         public async Task<IActionResult> Delete(int id)
         {
-            CroixRouge.Model.Collecte entity = await dataAccess.FindCollecteById(id);
+            Collecte entity = await dataAccess.FindCollecteById(id);
             if (entity == null)
                 return NotFound();
 

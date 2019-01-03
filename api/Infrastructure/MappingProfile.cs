@@ -11,35 +11,35 @@ namespace CroixRouge.api.Infrastructure
     {
         public MappingProfile()
         {
-            CreateMap<CroixRouge.Model.Role,RoleModel>();
+            CreateMap<Role,RoleDTO>();
 
-            CreateMap<RoleModel,CroixRouge.Model.Role>();
+            CreateMap<RoleDTO,Role>();
 
-            CreateMap<CroixRouge.Model.Alerte,AlerteModel>();
+            CreateMap<Alerte,AlerteDTO>();
 
-            CreateMap<AlerteModel, CroixRouge.Model.Alerte>();
+            CreateMap<AlerteDTO, Alerte>();
 
-            CreateMap<CroixRouge.Model.Groupesanguin, GroupesanguinModel>();
+            CreateMap<Groupesanguin, GroupesanguinDTO>();
 
-            CreateMap<CroixRouge.Model.Utilisateur, UtilisateurModel>();
+            CreateMap<Utilisateur, UtilisateurDTO>();
             //.ForMember(u => u.Password, opt => opt.Ignore());
 
-            CreateMap<UtilisateurModel, CroixRouge.Model.Utilisateur>();
+            CreateMap<UtilisateurDTO, Utilisateur>();
             //.ForMember(u => u.Password, opt => opt.Ignore());
 
-            CreateMap<CroixRouge.DTO.CollecteModel, CroixRouge.Model.Collecte>();
+            CreateMap<CollecteDTO, Collecte>();
 
-            CreateMap<CroixRouge.Model.Collecte, CroixRouge.DTO.CollecteModel>();
+            CreateMap<Collecte, CollecteDTO>();
 
-            CreateMap<Information, InformationModel>();
+            CreateMap<InformationDTO, Information>();
 
-            CreateMap<InformationModel, Information>();
+            CreateMap<Information, InformationDTO>();
 
-            CreateMap<DonModel, Don>();
+            CreateMap<Don, DonDTO>();
 
-            CreateMap<DonModel, DonModel>();
-            CreateMap<Jourouverture, JourouvertureModel>();
-            CreateMap<JourouvertureModel, Jourouverture>();
+            CreateMap<DonDTO, Don>();
+            CreateMap<Jourouverture, JourouvertureDTO>();
+            CreateMap<JourouvertureDTO, Jourouverture>();
         }
     } 
 }

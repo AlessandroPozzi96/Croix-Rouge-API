@@ -29,7 +29,7 @@ namespace CroixRouge.Dal
             .ToArrayAsync();
         }
 
-        public async Task AddAlerteAsync(CroixRouge.Model.Alerte alerte)
+        public async Task AddAlerteAsync(Alerte alerte)
         {
             if (alerte != null)
             {
@@ -38,7 +38,7 @@ namespace CroixRouge.Dal
             }
         }
 
-        public async Task UpdateAlerteAsync(CroixRouge.Model.Alerte alerte, CroixRouge.DTO.AlerteModel dto)
+        public async Task UpdateAlerteAsync(CroixRouge.Model.Alerte alerte, AlerteDTO dto)
         {
             alerte.Nom = dto.Nom;
             alerte.Contenu = dto.Contenu;
@@ -49,7 +49,7 @@ namespace CroixRouge.Dal
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemoveAlerteAsync(CroixRouge.Model.Alerte alerte)
+        public async Task RemoveAlerteAsync(Alerte alerte)
         {
             _context.Alerte.Remove(alerte);
             await _context.SaveChangesAsync();
@@ -60,7 +60,7 @@ namespace CroixRouge.Dal
             return _context.Alerte.FindAsync(id);
         }
 
-        public async Task<IEnumerable<CroixRouge.Model.Collecte>> GetCollectesAsync(int? pageIndex, int? pageSize, bool horairesAJour)
+        public async Task<IEnumerable<Collecte>> GetCollectesAsync(int? pageIndex, int? pageSize, bool horairesAJour)
         {
             var collectes = await _context.Collecte
             .OrderBy(collecte => collecte.Id)
@@ -80,7 +80,7 @@ namespace CroixRouge.Dal
             return collectes;
         }
 
-        public async Task AddCollecteAsync(CroixRouge.Model.Collecte collecte)
+        public async Task AddCollecteAsync(Collecte collecte)
         {
             if (collecte != null)
             {
@@ -89,7 +89,7 @@ namespace CroixRouge.Dal
             }
         }
 
-        public async Task UpdateCollecteAsync(CroixRouge.Model.Collecte collecte, CroixRouge.DTO.CollecteModel dto)
+        public async Task UpdateCollecteAsync(Collecte collecte, CollecteDTO dto)
         {
             collecte.Nom = dto.Nom;
             collecte.Latitude = dto.Latitude;
@@ -101,7 +101,7 @@ namespace CroixRouge.Dal
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemoveCollecteAsync(CroixRouge.Model.Collecte collecte)
+        public async Task RemoveCollecteAsync(Collecte collecte)
         {
             //suppression des joursouvertures lié
             
@@ -110,27 +110,27 @@ namespace CroixRouge.Dal
             await _context.SaveChangesAsync();
         }
 
-        public Task<CroixRouge.Model.Collecte> FindCollecteById(int id)
+        public Task<Collecte> FindCollecteById(int id)
         {
             return _context.Collecte
             .Include(c => c.Jourouverture)
             .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<IEnumerable<CroixRouge.Model.Groupesanguin>> GetGroupesanguinsAsync()
+        public async Task<IEnumerable<Groupesanguin>> GetGroupesanguinsAsync()
         {
             return await _context.Groupesanguin
             .OrderBy(g => g.Nom)
             .ToArrayAsync();
         }
 
-        public async Task<IEnumerable<CroixRouge.Model.Role>> GetRolesAsync()
+        public async Task<IEnumerable<Role>> GetRolesAsync()
         {
             return await _context.Role
             .ToArrayAsync();
         }
 
-        public async Task<IEnumerable<CroixRouge.Model.Utilisateur>> GetUtilisateursAsync(int? pageIndex, int? pageSize, string login)
+        public async Task<IEnumerable<Utilisateur>> GetUtilisateursAsync(int? pageIndex, int? pageSize, string login)
         {
              return await _context.Utilisateur
             .Where(u => login == null || u.Login.Contains(login))
@@ -140,7 +140,7 @@ namespace CroixRouge.Dal
             .ToArrayAsync();
         }
 
-        public async Task AddUtilisateurAsync(CroixRouge.Model.Utilisateur utilisateur)
+        public async Task AddUtilisateurAsync(Utilisateur utilisateur)
         {
             if (utilisateur != null)
             {
@@ -150,7 +150,7 @@ namespace CroixRouge.Dal
             //lancer exception
         }
 
-        public async Task UpdateUtilisateurAsync(CroixRouge.Model.Utilisateur utilisateur, CroixRouge.DTO.UtilisateurModel dto)
+        public async Task UpdateUtilisateurAsync(Utilisateur utilisateur, UtilisateurDTO dto)
         {   
             //Pas top avec le mapper car il remplace tous les champs    
             utilisateur.Nom = dto.Nom;
@@ -184,7 +184,7 @@ namespace CroixRouge.Dal
             await _context.SaveChangesAsync();
         }
 
-        public async Task<CroixRouge.Model.Utilisateur> FindUtilisateurByLogin(string login)
+        public async Task<Utilisateur> FindUtilisateurByLogin(string login)
         {
             //return _context.Utilisateur.FindAsync(login);
              return await _context.Utilisateur
@@ -193,14 +193,14 @@ namespace CroixRouge.Dal
 
         }
 
-        public async Task<IEnumerable<CroixRouge.Model.Information>> GetInformationsAsync()
+        public async Task<IEnumerable<Information>> GetInformationsAsync()
         {
             return await _context.Information
             .OrderBy(i => i.Id)
             .ToArrayAsync();
         }
 
-        public async Task addDonAsync(CroixRouge.Model.Don don)
+        public async Task addDonAsync(Don don)
         {
             if(don != null)
             {
@@ -209,14 +209,14 @@ namespace CroixRouge.Dal
             }
         }
 
-        public async Task<IEnumerable<CroixRouge.Model.Jourouverture>> GetJoursouverturesAsync()
+        public async Task<IEnumerable<Jourouverture>> GetJoursouverturesAsync()
         {
              return await _context.Jourouverture
             .OrderBy(j => j.Id)
             .ToArrayAsync();
         }
 
-        public async Task AddJourouvertureAsync(CroixRouge.Model.Jourouverture jourouverture)
+        public async Task AddJourouvertureAsync(Jourouverture jourouverture)
         {
             if (jourouverture != null)
             {
@@ -226,7 +226,7 @@ namespace CroixRouge.Dal
             }
         }
 
-        public async Task UpdateJourouvertureAsync(CroixRouge.Model.Jourouverture jourouverture, JourouvertureModel dto)
+        public async Task UpdateJourouvertureAsync(Jourouverture jourouverture, JourouvertureDTO dto)
         {   
             if (jourouverture != null)
             {
@@ -242,7 +242,7 @@ namespace CroixRouge.Dal
             await _context.SaveChangesAsync();
         }
 
-        public Task<CroixRouge.Model.Jourouverture> FindJourouvertureById(int id)
+        public Task<Jourouverture> FindJourouvertureById(int id)
         {
             return _context.Jourouverture.FindAsync(id);
         }

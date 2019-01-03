@@ -28,16 +28,16 @@ namespace CroixRouge.api.Controllers
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
-        public async Task<IActionResult> Post([FromBody]CroixRouge.DTO.DonModel dto)
+        public async Task<IActionResult> Post([FromBody]DonDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var entity = Mapper.Map<CroixRouge.Model.Don>(dto);
+            var entity = Mapper.Map<Don>(dto);
 
             await dataAccess.addDonAsync(entity);
             
-            return Created($"api/Dons/{entity.Id}", Mapper.Map<DonModel>(entity));
+            return Created($"api/Dons/{entity.Id}", Mapper.Map<DonDTO>(entity));
         }
 
 

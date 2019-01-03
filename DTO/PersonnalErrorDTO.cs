@@ -2,10 +2,10 @@ using System;
 
 namespace CroixRouge.DTO
 {
-    public class PersonnalErrorModel
+    public class PersonnalErrorDTO
     {
         public string Message { get; set; }
-        public PersonnalErrorModel(string message)
+        public PersonnalErrorDTO(string message)
         {
             this.Message = message ?? throw new ArgumentNullException(nameof(message));
         }

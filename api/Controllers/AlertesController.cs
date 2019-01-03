@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 using CroixRouge.Dal;
 using AutoMapper;
 
@@ -30,9 +29,9 @@ namespace CroixRouge.api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(int? pageIndex=Constants.Paging.PAGE_INDEX, int? pageSize = Constants.Paging.PAGE_SIZE, string nom = null)
         {
-            IEnumerable<CroixRouge.Model.Alerte> entities = await dataAccess.GetAlertesAsync(pageIndex, pageSize, nom);
+            IEnumerable<Alerte> entities = await dataAccess.GetAlertesAsync(pageIndex, pageSize, nom);
             
-            var results = Mapper.Map<IEnumerable<AlerteModel>>(entities);
+            var results = Mapper.Map<IEnumerable<AlerteDTO>>(entities);
 
             return Ok(results);
         }
@@ -41,11 +40,11 @@ namespace CroixRouge.api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            CroixRouge.Model.Alerte entity = await dataAccess.FindAlerteById(id);
+            Alerte entity = await dataAccess.FindAlerteById(id);
             if (entity == null)
                 return NotFound();
 
-            var result = Mapper.Map<AlerteModel>(entity);
+            var result = Mapper.Map<AlerteDTO>(entity);
 
             return Ok(result);
         }
@@ -53,36 +52,36 @@ namespace CroixRouge.api.Controllers
         // POST api/Alertes
         [HttpPost]
         //[Authorize(Roles = Constants.Roles.Admin)]
-        public async Task<IActionResult> Post([FromBody]CroixRouge.DTO.AlerteModel dto)
+        public async Task<IActionResult> Post([FromBody]AlerteDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var entity = Mapper.Map<CroixRouge.Model.Alerte>(dto);
+            var entity = Mapper.Map<Alerte>(dto);
 
             await dataAccess.AddAlerteAsync(entity);
 
-            return Created($"api/Alertes/{entity.Id}", Mapper.Map<AlerteModel>(entity));
+            return Created($"api/Alertes/{entity.Id}", Mapper.Map<AlerteDTO>(entity));
         }
 
         // PUT api/Shops/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]CroixRouge.DTO.AlerteModel dto)
+        public async Task<IActionResult> Put(int id, [FromBody]AlerteDTO dto)
         {
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
-            CroixRouge.Model.Alerte entity = await dataAccess.FindAlerteById(id);
+            Alerte entity = await dataAccess.FindAlerteById(id);
             if (entity == null)
                 return NotFound();
             await dataAccess.UpdateAlerteAsync(entity, dto);
 
-            return Ok(Mapper.Map<CroixRouge.DTO.AlerteModel>(entity));
+            return Ok(Mapper.Map<AlerteDTO>(entity));
         }
 
         // DELETE api/Alertes/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            CroixRouge.Model.Alerte alerte = await dataAccess.FindAlerteById(id);
+            Alerte alerte = await dataAccess.FindAlerteById(id);
             if (alerte == null)
                 // todo: débat: si l'on demande une suppression d'une entité qui n'existe pas
                 // s'agit-il vraiment d'un cas d'erreur? 

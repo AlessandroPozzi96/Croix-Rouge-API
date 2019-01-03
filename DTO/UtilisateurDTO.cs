@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CroixRouge.DTO
 {
-    public class UtilisateurModel
+    public class UtilisateurDTO
     {
         [StringLength(50, MinimumLength=3)]
         [Required]
@@ -32,7 +32,7 @@ namespace CroixRouge.DTO
         public string FkRole { get; set; }
         public byte[] Rv { get; set; }
         public string FkGroupesanguin;
-        public UtilisateurModel ()
+        public UtilisateurDTO ()
         {
 
         }

@@ -28,9 +28,9 @@ namespace CroixRouge.api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            IEnumerable<CroixRouge.Model.Information> entities = await dataAccess.GetInformationsAsync();
+            IEnumerable<Information> entities = await dataAccess.GetInformationsAsync();
             
-            var results = Mapper.Map<IEnumerable<InformationModel>>(entities);
+            var results = Mapper.Map<IEnumerable<InformationDTO>>(entities);
 
             return Ok(results);
         }

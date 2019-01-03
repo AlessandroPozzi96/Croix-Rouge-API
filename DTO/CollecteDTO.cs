@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CroixRouge.DTO
 {
-    public class CollecteModel
+    public class CollecteDTO
     {
         [Required]
         public int Id { get; set; }
@@ -16,9 +16,9 @@ namespace CroixRouge.DTO
         public decimal Longitude { get; set; }
         public int? Telephone { get; set; }
         public byte[] Rv { get; set; }
-        public JourouvertureModel[] Jourouverture { get; set; }
+        public JourouvertureDTO[] Jourouverture { get; set; }
 
-        public CollecteModel ()
+        public CollecteDTO ()
         {
 
         }

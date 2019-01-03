@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CroixRouge.DTO
 {
-    public class AlerteModel
+    public class AlerteDTO
     {
         [Required]
         public int Id { get; set; }
@@ -17,7 +17,7 @@ namespace CroixRouge.DTO
         public string FkGroupesanguin { get; set; }
         public byte[] Rv { get; set; }
 
-        public AlerteModel ()
+        public AlerteDTO ()
         {
 
         }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CroixRouge.DTO
 {
-    public class JourouvertureModel
+    public class JourouvertureDTO
     {
         [Required]
         public int Id { get; set; }
@@ -18,7 +18,7 @@ namespace CroixRouge.DTO
         public TimeSpan HeureFin { get; set; }
         public byte[] Rv { get; set; }
 
-        public JourouvertureModel ()
+        public JourouvertureDTO ()
         {
 
         }

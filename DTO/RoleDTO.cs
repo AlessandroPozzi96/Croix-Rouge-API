@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CroixRouge.DTO
 {
-    public class RoleModel
+    public class RoleDTO
     {
         [Required]
         public string Libelle {get; set;}
 
-        public RoleModel ()
+        public RoleDTO ()
         {
 
         }

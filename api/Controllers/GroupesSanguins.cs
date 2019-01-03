@@ -28,9 +28,9 @@ namespace CroixRouge.api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            IEnumerable<CroixRouge.Model.Groupesanguin> entities = await dataAccess.GetGroupesanguinsAsync();
+            IEnumerable<Groupesanguin> entities = await dataAccess.GetGroupesanguinsAsync();
             
-            var results = Mapper.Map<IEnumerable<GroupesanguinModel>>(entities);
+            var results = Mapper.Map<IEnumerable<GroupesanguinDTO>>(entities);
 
             //return Ok(entities.Select(CreateDTOFromEntity));
             return Ok(results);

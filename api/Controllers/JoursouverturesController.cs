@@ -29,9 +29,9 @@ namespace CroixRouge.api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            IEnumerable<CroixRouge.Model.Jourouverture> entities = await dataAccess.GetJoursouverturesAsync();
+            IEnumerable<Jourouverture> entities = await dataAccess.GetJoursouverturesAsync();
 
-            var results = Mapper.Map<IEnumerable<JourouvertureModel>>(entities);
+            var results = Mapper.Map<IEnumerable<JourouvertureDTO>>(entities);
 
             return Ok(results);
         }
@@ -40,11 +40,11 @@ namespace CroixRouge.api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            CroixRouge.Model.Jourouverture entity = await dataAccess.FindJourouvertureById(id);
+            Jourouverture entity = await dataAccess.FindJourouvertureById(id);
             if (entity == null)
                 return NotFound();
 
-            var result = Mapper.Map<JourouvertureModel>(entity);
+            var result = Mapper.Map<JourouvertureDTO>(entity);
 
             return Ok(result);
         }
@@ -52,12 +52,12 @@ namespace CroixRouge.api.Controllers
         // POST api/Jourouvertures
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
-        public async Task<IActionResult> Post([FromBody]CroixRouge.DTO.JourouvertureModel dto)
+        public async Task<IActionResult> Post([FromBody]JourouvertureDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-                
-            var entity = Mapper.Map<CroixRouge.Model.Jourouverture>(dto);
+
+            var entity = Mapper.Map<Jourouverture>(dto);
 
             Collecte collecte = await dataAccess.FindCollecteById(dto.FkCollecte);
             if (collecte == null)
@@ -67,15 +67,15 @@ namespace CroixRouge.api.Controllers
 
             await dataAccess.AddJourouvertureAsync(entity);
             
-            return Created($"api/Joursouvertures/{entity.Id}", Mapper.Map<JourouvertureModel>(entity));
+            return Created($"api/Joursouvertures/{entity.Id}", Mapper.Map<JourouvertureDTO>(entity));
         }
 
         // PUT api/Jourouvertures/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
-        public async Task<IActionResult> Put(int id, [FromBody]CroixRouge.DTO.JourouvertureModel dto)
+        public async Task<IActionResult> Put(int id, [FromBody]JourouvertureDTO dto)
         {
-            CroixRouge.Model.Jourouverture entity = await dataAccess.FindJourouvertureById(id);
+            Jourouverture entity = await dataAccess.FindJourouvertureById(id);
             if (entity == null)
                 return NotFound();
 
@@ -88,7 +88,7 @@ namespace CroixRouge.api.Controllers
 
             await dataAccess.UpdateJourouvertureAsync(entity, dto);
 
-            return Ok(Mapper.Map<CroixRouge.DTO.JourouvertureModel>(entity));
+            return Ok(Mapper.Map<JourouvertureDTO>(entity));
         }
 
         // DELETE api/Jourouvertures/5
@@ -96,7 +96,7 @@ namespace CroixRouge.api.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
         public async Task<IActionResult> Delete(int id)
         {
-            CroixRouge.Model.Jourouverture entity = await dataAccess.FindJourouvertureById(id);
+            Jourouverture entity = await dataAccess.FindJourouvertureById(id);
             if (entity == null)
                 return NotFound();
 

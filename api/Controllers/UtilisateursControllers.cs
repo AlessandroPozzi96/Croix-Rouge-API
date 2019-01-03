@@ -34,9 +34,9 @@ namespace CroixRouge.api.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
         public async Task<IActionResult> Get(int? pageIndex= Constants.Paging.PAGE_INDEX, int? pageSize = Constants.Paging.PAGE_SIZE, string login = null)
         {
-            IEnumerable<CroixRouge.Model.Utilisateur> entities = await dataAccess.GetUtilisateursAsync(pageIndex, pageSize, login);
+            IEnumerable<Utilisateur> entities = await dataAccess.GetUtilisateursAsync(pageIndex, pageSize, login);
             
-            var results = Mapper.Map<IEnumerable<UtilisateurModel>>(entities);
+            var results = Mapper.Map<IEnumerable<UtilisateurDTO>>(entities);
 
             return Ok(results);
         }
@@ -55,12 +55,12 @@ namespace CroixRouge.api.Controllers
                 return Forbid();
             }
 
-            CroixRouge.Model.Utilisateur entity = await dataAccess.FindUtilisateurByLogin(login);
+            Utilisateur entity = await dataAccess.FindUtilisateurByLogin(login);
             if (entity == null)
                 throw new NotFoundException("Utilisateur");
             
 
-            var result = Mapper.Map<UtilisateurModel>(entity);
+            var result = Mapper.Map<UtilisateurDTO>(entity);
 
             return Ok(result);
         }
@@ -69,7 +69,7 @@ namespace CroixRouge.api.Controllers
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [AllowAnonymous]
-        public async Task<IActionResult> Post([FromBody]CroixRouge.DTO.UtilisateurModel dto)
+        public async Task<IActionResult> Post([FromBody]UtilisateurDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -81,7 +81,7 @@ namespace CroixRouge.api.Controllers
                 return Forbid();
             }
 
-            CroixRouge.Model.Utilisateur nouveauUtilisateur = await dataAccess.FindUtilisateurByLogin(dto.Login);
+            Utilisateur nouveauUtilisateur = await dataAccess.FindUtilisateurByLogin(dto.Login);
             if (nouveauUtilisateur != null)
             {
                 return BadRequest(Constants.MsgErrors.LOGIN_EXISTANT);
@@ -90,18 +90,18 @@ namespace CroixRouge.api.Controllers
             dto.Score = 0;
             dto.Password = Hashing.HashPassword(dto.Password);
 
-            var entity = Mapper.Map<CroixRouge.Model.Utilisateur>(dto);
+            var entity = Mapper.Map<Utilisateur>(dto);
 
             await dataAccess.AddUtilisateurAsync(entity);
 
-            return Created($"api/Utilisateurs/{entity.Login}", Mapper.Map<UtilisateurModel>(entity));
+            return Created($"api/Utilisateurs/{entity.Login}", Mapper.Map<UtilisateurDTO>(entity));
         }
 
         // PUT api/Utilisateurs/Gwynbleidd
         //Vérifier si le login passé en paramètre est le même que celui du token
         [HttpPut("{login}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> Put(string login, [FromBody]CroixRouge.DTO.UtilisateurModel dto)
+        public async Task<IActionResult> Put(string login, [FromBody]UtilisateurDTO dto)
         {
             var loginToken = GetLoginToken();
             var roleToken = GetRoleToken();
@@ -112,7 +112,7 @@ namespace CroixRouge.api.Controllers
             }
 
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
-            CroixRouge.Model.Utilisateur entity = await dataAccess.FindUtilisateurByLogin(login);
+            Utilisateur entity = await dataAccess.FindUtilisateurByLogin(login);
             if (entity == null)
                 return NotFound();
             
@@ -121,7 +121,7 @@ namespace CroixRouge.api.Controllers
             
             await dataAccess.UpdateUtilisateurAsync(entity, dto);
 
-            return Ok(Mapper.Map<CroixRouge.DTO.UtilisateurModel>(entity));
+            return Ok(Mapper.Map<UtilisateurDTO>(entity));
         }
 
         // DELETE api/Utilisateurs/Gwynbleidd
@@ -139,7 +139,7 @@ namespace CroixRouge.api.Controllers
                 return Forbid();
             }
 
-            CroixRouge.Model.Utilisateur utilisateur = await dataAccess.FindUtilisateurByLogin(login);
+            Utilisateur utilisateur = await dataAccess.FindUtilisateurByLogin(login);
             if (utilisateur == null)
                 // todo: débat: si l'on demande une suppression d'une entité qui n'existe pas
                 // s'agit-il vraiment d'un cas d'erreur? 

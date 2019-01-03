@@ -33,7 +33,7 @@ namespace CroixRouge.api.Controllers
 
         // POST api/Jwt
         [HttpPost]
-        public async Task<ActionResult> Login([FromBody] CroixRouge.DTO.LoginModel loginModel)
+        public async Task<ActionResult> Login([FromBody] LoginDTO LoginDTO)
         {
             // Depuis ASP.NET Core 2.1, ces deux lignes sont superflues.
             // En effet, le framework prend en charge le retour d'une erreur 400 
@@ -52,7 +52,7 @@ namespace CroixRouge.api.Controllers
                 return true;
             });
 
-            Model.Utilisateur utilisateurFound = users.FirstOrDefault(utilisateur => utilisateur.Login == loginModel.UserName && Hashing.ValidatePassword(loginModel.Password, utilisateur.Password));
+            Model.Utilisateur utilisateurFound = users.FirstOrDefault(utilisateur => utilisateur.Login == LoginDTO.UserName && Hashing.ValidatePassword(LoginDTO.Password, utilisateur.Password));
             if (utilisateurFound == null)
                 return Unauthorized();
 

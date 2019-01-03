@@ -29,7 +29,7 @@ namespace CroixRouge.api.Infrastructure
                 var result = new ContentResult()
                 {
                     StatusCode = (int)HttpStatusCode.Conflict,
-                    Content = Newtonsoft.Json.JsonConvert.SerializeObject(new CroixRouge.DTO.PersonnalErrorModel("Access concurent à la base de donnée")),
+                    Content = Newtonsoft.Json.JsonConvert.SerializeObject(new PersonnalErrorDTO("Access concurent à la base de donnée")),
                     ContentType = "application/json"
 
                 };
@@ -37,12 +37,12 @@ namespace CroixRouge.api.Infrastructure
             }
             else
             {
-                if (context.Exception.GetType().IsSubclassOf(typeof(CroixRouge.Model.Exceptions.PersonnalException)))
+                if (context.Exception.GetType().IsSubclassOf(typeof(PersonnalException)))
                 {
                     var result = new ContentResult()
                     {
                         StatusCode = (int)HttpStatusCode.BadRequest,
-                        Content = Newtonsoft.Json.JsonConvert.SerializeObject(new CroixRouge.DTO.PersonnalErrorModel(context.Exception.Message)),
+                        Content = Newtonsoft.Json.JsonConvert.SerializeObject(new PersonnalErrorDTO(context.Exception.Message)),
                         ContentType = "application/json"
 
                     };

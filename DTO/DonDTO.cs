@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CroixRouge.DTO
 {
-     public class DonModel
+     public class DonDTO
     {
         public int Id { get; set; }
         [Required]
@@ -13,7 +13,7 @@ namespace CroixRouge.DTO
         [Required]
         [StringLength(50, MinimumLength=3)]
         public string FkUtilisateur { get; set; }
-        public DonModel ()
+        public DonDTO ()
         {
 
         }
