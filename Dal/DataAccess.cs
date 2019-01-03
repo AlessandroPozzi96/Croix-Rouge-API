@@ -229,9 +229,12 @@ namespace CroixRouge.Dal
             if (jourouverture != null)
             {
                 verificationHoraire(jourouverture.HeureDebut, jourouverture.HeureFin);
+                verificationChevauchementHoraires(jourouverture.FkCollecteNavigation, jourouverture);
                 _context.Jourouverture.Add(jourouverture);
                 await _context.SaveChangesAsync();
             }
+            else
+                throw new NotFoundException("Jourouverture");
         }
 
         public async Task UpdateJourouvertureAsync(Jourouverture jourouverture, JourouvertureDTO dto)
@@ -259,6 +262,46 @@ namespace CroixRouge.Dal
         {
             if (h2 <= h1)
                 throw new HoraireInvalideException();
+        }
+
+        public void verificationChevauchementHoraires(Collecte collecte, Jourouverture nouveauJourOuverture)
+        {
+            if (nouveauJourOuverture.Jour.HasValue)
+            {
+                if (nouveauJourOuverture.Date.HasValue)
+                    throw new HoraireDoubleException();
+
+                if (collecte.Jourouverture.Any(
+                    jourOuvertureExistant => jourOuvertureExistant.Jour == nouveauJourOuverture.Jour && 
+                    horaireSeChevauchent(nouveauJourOuverture, jourOuvertureExistant)
+                ))
+                    throw new ChevauchementHorairesException();
+            }
+            else
+            {
+                if (nouveauJourOuverture.Date.HasValue)
+                {
+                    DateTime maintenantSansHeures = DateTime.Now.Date;
+                    int resultatDate = DateTime.Compare(nouveauJourOuverture.Date.Value, maintenantSansHeures);
+                    if (resultatDate < 0)
+                        throw new HorairePlusValideException();
+
+                    if (collecte.Jourouverture.Any(
+                        jourOuvertureExistant => jourOuvertureExistant.Date == nouveauJourOuverture.Date && 
+                        horaireSeChevauchent(nouveauJourOuverture, jourOuvertureExistant)
+                    ))
+                        throw new ChevauchementHorairesException();
+                }
+                else
+                    throw new HoraireManquantException();
+            }
+        }
+
+        public bool horaireSeChevauchent(Jourouverture nouveauJourOuverture, Jourouverture jourOuvertureExistant)
+        {
+            return ((nouveauJourOuverture.HeureFin >= jourOuvertureExistant.HeureDebut && nouveauJourOuverture.HeureFin <= jourOuvertureExistant.HeureFin) ||
+                    (nouveauJourOuverture.HeureDebut >= jourOuvertureExistant.HeureDebut && nouveauJourOuverture.HeureDebut <= jourOuvertureExistant.HeureFin) ||
+                    (nouveauJourOuverture.HeureDebut <= jourOuvertureExistant.HeureDebut && nouveauJourOuverture.HeureFin >= jourOuvertureExistant.HeureFin));
         }
     }
 }

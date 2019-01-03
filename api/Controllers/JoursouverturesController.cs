@@ -50,18 +50,18 @@ namespace CroixRouge.api.Controllers
         }
 
         // POST api/Jourouvertures
-        [HttpPost]
+        [HttpPost("Collecte/{collecteId}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
-        public async Task<IActionResult> Post([FromBody]JourouvertureDTO dto)
+        public async Task<IActionResult> Post(int collecteId, [FromBody]JourouvertureDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            var entity = Mapper.Map<Jourouverture>(dto);
-
-            Collecte collecte = await dataAccess.FindCollecteById(dto.FkCollecte);
+            
+            Collecte collecte = await dataAccess.FindCollecteById(collecteId);
             if (collecte == null)
                 return NotFound();
+
+            var entity = Mapper.Map<Jourouverture>(dto);
 
             entity.FkCollecteNavigation = collecte;
 
