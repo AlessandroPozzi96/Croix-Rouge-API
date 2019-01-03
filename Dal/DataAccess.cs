@@ -370,6 +370,47 @@ namespace CroixRouge.Dal
             return _context.Imagepromotion.FindAsync(id);
         }
 
+        public async Task<IEnumerable<Diffuserimage>> GetDiffuserimageAsync()
+        {
+             return await _context.Diffuserimage
+            .OrderBy(dI => dI.Id)
+            .ToArrayAsync();
+        }
+
+        public async Task AddDiffuserimageAsync(Diffuserimage diffuserimage)
+        {
+            if (diffuserimage != null)
+            {
+                _context.Diffuserimage.Add(diffuserimage);
+                await _context.SaveChangesAsync();
+            }
+            else
+                throw new NotFoundException("Diffuserimage");
+        }
+
+        public async Task UpdateDiffuserimageAsync(Diffuserimage diffuserimage)
+        {   
+            if (diffuserimage != null)
+            {
+                await _context.SaveChangesAsync();
+            }
+            else
+                throw new NotFoundException("Diffuserimage");
+        }
+
+        public async Task RemoveDiffuserimageAsync(Diffuserimage diffuserimage)
+        {
+            if (diffuserimage == null)
+                throw new NotFoundException("Diffuserimage");
+
+            _context.Diffuserimage.Remove(diffuserimage);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task<Diffuserimage> FindDiffuserimageById(int id)
+        {
+            return _context.Diffuserimage.FindAsync(id);
+        }
 
         public void verificationHoraire(TimeSpan h1, TimeSpan h2) 
         {

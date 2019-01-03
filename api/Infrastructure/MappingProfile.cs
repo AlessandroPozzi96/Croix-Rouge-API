@@ -41,6 +41,9 @@ namespace CroixRouge.api.Infrastructure
 
             CreateMap<Imagepromotion, ImagepromotionDTO>();
             CreateMap<ImagepromotionDTO, Imagepromotion>();
+
+            CreateMap<Diffuserimage, DiffuserimageDTO>();
+            CreateMap<DiffuserimageDTO, Diffuserimage>();
         }
     } 
 }
