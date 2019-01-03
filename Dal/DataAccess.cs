@@ -36,10 +36,15 @@ namespace CroixRouge.Dal
                 _context.Alerte.Add(alerte);
                 await _context.SaveChangesAsync();
             }
+            else
+                throw new NotFoundException("Alerte");
         }
 
         public async Task UpdateAlerteAsync(CroixRouge.Model.Alerte alerte, AlerteDTO dto)
         {
+            if (alerte == null || dto == null)
+                throw new NotFoundException("Alerte");
+
             alerte.Nom = dto.Nom;
             alerte.Contenu = dto.Contenu;
             //fixme: le premier RowVersion n'a pas d'impact. 
@@ -51,6 +56,8 @@ namespace CroixRouge.Dal
 
         public async Task RemoveAlerteAsync(Alerte alerte)
         {
+            if (alerte == null)
+                throw new NotFoundException("Alerte");
             _context.Alerte.Remove(alerte);
             await _context.SaveChangesAsync();
         }
@@ -87,10 +94,15 @@ namespace CroixRouge.Dal
                 _context.Collecte.Add(collecte);
                 await _context.SaveChangesAsync();
             }
+            else    
+                throw new NotFoundException("Collecte");
         }
 
         public async Task UpdateCollecteAsync(Collecte collecte, CollecteDTO dto)
         {
+            if (collecte == null || dto == null)
+                throw new NotFoundException("Collecte");
+
             collecte.Nom = dto.Nom;
             collecte.Latitude = dto.Latitude;
             collecte.Longitude = dto.Longitude;
@@ -103,9 +115,10 @@ namespace CroixRouge.Dal
 
         public async Task RemoveCollecteAsync(Collecte collecte)
         {
+            if (collecte == null)
+                throw new NotFoundException("Collecte");
             //suppression des joursouvertures lié
             
-
             _context.Collecte.Remove(collecte);
             await _context.SaveChangesAsync();
         }
@@ -147,11 +160,14 @@ namespace CroixRouge.Dal
                 _context.Utilisateur.Add(utilisateur);
                 await _context.SaveChangesAsync();
             }
-            //lancer exception
+            else
+                throw new NotFoundException("Utilisateur");
         }
 
         public async Task UpdateUtilisateurAsync(Utilisateur utilisateur, UtilisateurDTO dto)
         {   
+            if (utilisateur == null || dto == null)
+                throw new NotFoundException("Utilisateur");
             //Pas top avec le mapper car il remplace tous les champs    
             utilisateur.Nom = dto.Nom;
             utilisateur.Mail = dto.Mail;
@@ -170,23 +186,24 @@ namespace CroixRouge.Dal
                 utilisateur.FkGroupesanguin = null;
             }
 
-            //fixme: le premier RowVersion n'a pas d'impact. 
-            //Accès concurrents
             _context.Entry(utilisateur).OriginalValues["Rv"] = dto.Rv;
 
-            //_context.Entry(utilisateur).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
         public async Task RemoveUtilisateurAsync(Utilisateur utilisateur)
         {
+            if (utilisateur == null)
+                throw new NotFoundException("Utilisateur");
+
             _context.Utilisateur.Remove(utilisateur);
             await _context.SaveChangesAsync();
         }
 
         public async Task<Utilisateur> FindUtilisateurByLogin(string login)
         {
-            //return _context.Utilisateur.FindAsync(login);
+            if (login == null)
+                throw new NotFoundException("Utilisateur");
              return await _context.Utilisateur
                     .Include(u=>u.FkGroupesanguinNavigation)
                     .FirstOrDefaultAsync(c => c.Login == login);
@@ -207,6 +224,8 @@ namespace CroixRouge.Dal
                 _context.Don.Add(don);
                 await _context.SaveChangesAsync();
             }
+            else
+                throw new NotFoundException("Don");
         }
 
         public async Task<IEnumerable<Jourouverture>> GetJoursouverturesAsync()
@@ -231,16 +250,20 @@ namespace CroixRouge.Dal
 
         public async Task UpdateJourouvertureAsync(Jourouverture jourouverture, JourouvertureDTO dto)
         {   
-            if (jourouverture != null)
+            if (jourouverture != null && dto != null)
             {
                 _context.Entry(jourouverture).OriginalValues["Rv"] = dto.Rv;
                 await _context.SaveChangesAsync();
             }
-            //exception
+            else
+                throw new NotFoundException("JourOuverture");
         }
 
         public async Task RemoveJourouvertureAsync(Jourouverture jourouverture)
         {
+            if (jourouverture == null)
+                throw new NotFoundException("Jourouverture");
+
             _context.Jourouverture.Remove(jourouverture);
             await _context.SaveChangesAsync();
         }
@@ -248,6 +271,49 @@ namespace CroixRouge.Dal
         public Task<Jourouverture> FindJourouvertureById(int id)
         {
             return _context.Jourouverture.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Lanceralerte>> GetLanceralertesAsync(string login)
+        {
+             return await _context.Lanceralerte
+            .Where(lA => login == null || lA.FkUtilisateur.Contains(login))
+            .OrderBy(l => l.Id)
+            .ToArrayAsync();
+        }
+
+        public async Task AddLanceralerteAsync(Lanceralerte lanceralerte)
+        {
+            if (lanceralerte != null)
+            {
+                _context.Lanceralerte.Add(lanceralerte);
+                await _context.SaveChangesAsync();
+            }
+            else
+                throw new NotFoundException("Lanceralerte");
+        }
+
+        public async Task UpdateLanceralerteAsync(Lanceralerte lanceralerte)
+        {   
+            if (lanceralerte != null)
+            {
+                await _context.SaveChangesAsync();
+            }
+            else
+                throw new NotFoundException("Lanceralerte");
+        }
+
+        public async Task RemoveLanceralerteAsync(Lanceralerte lanceralerte)
+        {
+            if (lanceralerte == null)
+                throw new NotFoundException("Lanceralerte");
+
+            _context.Lanceralerte.Remove(lanceralerte);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task<Lanceralerte> FindLanceralerteById(int id)
+        {
+            return _context.Lanceralerte.FindAsync(id);
         }
 
         public void verificationHoraire(TimeSpan h1, TimeSpan h2) 
