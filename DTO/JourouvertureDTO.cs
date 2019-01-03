@@ -7,7 +7,6 @@ namespace CroixRouge.DTO
     {
         [Required]
         public int Id { get; set; }
-        [StringLength(8, MinimumLength=2)]
         public byte? Jour { get; set; }
         public DateTime? Date { get; set; }
         [Required]
