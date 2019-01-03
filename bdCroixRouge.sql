@@ -18,9 +18,10 @@ CREATE TABLE Groupesanguin (
 );
 
 CREATE TABLE Imagepromotion (
-	Id 		INT 	IDENTITY(1, 1) 	NOT NULL,
-	Url		NVARCHAR(2083)			NOT NULL, 
-	Rv		ROWVERSION				NOT NULL,
+	Id 				INT 	IDENTITY(1, 1) 	NOT NULL,
+	Url				NVARCHAR(2083)			NOT NULL, 
+	Description		NVARCHAR(500)			NOT NULL,
+	Rv		ROWVERSION						NOT NULL,
 	PRIMARY KEY CLUSTERED (Id ASC)
 );
 
@@ -227,6 +228,7 @@ INSERT INTO [dbo].[Information]
 		   ('Puis-je contracter une maladie en donnant du sang ?', 'NON. D''une part, avant chaque don, on vérifie soigneusement l''aptitude du donneur à faire don de son sang. D''autre part, il n''y a aucun risque de contamination puisqu''on utilise pour chaque don un matériel stérile et à usage unique, détruit par incinération après utilisation. Il en va de même pour les dons de plasma et de plaquettes.');
 		   
 INSERT INTO [dbo].[Imagepromotion]
-           ([Url])
+           ([Url]
+		   ,[Description])
      VALUES
-           ('https://pbs.twimg.com/profile_images/765420051545649152/Ei2ZvEbU_400x400.jpg')		   
+           ('https://pbs.twimg.com/profile_images/765420051545649152/Ei2ZvEbU_400x400.jpg', 'Image officielle de la croix rouge en Belgique');	   

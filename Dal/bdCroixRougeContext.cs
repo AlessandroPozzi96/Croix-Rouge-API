@@ -130,7 +130,11 @@ namespace CroixRouge.Dal
                 entity.Property(e => e.Url)
                     .IsRequired()
                     .HasMaxLength(2083);
-                    
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
                 entity.Property(e => e.Rv)
                     .IsRequired()
                     .IsRowVersion();
