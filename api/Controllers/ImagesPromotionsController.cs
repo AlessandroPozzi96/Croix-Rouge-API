@@ -73,7 +73,6 @@ namespace CroixRouge.api.Controllers
             if (entity == null)
                 return NotFound();
 
-            entity = Mapper.Map<Imagepromotion>(dto);
             await dataAccess.UpdateImagePromotionAsync(entity, dto);
 
             return Ok(Mapper.Map<ImagepromotionDTO>(entity));

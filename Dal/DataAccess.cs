@@ -263,6 +263,14 @@ namespace CroixRouge.Dal
         {   
             if (jourouverture != null && dto != null)
             {
+                // verificationHoraire(jourouverture.HeureDebut, jourouverture.HeureFin);
+                // verificationChevauchementHoraires(jourouverture.FkCollecteNavigation, jourouverture);
+                jourouverture.Date = dto.Date;
+                jourouverture.Jour = dto.Jour;
+                jourouverture.FkCollecte = dto.FkCollecte;
+                jourouverture.HeureDebut = dto.HeureDebut;
+                jourouverture.HeureFin = dto.HeureFin;
+
                 _context.Entry(jourouverture).OriginalValues["Rv"] = dto.Rv;
                 await _context.SaveChangesAsync();
             }
@@ -349,6 +357,9 @@ namespace CroixRouge.Dal
         {   
             if (imagepromotion != null && dto != null)
             {
+                imagepromotion.Description = dto.Description;
+                imagepromotion.Url = dto.Url;
+
                 _context.Entry(imagepromotion).OriginalValues["Rv"] = dto.Rv;
                 await _context.SaveChangesAsync();
             }

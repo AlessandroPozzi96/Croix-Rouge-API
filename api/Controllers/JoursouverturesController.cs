@@ -83,7 +83,6 @@ namespace CroixRouge.api.Controllers
             if (collecte == null)
                 return NotFound();
             
-            entity = Mapper.Map<Jourouverture>(dto);
             entity.FkCollecteNavigation = collecte;
 
             await dataAccess.UpdateJourouvertureAsync(entity, dto);
