@@ -101,12 +101,20 @@ namespace CroixRouge.Dal
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemoveCollecteAsync(Collecte collecte)
+        public async Task RemoveCollecteAsync(Collecte collecte,bool suppressionHorraire)
         {
             //suppression des joursouvertures lié
-            
-
-            _context.Collecte.Remove(collecte);
+            if(suppressionHorraire)
+            {
+                foreach(Jourouverture jourouverture in collecte.Jourouverture)
+                {
+                    _context.Jourouverture.Remove(jourouverture);
+                }
+                _context.Collecte.Remove(collecte);
+            }
+            else{
+                _context.Collecte.Remove(collecte);
+            }
             await _context.SaveChangesAsync();
         }
 
@@ -241,7 +249,7 @@ namespace CroixRouge.Dal
             _context.Jourouverture.Remove(jourouverture);
             await _context.SaveChangesAsync();
         }
-
+    
         public Task<Jourouverture> FindJourouvertureById(int id)
         {
             return _context.Jourouverture.FindAsync(id);

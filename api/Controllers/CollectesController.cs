@@ -82,15 +82,19 @@ namespace CroixRouge.api.Controllers
         // DELETE api/Collectes/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id,bool suppressionHorraire = false)
         {
             Collecte entity = await dataAccess.FindCollecteById(id);
             if (entity == null)
                 return NotFound();
 
-            await dataAccess.RemoveCollecteAsync(entity);
+            await dataAccess.RemoveCollecteAsync(entity,suppressionHorraire);
 
             return Ok();
         }
+
+
+
+
     }
 }
