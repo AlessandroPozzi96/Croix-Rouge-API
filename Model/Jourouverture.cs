@@ -6,7 +6,7 @@ namespace CroixRouge.Model
     public partial class Jourouverture
     {
         public int Id { get; set; }
-        public string LibelleJour { get; set; }
+        public byte? Jour { get; set; }
         public DateTime? Date { get; set; }
         public int FkCollecte { get; set; }
         public TimeSpan HeureDebut { get; set; }

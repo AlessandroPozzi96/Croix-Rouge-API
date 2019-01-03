@@ -8,7 +8,7 @@ namespace CroixRouge.DTO
         [Required]
         public int Id { get; set; }
         [StringLength(8, MinimumLength=2)]
-        public string LibelleJour { get; set; }
+        public byte? Jour { get; set; }
         public DateTime? Date { get; set; }
         [Required]
         public int FkCollecte { get; set; }

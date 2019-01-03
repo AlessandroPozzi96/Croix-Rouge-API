@@ -250,7 +250,7 @@ namespace CroixRouge.Dal
         public void verificationHoraire(TimeSpan h1, TimeSpan h2) 
         {
             if (h2 <= h1)
-                throw new ChevauchementHorairesException();
+                throw new HoraireInvalideException();
         }
     }
 }
