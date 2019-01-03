@@ -327,6 +327,50 @@ namespace CroixRouge.Dal
             return _context.Lanceralerte.FindAsync(id);
         }
 
+        public async Task<IEnumerable<Imagepromotion>> GetImagepromotionAsync()
+        {
+             return await _context.Imagepromotion
+            .OrderBy(iP => iP.Id)
+            .ToArrayAsync();
+        }
+
+        public async Task AddImagepromotionAsync(Imagepromotion imagepromotion)
+        {
+            if (imagepromotion != null)
+            {
+                _context.Imagepromotion.Add(imagepromotion);
+                await _context.SaveChangesAsync();
+            }
+            else
+                throw new NotFoundException("Imagepromotion");
+        }
+
+        public async Task UpdateImagePromotionAsync(Imagepromotion imagepromotion, ImagepromotionDTO dto)
+        {   
+            if (imagepromotion != null && dto != null)
+            {
+                _context.Entry(imagepromotion).OriginalValues["Rv"] = dto.Rv;
+                await _context.SaveChangesAsync();
+            }
+            else
+                throw new NotFoundException("Imagepromotion");
+        }
+
+        public async Task RemoveImagepromotionAsync(Imagepromotion imagepromotion)
+        {
+            if (imagepromotion == null)
+                throw new NotFoundException("Imagepromotion");
+
+            _context.Imagepromotion.Remove(imagepromotion);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task<Imagepromotion> FindImagepromotionById(int id)
+        {
+            return _context.Imagepromotion.FindAsync(id);
+        }
+
+
         public void verificationHoraire(TimeSpan h1, TimeSpan h2) 
         {
             if (h2 <= h1)

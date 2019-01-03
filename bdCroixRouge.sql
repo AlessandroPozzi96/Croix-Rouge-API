@@ -18,8 +18,10 @@ CREATE TABLE Groupesanguin (
 );
 
 CREATE TABLE Imagepromotion (
-	Url		NVARCHAR(400)	NOT NULL, 
-	PRIMARY KEY (Url)
+	Id 		INT 	IDENTITY(1, 1) 	NOT NULL,
+	Url		NVARCHAR(2083)			NOT NULL, 
+	Rv		ROWVERSION				NOT NULL,
+	PRIMARY KEY CLUSTERED (Id ASC)
 );
 
 CREATE TABLE Role (
@@ -50,19 +52,19 @@ CREATE TABLE Utilisateur (
 
 CREATE TABLE Partagerimage (
 	Id 				INT 	IDENTITY(1, 1) 	NOT NULL,
-	Fk_Image		NVARCHAR(400)			NOT NULL, 
+	Fk_Image		INT						NOT NULL, 
 	Fk_Utilisateur	NVARCHAR(50)			NOT NULL
 	PRIMARY KEY CLUSTERED (Id ASC), 
-	FOREIGN KEY (Fk_Image) REFERENCES Imagepromotion(Url), 
+	FOREIGN KEY (Fk_Image) REFERENCES Imagepromotion(Id), 
 	FOREIGN KEY (Fk_Utilisateur) REFERENCES Utilisateur(Login)
 );
 
 CREATE TABLE Diffuserimage (
 	Id 				INT 	IDENTITY(1, 1) 	NOT NULL,
-	Fk_Image		NVARCHAR(400)			NOT NULL, 
+	Fk_Image		INT						NOT NULL, 
 	Fk_Utilisateur	NVARCHAR(50)			NOT NULL
 	PRIMARY KEY CLUSTERED (Id ASC), 
-	FOREIGN KEY (Fk_Image) REFERENCES Imagepromotion(Url), 
+	FOREIGN KEY (Fk_Image) REFERENCES Imagepromotion(Id), 
 	FOREIGN KEY (Fk_Utilisateur) REFERENCES Utilisateur(Login)
 );
 
@@ -147,10 +149,10 @@ INSERT INTO [dbo].[Utilisateur]
            ,[Fk_Role]
            ,[Fk_Groupesanguin])
      VALUES
-           ('Gwynbleidd', 'POZZI', 'Alessandro', '$2a$12$a0zO2D/85/qUy8N/bPKq4.beCTNdTYwTF7Zq/LmsaGDKfZAq.45sO', 'alessandro.pozzi72@gmail.com', 473227085, '1996-07-14', 1, 0, 'Place du Baty', '6B','ADMIN', null), 
+           ('Gwynbleidd', 'POZZI', 'Alessandro', '$2a$12$A3xX8iSSyqes22sJOug7oONIjHKiekQ2JUfFHIUSIo/2CkCiqzVtW', 'alessandro.pozzi72@gmail.com', 473227085, '1996-07-14', 1, 0, 'Place du Baty', '6B','ADMIN', null), 
 		   ('Bob', 'BRAHY', 'Sébastien', '$2a$12$n/QOzqYJRgQhAaiv6Jz5COxzy0g/hB6KeaRsqFJmeVOpczC2Tl6Hu', 'brahysebastien@hotmail.com', 473124578, '1993-01-01', 1, 0, 'Rue du cheval Noir', '12C','ADMIN', null),
-		   ('john', 'DOE', 'John', '$2a$12$P1spYG7Ke67LiUNH594KG.9rF0sDncajbB.tzCETmGR2MWBHG04z.', 'johndoe@hotmail.com', 473124574, '1980-01-01', 1, 0, 'Rue Charles-De-Gaules', '4', 'USER', null);
---PASSWORD : Gwynbleidd et john → 11111111 | Bob → 12345678		   
+		   ('john', 'DOE', 'John', '$2a$12$68y8BCBR62T7bEG4TU8SIugNnF09N52cfF0yXfBAxP6KqM3zqUpFu', 'johndoe@hotmail.com', 473124574, '1980-01-01', 1, 0, 'Rue Charles-De-Gaules', '4', 'USER', null);
+--PASSWORD : Gwynbleidd → 11111111 | Bob → 12345678 / john → 12121212
 		   
 INSERT INTO [dbo].[Groupesanguin]
 ([Nom])
@@ -223,3 +225,8 @@ INSERT INTO [dbo].[Information]
 		   ('Que devient le sang que je donne en cas d''anomalie ?', 'Si les analyses pratiquées révèlent un résultat anormal, le sang est détruit par incinération.'),
 		   ('Quand utilise-t-on le sang ?', 'On a surtout besoin de sang pour les personnes qui en ont perdu beaucoup, en cas d''accident ou d''opération grave.\n Il faut également disposer de produits sanguins pour traiter les maladies qui affectent la fabrication du sang, par exemple dans le cas des leucémies.'),
 		   ('Puis-je contracter une maladie en donnant du sang ?', 'NON. D''une part, avant chaque don, on vérifie soigneusement l''aptitude du donneur à faire don de son sang. D''autre part, il n''y a aucun risque de contamination puisqu''on utilise pour chaque don un matériel stérile et à usage unique, détruit par incinération après utilisation. Il en va de même pour les dons de plasma et de plaquettes.');
+		   
+INSERT INTO [dbo].[Imagepromotion]
+           ([Url])
+     VALUES
+           ('https://pbs.twimg.com/profile_images/765420051545649152/Ei2ZvEbU_400x400.jpg')		   

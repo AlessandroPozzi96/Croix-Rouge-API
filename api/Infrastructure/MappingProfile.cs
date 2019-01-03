@@ -38,6 +38,9 @@ namespace CroixRouge.api.Infrastructure
 
             CreateMap<Lanceralerte, LanceralerteDTO>();
             CreateMap<LanceralerteDTO, Lanceralerte>();
+
+            CreateMap<Imagepromotion, ImagepromotionDTO>();
+            CreateMap<ImagepromotionDTO, Imagepromotion>();
         }
     } 
 }
