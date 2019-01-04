@@ -231,4 +231,5 @@ INSERT INTO [dbo].[Imagepromotion]
            ([Url]
 		   ,[Description])
      VALUES
-           ('https://pbs.twimg.com/profile_images/765420051545649152/Ei2ZvEbU_400x400.jpg', 'Image officielle de la croix rouge en Belgique');	   
+           ('https://pbs.twimg.com/profile_images/765420051545649152/Ei2ZvEbU_400x400.jpg', 'Image officielle de la croix rouge en Belgique'), 
+		   ('https://image.noelshack.com/fichiers/2019/01/5/1546591486-48270691-733625447024877-3505170836589903872-n.jpg', 'Image promotionnnelle destiné aux utilisateurs de l''application Android');	   
