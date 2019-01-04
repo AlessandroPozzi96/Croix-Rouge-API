@@ -150,10 +150,10 @@ INSERT INTO [dbo].[Utilisateur]
            ,[Fk_Role]
            ,[Fk_Groupesanguin])
      VALUES
-           ('Gwynbleidd', 'POZZI', 'Alessandro', '$2a$12$A3xX8iSSyqes22sJOug7oONIjHKiekQ2JUfFHIUSIo/2CkCiqzVtW', 'alessandro.pozzi72@gmail.com', 473227085, '1996-07-14', 1, 0, 'Place du Baty', '6B','ADMIN', null), 
+           ('Gwynbleidd', 'POZZI', 'Alessandro', '$2a$12$EG2eHCTBzXfOG7f7QEMmsuZuKFpxIY/d.BxTf0GCiW9oVEqLZvms2', 'alessandro.pozzi72@gmail.com', 473227085, '1996-07-14', 1, 0, 'Place du Baty', '6B','ADMIN', null), 
 		   ('Bob', 'BRAHY', 'Sébastien', '$2a$12$n/QOzqYJRgQhAaiv6Jz5COxzy0g/hB6KeaRsqFJmeVOpczC2Tl6Hu', 'brahysebastien@hotmail.com', 473124578, '1993-01-01', 1, 0, 'Rue du cheval Noir', '12C','ADMIN', null),
 		   ('john', 'DOE', 'John', '$2a$12$68y8BCBR62T7bEG4TU8SIugNnF09N52cfF0yXfBAxP6KqM3zqUpFu', 'johndoe@hotmail.com', 473124574, '1980-01-01', 1, 0, 'Rue Charles-De-Gaules', '4', 'USER', null);
---PASSWORD : Gwynbleidd → 11111111 | Bob → 12345678 / john → 12121212
+--PASSWORD : Gwynbleidd → MonMotDePasse | Bob → 12345678 / john → 12121212
 		   
 INSERT INTO [dbo].[Groupesanguin]
 ([Nom])

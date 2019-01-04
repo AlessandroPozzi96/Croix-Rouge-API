@@ -251,7 +251,7 @@ namespace CroixRouge.Dal
             if (jourouverture != null)
             {
                 verificationHoraire(jourouverture.HeureDebut, jourouverture.HeureFin);
-                verificationChevauchementHoraires(jourouverture.FkCollecteNavigation, jourouverture);
+                verificationChevauchementHoraires(jourouverture.FkCollecteNavigation.Jourouverture, jourouverture);
                 _context.Jourouverture.Add(jourouverture);
                 await _context.SaveChangesAsync();
             }
@@ -263,8 +263,10 @@ namespace CroixRouge.Dal
         {   
             if (jourouverture != null && dto != null)
             {
-                // verificationHoraire(jourouverture.HeureDebut, jourouverture.HeureFin);
-                // verificationChevauchementHoraires(jourouverture.FkCollecteNavigation, jourouverture);
+                var joursOuvertures = jourouverture.FkCollecteNavigation.Jourouverture
+                .Where(jO => jO != jourouverture)
+                .ToList();
+
                 jourouverture.Date = dto.Date;
                 jourouverture.Jour = dto.Jour;
                 jourouverture.FkCollecte = dto.FkCollecte;
@@ -272,6 +274,10 @@ namespace CroixRouge.Dal
                 jourouverture.HeureFin = dto.HeureFin;
 
                 _context.Entry(jourouverture).OriginalValues["Rv"] = dto.Rv;
+
+                verificationHoraire(jourouverture.HeureDebut, jourouverture.HeureFin);
+                verificationChevauchementHoraires(joursOuvertures, jourouverture);
+
                 await _context.SaveChangesAsync();
             }
             else
@@ -429,14 +435,14 @@ namespace CroixRouge.Dal
                 throw new HoraireInvalideException();
         }
 
-        public void verificationChevauchementHoraires(Collecte collecte, Jourouverture nouveauJourOuverture)
+        public void verificationChevauchementHoraires(IEnumerable<Jourouverture> joursOuvertures, Jourouverture nouveauJourOuverture)
         {
             if (nouveauJourOuverture.Jour.HasValue)
             {
                 if (nouveauJourOuverture.Date.HasValue)
                     throw new HoraireDoubleException();
 
-                if (collecte.Jourouverture.Any(
+                if (joursOuvertures.Any(
                     jourOuvertureExistant => jourOuvertureExistant.Jour == nouveauJourOuverture.Jour && 
                     horaireSeChevauchent(nouveauJourOuverture, jourOuvertureExistant)
                 ))
@@ -451,7 +457,7 @@ namespace CroixRouge.Dal
                     if (resultatDate < 0)
                         throw new HorairePlusValideException();
 
-                    if (collecte.Jourouverture.Any(
+                    if (joursOuvertures.Any(
                         jourOuvertureExistant => jourOuvertureExistant.Date == nouveauJourOuverture.Date && 
                         horaireSeChevauchent(nouveauJourOuverture, jourOuvertureExistant)
                     ))
