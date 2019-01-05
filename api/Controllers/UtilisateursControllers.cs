@@ -24,11 +24,13 @@ namespace CroixRouge.api.Controllers
         private bdCroixRougeContext _context;
         private DataAccess dataAccess;
         private string ANONYMOUS = "anonymous";
+        private string mdpMailCroixRouge;
 
         public UtilisateursController(bdCroixRougeContext context)
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
             this.dataAccess = new DataAccess(this._context);
+            mdpMailCroixRouge = new ConfigurationHelper("mailCroixRougePassword").GetConnectionString();
         }
 
         // GET api/Utilisateurs
@@ -172,9 +174,9 @@ namespace CroixRouge.api.Controllers
             client.Timeout = 10000;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;
-            client.Credentials = new System.Net.NetworkCredential("CroixRougeNamur@gmail.com","CroixRouge2019");
+            client.Credentials = new System.Net.NetworkCredential("CroixRougeNamur@gmail.com", mdpMailCroixRouge);
 
-            MailMessage mm = new MailMessage("CroixRougeNamur@gmail.com", email, "Mot de passe réinitialisé !", "Bonjour " + utilisateur.Login + ", \n Suite à votre demande nous vous avons créé un nouveau mot de passe, rappelez-vous en la prochaine fois ! \n Nouveau mot de passe : " + mdpNonHashe);
+            MailMessage mm = new MailMessage("CroixRougeNamur@gmail.com", email, "Mot de passe réinitialisé !", "Bonjour " + utilisateur.Login + ", \n \n Suite à votre demande nous vous avons créé un nouveau mot de passe, rappelez-vous en la prochaine fois ! \n \n Nouveau mot de passe : " + mdpNonHashe + " \n \n A bientôt sur DonDeSang :)");
             mm.BodyEncoding = UTF8Encoding.UTF8;
             mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
 
