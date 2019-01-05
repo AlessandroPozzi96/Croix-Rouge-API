@@ -87,6 +87,13 @@ namespace CroixRouge.Dal
             return collectes;
         }
 
+        public async Task<IEnumerable<Collecte>> GetAllCollectesAsync()
+        {
+            return await _context.Collecte
+            .OrderBy(collecte => collecte.Id)
+            .ToArrayAsync();
+        }
+
         public async Task AddCollecteAsync(Collecte collecte)
         {
             if (collecte != null)
@@ -164,6 +171,13 @@ namespace CroixRouge.Dal
             .ToArrayAsync();
         }
 
+        public async Task<IEnumerable<Utilisateur>> GetAllUtilisateursAsync()
+        {
+             return await _context.Utilisateur
+            .OrderBy(u => u.Login)
+            .ToArrayAsync();
+        }
+
         public async Task AddUtilisateurAsync(Utilisateur utilisateur)
         {
             if (utilisateur != null)
@@ -225,6 +239,13 @@ namespace CroixRouge.Dal
         {
             return await _context.Information
             .OrderBy(i => i.Id)
+            .ToArrayAsync();
+        }
+
+        public async Task<IEnumerable<Don>> GetDonsAsync()
+        {
+             return await _context.Don
+            .OrderBy(d => d.Id)
             .ToArrayAsync();
         }
 
