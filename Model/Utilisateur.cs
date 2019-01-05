@@ -22,6 +22,7 @@ namespace CroixRouge.Model
         public DateTime DateNaissance { get; set; }
         public bool IsMale { get; set; }
         public int Score { get; set; }
+        public string Ville { get; set; }
         public string Rue { get; set; }
         public string FkRole { get; set; }
         public string Numero { get; set; }

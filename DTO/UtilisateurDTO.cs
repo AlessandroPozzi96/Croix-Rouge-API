@@ -23,10 +23,9 @@ namespace CroixRouge.DTO
         public bool IsMale { get; set; }
         public int Score { get; set; }
         [StringLength(200, MinimumLength=2)]
-        [Required]
+        public string Ville { get; set; }
         public string Rue { get; set; }
         [StringLength(4, MinimumLength=1)]
-        [Required]
         public string Numero { get; set; }
         [StringLength(6, MinimumLength=1)]
         public string FkRole { get; set; }
