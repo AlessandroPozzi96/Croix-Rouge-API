@@ -217,6 +217,13 @@ namespace CroixRouge.Dal
             await _context.SaveChangesAsync();
         }
 
+        public async Task SimpleUpdateUtilisateurAsync(Utilisateur utilisateur)
+        {
+            if (utilisateur == null)
+                throw new NotFoundException("Utilisateur");
+            await _context.SaveChangesAsync();
+        }
+
         public async Task RemoveUtilisateurAsync(Utilisateur utilisateur)
         {
             if (utilisateur == null)
@@ -233,6 +240,15 @@ namespace CroixRouge.Dal
              return await _context.Utilisateur
                     .Include(u=>u.FkGroupesanguinNavigation)
                     .FirstOrDefaultAsync(c => c.Login == login);
+
+        }
+
+        public async Task<Utilisateur> FindUtilisateurByEmail(string email)
+        {
+            if (email == null)
+                throw new NotFoundException("Utilisateur");
+             return await _context.Utilisateur
+                    .FirstOrDefaultAsync(c => c.Mail == email);
 
         }
 

@@ -13,6 +13,8 @@ using CroixRouge.Dal;
 using AutoMapper;
 using CroixRouge.api.Infrastructure;
 using CroixRouge.Model.Exceptions;
+using System.Text;
+using System.Net.Mail;
 
 namespace CroixRouge.api.Controllers
 {
@@ -148,6 +150,49 @@ namespace CroixRouge.api.Controllers
             await dataAccess.RemoveUtilisateurAsync(utilisateur);
 
             return Ok();
+        }
+
+       [HttpGet("ResetPassword/{email}")]
+        public async Task<IActionResult> resetPassword(string email)
+        {
+            Utilisateur utilisateur = await dataAccess.FindUtilisateurByEmail(email);
+            if (utilisateur == null)
+                return NotFound();
+
+            string mdpNonHashe = CreatePassword(8);
+
+            utilisateur.Password = Hashing.HashPassword(mdpNonHashe);
+
+            await dataAccess.SimpleUpdateUtilisateurAsync(utilisateur);
+
+            SmtpClient client = new SmtpClient();
+            client.Port = 587;
+            client.Host = "smtp.gmail.com";
+            client.EnableSsl = true;
+            client.Timeout = 10000;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.UseDefaultCredentials = false;
+            client.Credentials = new System.Net.NetworkCredential("CroixRougeNamur@gmail.com","CroixRouge2019");
+
+            MailMessage mm = new MailMessage("CroixRougeNamur@gmail.com", email, "Mot de passe réinitialisé !", "Bonjour " + utilisateur.Login + ", \n Suite à votre demande nous vous avons créé un nouveau mot de passe, rappelez-vous en la prochaine fois ! \n Nouveau mot de passe : " + mdpNonHashe);
+            mm.BodyEncoding = UTF8Encoding.UTF8;
+            mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
+
+            client.Send(mm);
+
+            return Ok();
+        }
+
+        public string CreatePassword(int length)
+        {
+                const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+                StringBuilder res = new StringBuilder();
+                Random rnd = new Random();
+                while (0 < length--)
+                {
+                    res.Append(valid[rnd.Next(valid.Length)]);
+                }
+                return res.ToString();
         }
 
         public string GetLoginToken()
