@@ -201,6 +201,7 @@ namespace CroixRouge.Dal
             utilisateur.DateNaissance = dto.DateNaissance;
             utilisateur.IsMale = dto.IsMale;
             utilisateur.Score = dto.Score;
+            utilisateur.Ville = dto.Ville;
             utilisateur.Rue = dto.Rue;
             utilisateur.Numero = dto.Numero;
 
