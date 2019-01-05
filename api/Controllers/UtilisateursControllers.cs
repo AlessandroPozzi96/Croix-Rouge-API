@@ -106,7 +106,7 @@ namespace CroixRouge.api.Controllers
             var loginToken = GetLoginToken();
             var roleToken = GetRoleToken();
 
-            if (roleToken == CroixRouge.Model.Constants.Roles.User && (login != loginToken || loginToken != dto.Login || dto.FkRole != CroixRouge.Model.Constants.Roles.User))
+            if (roleToken == CroixRouge.Model.Constants.Roles.User && (login != loginToken || loginToken != dto.Login))
             {
                 return Forbid();
             }
