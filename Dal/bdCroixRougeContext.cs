@@ -29,15 +29,6 @@ namespace CroixRouge.Dal
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<Utilisateur> Utilisateur { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=tcp:croixrouge.database.windows.net,1433;Initial Catalog=bdCroixRouge;User Id=Gwynbleidd@croixrouge.database.windows.net;Password=Pa456lOt;");
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Alerte>(entity =>
