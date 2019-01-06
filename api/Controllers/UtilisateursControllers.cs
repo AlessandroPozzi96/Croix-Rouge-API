@@ -110,6 +110,7 @@ namespace CroixRouge.api.Controllers
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+                
             var loginToken = GetLoginToken();
             var roleToken = GetRoleToken();
 

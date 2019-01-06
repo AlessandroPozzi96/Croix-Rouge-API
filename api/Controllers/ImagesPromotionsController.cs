@@ -68,6 +68,8 @@ namespace CroixRouge.api.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
         public async Task<IActionResult> Put(int id, [FromBody]ImagepromotionDTO dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
             Imagepromotion entity = await dataAccess.FindImagepromotionById(id);
             if (entity == null)

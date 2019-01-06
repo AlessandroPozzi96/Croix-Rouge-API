@@ -67,6 +67,8 @@ namespace CroixRouge.api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody]AlerteDTO dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             Lanceralerte entity = await dataAccess.FindLanceralerteById(id);
             if (entity == null)
                 return NotFound();

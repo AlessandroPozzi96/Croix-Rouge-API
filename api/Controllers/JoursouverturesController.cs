@@ -75,6 +75,8 @@ namespace CroixRouge.api.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
         public async Task<IActionResult> Put(int id, [FromBody]JourouvertureDTO dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             Jourouverture entity = await dataAccess.FindJourouvertureById(id);
             if (entity == null)
                 return NotFound();

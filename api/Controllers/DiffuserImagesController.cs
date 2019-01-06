@@ -76,6 +76,8 @@ namespace CroixRouge.api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody]DiffuserimageDTO dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
             Diffuserimage entity = await dataAccess.FindDiffuserimageById(id);
             if (entity == null)

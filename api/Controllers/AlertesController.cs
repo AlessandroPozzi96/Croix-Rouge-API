@@ -68,6 +68,8 @@ namespace CroixRouge.api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody]AlerteDTO dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             //fixme: comment valider que le client envoie toujours quelque chose de valide?
             Alerte entity = await dataAccess.FindAlerteById(id);
             if (entity == null)
