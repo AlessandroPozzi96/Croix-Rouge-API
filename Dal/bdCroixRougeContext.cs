@@ -244,7 +244,9 @@ namespace CroixRouge.Dal
                     .IsRequired()
                     .HasMaxLength(100);
 
-                entity.Property(e => e.NumGsm).HasColumnName("NumGSM");
+                entity.Property(e => e.NumGsm)
+                    .IsRequired()
+                    .HasColumnName("NumGSM");
 
                 entity.Property(e => e.Numero)
                     .IsRequired()

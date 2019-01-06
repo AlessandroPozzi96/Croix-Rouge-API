@@ -36,7 +36,7 @@ CREATE TABLE Utilisateur (
 	Prenom				NVARCHAR(100) 	NOT NULL, 
 	Password 			NVARCHAR(200)	NOT NULL, 
 	Mail				NVARCHAR(320)	NOT NULL, 
-	NumGSM				INT, 
+	NumGSM				INT				NOT NULL,
 	DateNaissance		DATE			NOT NULL, 
 	IsMale				BIT				NOT NULL,
 	Score				INT				NOT NULL,
