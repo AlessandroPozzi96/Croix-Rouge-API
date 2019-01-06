@@ -8,7 +8,7 @@ namespace CroixRouge.DTO
         [StringLength(50, MinimumLength=3)]
         [Required]
         public string Login { get; set; }
-        [StringLength(200)]
+        [StringLength(200, MinimumLength=8)]
         public string Password { get; set; }
         [StringLength(100, MinimumLength=2)]
         public string Nom { get; set; }
