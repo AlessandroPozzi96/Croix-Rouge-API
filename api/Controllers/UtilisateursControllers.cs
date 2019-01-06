@@ -75,7 +75,7 @@ namespace CroixRouge.api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody]UtilisateurDTO dto)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || dto.Password == null)
                 return BadRequest(ModelState);
             
             string roleToken = GetRoleToken();
@@ -105,8 +105,11 @@ namespace CroixRouge.api.Controllers
         //Vérifier si le login passé en paramètre est le même que celui du token
         [HttpPut("{login}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> Put(string login, [FromBody]UtilisateurDTO dto)
+        public async Task<IActionResult> Put(string login, [FromBody]MaJUtilisateurDTO dto)
         {
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             var loginToken = GetLoginToken();
             var roleToken = GetRoleToken();
 
@@ -120,7 +123,8 @@ namespace CroixRouge.api.Controllers
             if (entity == null)
                 return NotFound();
             
-            entity.Password = Hashing.HashPassword(dto.Password);
+            if (dto.Password != null || dto.Password != "")
+                entity.Password = Hashing.HashPassword(dto.Password);
             
             await dataAccess.UpdateUtilisateurAsync(entity, dto);
 

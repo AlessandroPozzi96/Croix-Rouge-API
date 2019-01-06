@@ -189,7 +189,7 @@ namespace CroixRouge.Dal
                 throw new NotFoundException("Utilisateur");
         }
 
-        public async Task UpdateUtilisateurAsync(Utilisateur utilisateur, UtilisateurDTO dto)
+        public async Task UpdateUtilisateurAsync(Utilisateur utilisateur, MaJUtilisateurDTO dto)
         {   
             if (utilisateur == null || dto == null)
                 throw new NotFoundException("Utilisateur");
