@@ -1,6 +1,7 @@
 # Croix-Rouge-API
 - Projet développé sous ASP .NET CORE en C#.
 - Cette API pour but de réaliser des opérations diverses sur notre base de données de manière sécurisée tout en garantissant son intégrité.
+- Documentation : [https://croixrougeapi.azurewebsites.net/documentation/index.html](https://croixrougeapi.azurewebsites.net/documentation/index.html)
 
 ## Prérequis
 - .NET CORE 2.1.500 [téléchargement](https://dotnet.microsoft.com/download)
