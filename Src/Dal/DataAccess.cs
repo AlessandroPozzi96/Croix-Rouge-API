@@ -58,11 +58,12 @@ namespace CroixRouge.Dal
         {
             if (alerte == null)
                 throw new NotFoundException("Alerte");
-            IEnumerable<Lanceralerte> lancerAlertes = alerte.Lanceralerte;
-            foreach(Lanceralerte lA in lancerAlertes)
+            IEnumerable<Lanceralerte> lAlertes = await _context.Lanceralerte.ToArrayAsync();
+            lAlertes = lAlertes.Where(lA => lA.FkAlerte == alerte.Id);
+            foreach(Lanceralerte lA in lAlertes)
             {
                 await RemoveLanceralerteAsync(lA);
-            }
+            }    
             _context.Alerte.Remove(alerte);
             await _context.SaveChangesAsync();
         }
