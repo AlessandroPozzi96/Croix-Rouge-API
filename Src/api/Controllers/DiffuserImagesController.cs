@@ -13,7 +13,7 @@ using AutoMapper;
 
 namespace CroixRouge.api.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.Roles.Admin)]
     [Route("api/[controller]")]
     public class DiffuserImagesController : Controller
     {
