@@ -182,6 +182,10 @@ namespace CroixRouge.Dal
         {
             if (utilisateur != null)
             {
+                Utilisateur nouveauUtilisateur = await FindUtilisateurByEmail(utilisateur.Mail);
+                if (nouveauUtilisateur != null)
+                    throw new EmailDejaExistanteException();
+
                 _context.Utilisateur.Add(utilisateur);
                 await _context.SaveChangesAsync();
             }
@@ -193,6 +197,14 @@ namespace CroixRouge.Dal
         {   
             if (utilisateur == null || dto == null)
                 throw new NotFoundException("Utilisateur");
+
+            if (utilisateur.Mail != dto.Mail)
+            {
+                Utilisateur nouveauUtilisateur = await FindUtilisateurByEmail(dto.Mail);
+                if (nouveauUtilisateur != null)
+                    throw new EmailDejaExistanteException();
+            }
+
             //Pas top avec le mapper car il remplace tous les champs    
             utilisateur.Nom = dto.Nom;
             utilisateur.Mail = dto.Mail;
@@ -290,6 +302,12 @@ namespace CroixRouge.Dal
             {
                 verificationHoraire(jourouverture.HeureDebut, jourouverture.HeureFin);
                 verificationChevauchementHoraires(jourouverture.FkCollecteNavigation.Jourouverture, jourouverture);
+
+                if (jourouverture.Jour != null)
+                {
+                    verificationJourSemaineCorrect(jourouverture.Jour.Value);
+                }
+
                 _context.Jourouverture.Add(jourouverture);
                 await _context.SaveChangesAsync();
             }
@@ -301,9 +319,15 @@ namespace CroixRouge.Dal
         {   
             if (jourouverture != null && dto != null)
             {
+                //On exclut le jourOuverture actuel
                 var joursOuvertures = jourouverture.FkCollecteNavigation.Jourouverture
                 .Where(jO => jO != jourouverture)
                 .ToList();
+
+                if (dto.Jour != null)
+                {
+                    verificationJourSemaineCorrect(jourouverture.Jour.Value);
+                }
 
                 jourouverture.Date = dto.Date;
                 jourouverture.Jour = dto.Jour;
