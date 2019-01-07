@@ -58,8 +58,8 @@ namespace CroixRouge.Dal
         {
             if (alerte == null)
                 throw new NotFoundException("Alerte");
-            IEnumerable<Lanceralerte> test = alerte.Lanceralerte;
-            foreach(Lanceralerte lA in test)
+            IEnumerable<Lanceralerte> lancerAlertes = alerte.Lanceralerte;
+            foreach(Lanceralerte lA in lancerAlertes)
             {
                 await RemoveLanceralerteAsync(lA);
             }
@@ -129,6 +129,21 @@ namespace CroixRouge.Dal
         {
             if (collecte == null)
                 throw new NotFoundException("Collecte");
+            
+            
+            IEnumerable<Don> dons = await GetDonsAsync();
+            dons = dons.Where(d => d.FkCollecte == collecte.Id);
+            foreach(Don don in dons)
+            {
+                await RemoveDonAsync(don);
+            }
+
+            IEnumerable<Jourouverture> joursouvertures = await GetJoursouverturesAsync();
+            joursouvertures = joursouvertures.Where(j => j.FkCollecte == collecte.Id);
+            foreach(Jourouverture j in joursouvertures)
+            {
+                await RemoveJourouvertureAsync(j);
+            }            
             //suppression des joursouvertures lié
             
             _context.Collecte.Remove(collecte);
@@ -143,6 +158,7 @@ namespace CroixRouge.Dal
             else{
                 _context.Collecte.Remove(collecte);
             }
+
             await _context.SaveChangesAsync();
         }
 
@@ -246,6 +262,19 @@ namespace CroixRouge.Dal
             if (utilisateur == null)
                 throw new NotFoundException("Utilisateur");
 
+            IEnumerable<Don> dons = await GetDonsAsync();
+            dons = dons.Where(d => d.FkUtilisateur == utilisateur.Login);
+            foreach(Don don in dons)
+            {
+                await RemoveDonAsync(don);
+            }
+
+            IEnumerable<Lanceralerte> lancerAlertes = utilisateur.Lanceralerte;
+            foreach(Lanceralerte lA in lancerAlertes)
+            {
+                await RemoveLanceralerteAsync(lA);
+            }        
+
             _context.Utilisateur.Remove(utilisateur);
             await _context.SaveChangesAsync();
         }
@@ -292,6 +321,15 @@ namespace CroixRouge.Dal
             }
             else
                 throw new NotFoundException("Don");
+        }
+
+        public async Task RemoveDonAsync(Don don)
+        {
+            if (don == null)
+                throw new NotFoundException("Don");
+
+            _context.Don.Remove(don);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Jourouverture>> GetJoursouverturesAsync()
