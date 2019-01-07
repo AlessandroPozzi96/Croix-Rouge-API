@@ -189,7 +189,7 @@ namespace CroixRouge.api.Controllers
             return Ok();
         }
 
-        public string CreatePassword(int length)
+        protected string CreatePassword(int length)
         {
                 const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
                 StringBuilder res = new StringBuilder();
@@ -201,12 +201,12 @@ namespace CroixRouge.api.Controllers
                 return res.ToString();
         }
 
-        public string GetLoginToken()
+        protected string GetLoginToken()
         {
             return User.Claims.ElementAt(0).Value;
         }
 
-        public string GetRoleToken()
+        protected string GetRoleToken()
         {
             if (User.Identity.IsAuthenticated)
                 return User.Claims.ElementAt(3).Value;
