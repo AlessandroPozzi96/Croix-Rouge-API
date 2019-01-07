@@ -512,5 +512,11 @@ namespace CroixRouge.Dal
                     (nouveauJourOuverture.HeureDebut >= jourOuvertureExistant.HeureDebut && nouveauJourOuverture.HeureDebut <= jourOuvertureExistant.HeureFin) ||
                     (nouveauJourOuverture.HeureDebut <= jourOuvertureExistant.HeureDebut && nouveauJourOuverture.HeureFin >= jourOuvertureExistant.HeureFin));
         }
+
+        public void verificationJourSemaineCorrect(int jourSemaine)
+        {
+            if (jourSemaine < 0 || jourSemaine > 6)
+                throw new JourSemaineIncorrectException();
+        }
     }
 }
